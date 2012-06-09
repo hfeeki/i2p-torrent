@@ -7,12 +7,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use FOS\UserBundle\Model\UserInterface;
 
-/**
- * Controller managing the password change
- *
- * @author Thibault Duplessis <thibault.duplessis@gmail.com>
- * @author Christophe Coevoet <stof@notk.org>
- */
 class ChangePasswordController extends ContainerAware
 {
     /**
@@ -50,7 +44,7 @@ class ChangePasswordController extends ContainerAware
      */
     protected function getRedirectionUrl(UserInterface $user)
     {
-        return $this->container->get('router')->generate('fos_user_profile_show');
+        return $this->container->get('router')->generate('fos_user_change_password');
     }
 
     protected function setFlash($action, $value)
