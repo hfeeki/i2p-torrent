@@ -31,17 +31,14 @@
     {% endjavascripts %}
 </head>
 <body>
-<!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a
-        href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
-
 {% block body %}{% endblock %}
 
 {% block javascript %}
 {% spaceless %}
 <!-- global js -->
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 {% javascripts
     filter='?yui_js'
+        '@SOTBCoreBundle/Resources/public/js/jquery.min.js'
         '@SOTBCoreBundle/Resources/public/js/plugins.js'
         '../vendor/twitter/bootstrap/js/bootstrap-modal.js'
         '../vendor/twitter/bootstrap/js/bootstrap-dropdown.js'

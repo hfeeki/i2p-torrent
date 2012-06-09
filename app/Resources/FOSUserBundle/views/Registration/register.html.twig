@@ -1,6 +1,7 @@
 {% extends "FOSUserBundle::layout.html.twig" %}
 
 {% block content %}
+{{ form_errors(form) }}
 <form action="{{ path('fos_user_registration_register') }}" {{ form_enctype(form) }} method="POST" class="fos_user_registration_register">
     {{ form_widget(form) }}
     <div class="form-actions">

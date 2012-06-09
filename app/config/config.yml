@@ -79,6 +79,14 @@ fos_user:
     db_driver: mongodb # other valid values are 'mongodb', 'couchdb' and 'propel'
     firewall_name: main
     user_class: SOTB\UserBundle\Document\User
+    registration:
+        confirmation:
+            enabled:    false # change to true for required email confirmation
+        form:
+            type:               sotb_user_registration
+            handler:            sotb_user.registration.form.handler
+            name:               sotb_user_registration_form
+            validation_groups:  [Register]
 
 mopa_bootstrap:
     form:

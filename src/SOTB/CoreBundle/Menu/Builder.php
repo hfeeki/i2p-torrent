@@ -31,7 +31,7 @@ class Builder extends ContainerAware
                 'routeParameters' => array()
             ));
         } else {
-            $menuItem2 = $menu->addChild('Membership', array('uri' => '#'))
+            $menuItem2 = $menu->addChild('Account', array('uri' => '#'))
                 ->setAttribute('class', 'dropdown')
                 ->setLinkattribute('data-toggle', 'dropdown')
                 ->setLinkattribute('class', 'dropdown-toggle')
@@ -43,10 +43,6 @@ class Builder extends ContainerAware
             ));
             $menuItem2->addChild('Register', array(
                 'route'           => 'fos_user_registration_register',
-                'routeParameters' => array()
-            ));
-            $menuItem2->addChild('Forgot Password', array(
-                'route'           => 'fos_user_resetting_request',
                 'routeParameters' => array()
             ));
         }
