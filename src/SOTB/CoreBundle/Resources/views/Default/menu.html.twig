@@ -1,0 +1,4 @@
+{% extends 'knp_menu.html.twig' %}
+
+{% block label %}{{ item.label }}{% if item.hasChildren and item.level is sameas(1) and item.displayChildren %} <b class="caret"></b>{% endif %}
+{% endblock %}

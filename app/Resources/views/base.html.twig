@@ -1,0 +1,65 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]><html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--><html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    <meta name="description" content="">
+
+    <meta name="viewport" content="width=device-width">
+    {% block stylesheet %}
+    {% spaceless %}
+    <!-- global css -->
+    {% stylesheets
+    filter='less,?yui_css'
+            '@SOTBCoreBundle/Resources/public/css/style.css'
+            '../vendor/twitter/bootstrap/less/bootstrap.less'
+            '../vendor/twitter/bootstrap/less/responsive.less'
+            '@SOTBCoreBundle/Resources/public/css/main.css'
+        %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+
+    {% endspaceless %}
+    {% endblock stylesheet %}
+
+    {% javascripts '@SOTBCoreBundle/Resources/public/js/modernizr-2.5.3.min.js' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+</head>
+<body>
+<!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a
+        href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
+
+{% block body %}{% endblock %}
+
+{% block javascript %}
+{% spaceless %}
+<!-- global js -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+{% javascripts
+    filter='?yui_js'
+        '@SOTBCoreBundle/Resources/public/js/plugins.js'
+        '../vendor/twitter/bootstrap/js/bootstrap-modal.js'
+        '../vendor/twitter/bootstrap/js/bootstrap-dropdown.js'
+        '../vendor/twitter/bootstrap/js/bootstrap-tab.js'
+        '../vendor/twitter/bootstrap/js/bootstrap-tooltip.js'
+        '../vendor/twitter/bootstrap/js/bootstrap-popover.js'
+        '../vendor/twitter/bootstrap/js/bootstrap-alert.js'
+        '@SOTBCoreBundle/Resources/public/js/script.js'
+    %}
+<script src="{{ asset_url }}"></script>
+{% endjavascripts %}
+{% endspaceless %}
+{% endblock javascript %}
+
+<script>
+    $(document).ready(function () {
+        {% block documentReady %}{% endblock documentReady %}
+    });
+</script>
+</body>
+</html>

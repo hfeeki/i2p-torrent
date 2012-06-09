@@ -1,0 +1,18 @@
+{% extends "FOSUserBundle::layout.html.twig" %}
+
+{% block content %}
+<form action="{{ path('fos_user_resetting_send_email') }}" method="POST" class="fos_user_resetting_request">
+
+    <div class="control-group">
+        {% if invalid_username is defined %}
+        <p>{{ 'resetting.request.invalid_username'|trans({'%username%': invalid_username}, 'FOSUserBundle') }}</p>
+        {% endif %}
+        <label for="username" class="required control-label">Username or email</label>
+        <div class="controls" ><input id="username" type="text" name="username" required="required" maxlength="255" /></div>
+    </div>
+
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Reset password</button>
+    </div>
+</form>
+{% endblock content %}
