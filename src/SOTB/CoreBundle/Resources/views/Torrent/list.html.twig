@@ -1,9 +1,29 @@
 {% extends 'SOTBCoreBundle::layout.html.twig' %}
 
 {% block content %}
-<ul>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Seeders</th>
+        <th>Leechers</th>
+        <th>Hash</th>
+        <th>Created</th>
+        <th>Uploaded</th>
+    </tr>
+    </thead>
+    <tbody>
     {% for torrent in torrents %}
-    <li><a href="{{ path('torrent_download', {'slug':torrent.slug}) }}">{{ torrent.name }}</a></li>
+    <tr>
+        <td><a href="{{ path('torrent_download', {'slug':torrent.slug}) }}">{{ torrent.name }}</a></td>
+        <td>{{ torrent.seeders }}</td>
+        <td>{{ torrent.leechers }}</td>
+        <td>{{ torrent.hash }}</td>
+        <td>{{ torrent.creationDate | date }}</td>
+        <td>{{ torrent.created | date }}</td>
+
+    </tr>
     {% endfor %}
-</ul>
+    </tbody>
+</table>
 {% endblock content %}

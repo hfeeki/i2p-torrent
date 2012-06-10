@@ -39,8 +39,8 @@ class TorrentController extends Controller
             if ($form->isValid()) {
                 $dm = $this->container->get('doctrine.odm.mongodb.document_manager');
 
-                $uploader = new \SOTB\CoreBundle\TorrentUploader($this->container->getParameter('torrent_data_dir'));
-                $uploader->upload($torrent);
+                $torrentManager = $this->container->get('torrent_manager');
+                $torrentManager->upload($torrent);
 
                 $dm->persist($torrent);
                 $dm->flush();
@@ -60,7 +60,13 @@ class TorrentController extends Controller
 
         $torrent = $dm->getRepository('SOTBCoreBundle:Torrent')->findOneBy(array('slug' => $slug));
 
-        return new TorrentResponse($torrent, $this->container->getParameter('torrent_data_dir'));
+        $torrentManager = $this->container->get('torrent_manager');
+
+        $result = $torrentManager->readTorrent($torrentManager->getUploadRootDir() . DIRECTORY_SEPARATOR . $torrent->getFilename());
+        var_export($result);
+        die();
+
+        return new TorrentResponse($torrent, $torrentManager->getUploadRootDir());
     }
 
 }

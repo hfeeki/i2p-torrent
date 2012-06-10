@@ -21,9 +21,11 @@
             </sort>
         </reference-many>
 
+        <field name="title" fieldName="title" type="string"/>
+
         <field name="name" fieldName="name" type="string"/>
         <field name="slug" type="string" unique="true">
-            <gedmo:slug unique="true" fields="name" />
+            <gedmo:slug unique="true" fields="title" />
         </field>
 
         <field name="description" fieldName="description" type="string"/>
@@ -34,7 +36,12 @@
 
         <field name="filename" fieldName="filename" type="string"/>
 
-        <field name="info" fieldName="info" type="hash"/>
+        <field name="files" fieldName="files" type="hash"/>
+
+        <field name="pieceLength" fieldName="pieceLength" type="int"/>
+        <field name="pieces" fieldName="pieces" type="bin"/>
+        <field name="private" fieldName="private" type="boolean"/>
+
         <field name="announceList" fieldName="announceList" type="hash"/>
         <field name="creationDate" fieldName="creationDate" type="date"/>
         <field name="comment" fieldName="comment" type="string"/>

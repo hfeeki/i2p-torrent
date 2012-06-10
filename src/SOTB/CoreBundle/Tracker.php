@@ -35,8 +35,10 @@ class Tracker
             return $this->announceFailure("Invalid get parameters.");
         }
 
+        $info_hash = pack('H*', $params->get('info_hash'));
+
         // validate the request
-        if (20 != strlen($params->get('info_hash'))) {
+        if (20 != strlen($info_hash)) {
             return $this->announceFailure("Invalid length of info_hash.");
         }
         if (20 != strlen($params->get('peer_id'))) {
@@ -68,7 +70,7 @@ class Tracker
             $peer->setPeerId($params->get('peer_id'));
         }
 
-        if ('completed' === $params->getInt('event')) {
+        if ('completed' === $params->get('event')) {
             $peer->setComplete(true);
         }
 
@@ -79,11 +81,11 @@ class Tracker
         $peer->setUploaded($params->getInt('uploaded'));
         $peer->setLeft($params->getInt('left'));
 
-        $configInterval = '10';
+        $configInterval = '100';
         $interval = $configInterval + mt_rand(round($configInterval / -10), round($configInterval / 10));
 
         // If the client gracefully exists, we set its ttl to 0, double-interval otherwise.
-        $peer->setInterval(('completed' === $params->get('event'))? 0 : $interval * 2);
+        $peer->setInterval(('stopped' === $params->get('event'))? 0 : $interval * 2);
 
         $this->dm->persist($peer);
 
@@ -94,6 +96,12 @@ class Tracker
             return $this->announceFailure($e->getMessage());
         }
 
+        // TODO: this should be cron'd, not done on each announce
+        // update the torrent stats
+        $torrent->setSeeders(intval($peer_stats['complete']));
+        $torrent->setLeechers(intval($peer_stats['incomplete']));
+
+        $this->dm->persist($torrent);
 
         $response = array(
             'interval'      => $interval,

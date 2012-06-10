@@ -13,7 +13,6 @@ class PeerRepository extends DocumentRepository
     {
         return $this->createQueryBuilder()
             ->field('torrent')->references($torrent)
-            ->field('complete')->notEqual(true)
             ->field('expires')->gte(new \DateTime())
             ->getQuery()
             ->execute();

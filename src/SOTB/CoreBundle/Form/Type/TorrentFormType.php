@@ -19,7 +19,7 @@ class TorrentFormType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('name', 'text', array(
+        $builder->add('title', 'text', array(
             'required' => true
         ))
             ->add('description', 'textarea', array(

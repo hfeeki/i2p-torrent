@@ -13,19 +13,25 @@ class Torrent
 {
     private $id;
 
+    private $title;
     private $name;
     private $slug;
     private $description;
-    private $size;
+    private $size; // in bytes
     private $uploader;
     private $seeders;
     private $leechers;
     private $comments;
 
-    private $file;
-    private $filename;
+    private $_file; // only used to pass the file in the upload form
+    private $filename; // for locating the torrent file on disk (using the hash as the file name anyway)
 
-    private $info;
+    private $pieceLength;
+    private $pieces;
+    private $private;
+
+    private $files;
+
     private $announceList;
     private $creationDate;
     private $comment;
@@ -47,23 +53,6 @@ class Torrent
         $this->seeders = 0;
         $this->leechers = 0;
         $this->comments = new ArrayCollection();
-
-        $this->info = array(
-            'piece length' => 0,
-            'pieces'       => 0,
-            'private'      => 0,
-//          //'mode' => 'single-file',
-            'name'         => '',
-            'length'       => 0,
-            'md5sum'       => '',
-//          //'mode' => 'multi-file',
-//                'name' => '',
-//                'files' => array(
-//                    'length' => 0,
-//                    'md5sum' => '',
-//                    'path' => '' // bencoded
-//                )
-        );
     }
 
     public function setHash($hash)
@@ -160,16 +149,6 @@ class Torrent
         return $this->encoding;
     }
 
-    public function setInfo($info)
-    {
-        $this->info = $info;
-    }
-
-    public function getInfo()
-    {
-        return $this->info;
-    }
-
     public function setName($name)
     {
         $this->name = $name;
@@ -262,11 +241,56 @@ class Torrent
 
     public function setFile($file)
     {
-        $this->file = $file;
+        $this->_file = $file;
     }
 
     public function getFile()
     {
-        return $this->file;
+        return $this->_file;
+    }
+
+    public function setTitle($title)
+    {
+        $this->title = $title;
+    }
+
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    public function setPrivate($private)
+    {
+        $this->private = $private;
+    }
+
+    public function setFiles($files)
+    {
+        $this->files = $files;
+    }
+
+    public function getFiles()
+    {
+        return $this->files;
+    }
+
+    public function setPieces($pieces)
+    {
+        $this->pieces = $pieces;
+    }
+
+    public function getPieces()
+    {
+        return $this->pieces;
+    }
+
+    public function setPieceLength($pieceLength)
+    {
+        $this->pieceLength = $pieceLength;
+    }
+
+    public function getPieceLength()
+    {
+        return $this->pieceLength;
     }
 }

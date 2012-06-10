@@ -21,12 +21,18 @@ class TorrentResponse extends Response
 
         parent::__construct('', 200, array(
             'Content-Type'        => 'application/x-bittorrent',
+            'Content-Length'      => filesize($this->getPathname()),
             'Content-Disposition' => 'attachment; filename="' . $this->torrent->getSlug() . '.torrent"'
         ));
     }
 
+    protected function getPathname()
+    {
+        return $this->baseDir . DIRECTORY_SEPARATOR . $this->torrent->getFilename();
+    }
+
     public function sendContent()
     {
-        return readfile($this->baseDir . DIRECTORY_SEPARATOR . $this->torrent->getFilename());
+        return readfile($this->getPathname());
     }
 }

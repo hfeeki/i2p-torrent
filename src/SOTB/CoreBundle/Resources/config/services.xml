@@ -13,6 +13,9 @@
         <service id="tracker" class="SOTB\CoreBundle\Tracker">
             <argument type="service" id="doctrine.odm.mongodb.document_manager" />
         </service>
+        <service id="torrent_manager" class="SOTB\CoreBundle\TorrentManager">
+            <argument>%torrent_data_dir%</argument>
+        </service>
     </services>
 
 </container>
