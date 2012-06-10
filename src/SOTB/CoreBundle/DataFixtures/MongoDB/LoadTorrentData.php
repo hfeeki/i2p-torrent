@@ -22,22 +22,26 @@ class LoadTorrentData implements FixtureInterface
     {
         $faker = FakerFactory::create();
 
-        $torrent = new Torrent();
-        $torrent->setHash('12345678901234567890');
-        $torrent->setName($faker->company);
+        $hash = '1234567890123456789';
+        for ($a = 1; $a <= 4; $a++) {
+            $torrent = new Torrent();
+            $torrent->setHash($hash.$a);
+            $torrent->setName($faker->company);
 
-        for ($i = 1; $i < 50; $i++) {
-            $peer = new Peer();
-            $peer->setIp($faker->ipv4);
-            $peer->setPort($faker->randomNumber(5));
-            $peer->setPeerId($faker->bothify('????####?#?##?#??###?#?#?#?#?#??#?#?#'));
+            for ($i = 1; $i < 50; $i++) {
+                $peer = new Peer();
+                $peer->setIp($faker->ipv4);
+                $peer->setPort($faker->randomNumber(5));
+                $peer->setPeerId($faker->bothify('????####?#?##?#??###?#?#?#?#?#??#?#?#'));
 
-            $torrent->addPeer($peer);
+                $torrent->addPeer($peer);
 
-            $manager->persist($peer);
+                $manager->persist($peer);
+            }
+
+            $manager->persist($torrent);
         }
 
-        $manager->persist($torrent);
         $manager->flush();
     }
 }

@@ -9,9 +9,10 @@ use Doctrine\ODM\MongoDB\DocumentRepository;
  */
 class PeerRepository extends DocumentRepository
 {
-    public function findActivePeers()
+    public function findActivePeers($torrent)
     {
         return $this->createQueryBuilder()
+            ->field('torrent')->references($torrent)
             ->field('complete')->notEqual(true)
             ->field('expires')->gte(new \DateTime())
             ->getQuery()

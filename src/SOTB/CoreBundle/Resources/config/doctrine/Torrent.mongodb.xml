@@ -9,9 +9,12 @@
 
         <field name="hash" fieldName="hash" type="string"/>
         <reference-many name="peers" fieldName="peers" field="peers" mapped-by="torrent"
+                        target-document="SOTB\CoreBundle\Document\Peer">
+        </reference-many>
+
+        <reference-many name="activePeers" fieldName="activePeers" field="activePeers" mapped-by="torrent"
                         target-document="SOTB\CoreBundle\Document\Peer"
-                        repository-method="findActivePeers"
-                >
+                        repository-method="findActivePeers">
             <sort>
                 <sort field="expires" order="asc"/>
             </sort>

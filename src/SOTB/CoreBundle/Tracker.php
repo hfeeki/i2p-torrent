@@ -111,7 +111,7 @@ class Tracker
     {
         if ($compact) {
             $return = '';
-            foreach ($torrent->getPeers() as $aPeer) {
+            foreach ($torrent->getActivePeers() as $aPeer) {
                 if ($peer->getPeerId() !== $peer->$aPeer()) {
                     $return .= pack('N', ip2long($aPeer->getIp()));
                     $return .= pack('n', intval($aPeer->getPort()));
@@ -119,7 +119,7 @@ class Tracker
             }
         } else {
             $return = array();
-            foreach ($torrent->getPeers() as $aPeer) {
+            foreach ($torrent->getActivePeers() as $aPeer) {
                 if ($peer->getPeerId() !== $aPeer->getPeerId()) {
                     $result = array(
                         'ip'        => $aPeer->getIp(),
@@ -140,7 +140,7 @@ class Tracker
     {
         $result = array('complete' => 0, 'incomplete' => 0);
 
-        foreach ($torrent->getPeers() as $aPeer) {
+        foreach ($torrent->getActivePeers() as $aPeer) {
             if ($peer->getPeerId() !== $aPeer->getPeerId()) {
                 if ($aPeer->isComplete()) {
                     $result['complete'] += 1;
