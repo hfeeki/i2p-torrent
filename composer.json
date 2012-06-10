@@ -38,10 +38,11 @@
         "friendsofsymfony/user-bundle":"dev-master",
         "doctrine/mongodb-odm-bundle":"dev-master",
         "doctrine/doctrine-fixtures-bundle":"dev-master",
-        "mopa/bootstrap-bundle": "dev-master",
+        "mopa/bootstrap-bundle":"dev-master",
         "twitter/bootstrap":"2.0.2",
         "knplabs/knp-paginator-bundle":"dev-master",
-        "knplabs/knp-menu-bundle":"dev-master"
+        "knplabs/knp-menu-bundle":"dev-master",
+        "fzaninotto/faker":"dev-master"
     },
     "scripts":{
         "post-install-cmd":[

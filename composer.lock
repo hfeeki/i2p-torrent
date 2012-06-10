@@ -1,5 +1,5 @@
 {
-    "hash": "630f7b9c0d1bb9c1bfa01304b21e68c2",
+    "hash": "9e4dac2b83837c8c9c54c8401892016f",
     "packages": [
         {
             "package": "doctrine/common",
@@ -27,7 +27,7 @@
         {
             "package": "doctrine/mongodb",
             "version": "dev-master",
-            "source-reference": "996bdb9d4e4ca4fd4954772b194d2c3336a1fcb9"
+            "source-reference": "1f667269e06f592fc593e2865b0cddbb4bbbe15b"
         },
         {
             "package": "doctrine/mongodb-odm",
@@ -47,6 +47,11 @@
             "package": "friendsofsymfony/user-bundle",
             "version": "dev-master",
             "source-reference": "14d5e7a18007c3bd34a7161fa1defd4ac1daa648"
+        },
+        {
+            "package": "fzaninotto/faker",
+            "version": "dev-master",
+            "source-reference": "f6162c88c92b29268d30ff4c000b8b69bd4e372e"
         },
         {
             "package": "jms/aop-bundle",
@@ -91,12 +96,6 @@
         {
             "package": "kriswallsmith/assetic",
             "version": "dev-master",
-            "alias-pretty-version": "1.1.x-dev",
-            "alias-version": "1.1.9999999.9999999-dev"
-        },
-        {
-            "package": "kriswallsmith/assetic",
-            "version": "dev-master",
             "source-reference": "8c76115503d23340e19b5cf6aa95f86663f7185f"
         },
         {
@@ -107,12 +106,6 @@
             "package": "mopa/bootstrap-bundle",
             "version": "dev-master",
             "source-reference": "94d1673ec662ac2547beca662ef6f2b4988dbe39"
-        },
-        {
-            "package": "mopa/bootstrap-bundle",
-            "version": "dev-master",
-            "alias-pretty-version": "2.1.x-dev",
-            "alias-version": "2.1.9999999.9999999-dev"
         },
         {
             "package": "mopa/composer-bridge",
@@ -158,12 +151,6 @@
         {
             "package": "symfony/swiftmailer-bridge",
             "version": "dev-master",
-            "alias-pretty-version": "2.1.x-dev",
-            "alias-version": "2.1.9999999.9999999-dev"
-        },
-        {
-            "package": "symfony/swiftmailer-bridge",
-            "version": "dev-master",
             "source-reference": "408eb09f5799d393ddc3d916ec3667857fb3a20d"
         },
         {
@@ -174,13 +161,13 @@
         {
             "package": "symfony/symfony",
             "version": "dev-master",
-            "source-reference": "f8a09db5e2364d66465358fe393ce51b49b07144"
+            "alias-pretty-version": "2.1.x-dev",
+            "alias-version": "2.1.9999999.9999999-dev"
         },
         {
             "package": "symfony/symfony",
             "version": "dev-master",
-            "alias-pretty-version": "2.1.x-dev",
-            "alias-version": "2.1.9999999.9999999-dev"
+            "source-reference": "6266b72ddc17c4ac3c01fa1b14d3200eab947671"
         },
         {
             "package": "twig/extensions",
@@ -190,13 +177,13 @@
         {
             "package": "twig/twig",
             "version": "dev-master",
-            "source-reference": "018c52fe59479b65920d18a6461edeb312963f9d"
+            "alias-pretty-version": "1.8.x-dev",
+            "alias-version": "1.8.9999999.9999999-dev"
         },
         {
             "package": "twig/twig",
             "version": "dev-master",
-            "alias-pretty-version": "1.8.x-dev",
-            "alias-version": "1.8.9999999.9999999-dev"
+            "source-reference": "018c52fe59479b65920d18a6461edeb312963f9d"
         },
         {
             "package": "twitter/bootstrap",
@@ -222,6 +209,7 @@
         "doctrine/doctrine-fixtures-bundle": 20,
         "mopa/bootstrap-bundle": 20,
         "knplabs/knp-paginator-bundle": 20,
-        "knplabs/knp-menu-bundle": 20
+        "knplabs/knp-menu-bundle": 20,
+        "fzaninotto/faker": 20
     }
 }

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mongo-mapping xmlns="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping"
+                        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                        xsi:schemaLocation="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping
+                        http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
+
+    <document name="SOTB\CoreBundle\Document\Announcement" collection="Announcements">
+
+        <field name="id" id="true"/>
+
+        <field name="infoHash" fieldName="infoHash" type="string"/>
+        <field name="peerId" fieldName="peerId" type="string"/>
+        <field name="ip" fieldName="ip" type="string"/>
+        <field name="port" fieldName="port" type="int"/>
+        <field name="downloaded" fieldName="downloaded" type="int"/>
+        <field name="uploaded" fieldName="uploaded" type="int"/>
+        <field name="left" fieldName="left" type="int"/>
+
+        <field name="event" fieldName="event" type="string"/>
+
+        <field name="interval" fieldName="interval" type="int"/>
+        <field name="key" fieldName="key" type="string"/>
+        <field name="trackerId" fieldName="trackerId" type="string"/>
+
+        <field name="created" fieldName="created" type="timestamp"/>
+    </document>
+</doctrine-mongo-mapping>

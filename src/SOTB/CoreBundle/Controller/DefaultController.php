@@ -4,6 +4,10 @@ namespace SOTB\CoreBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\Request;
+
+use PHPTracker_Config_Simple;
+use PHPTracker_Core;
 
 class DefaultController extends Controller
 {
@@ -18,8 +22,23 @@ class DefaultController extends Controller
     /**
      * @Template()
      */
-    public function memberAction()
+    public function memberAction(Request $request)
     {
-        return array();
+
+    }
+
+    public function announceAction(Request $request)
+    {
+        $tracker = $this->container->get('tracker');
+
+        $params = $request->query;
+
+        if (!$params->has('ip')) {
+            $params->set('ip', $request->getClientIp());
+        }
+
+        $response = $tracker->announce($params);
+
+        return $response;
     }
 }

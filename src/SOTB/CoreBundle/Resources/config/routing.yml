@@ -5,3 +5,7 @@ homepage:
 members:
     pattern:  /member
     defaults: { _controller: SOTBCoreBundle:Default:member }
+
+announce:
+    pattern:  /announce
+    defaults: { _controller: SOTBCoreBundle:Default:announce }
