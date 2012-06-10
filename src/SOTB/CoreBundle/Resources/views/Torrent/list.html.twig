@@ -1,0 +1,9 @@
+{% extends 'SOTBCoreBundle::layout.html.twig' %}
+
+{% block content %}
+<ul>
+    {% for torrent in torrents %}
+    <li><a href="{{ path('torrent_download', {'slug':torrent.slug}) }}">{{ torrent.name }}</a></li>
+    {% endfor %}
+</ul>
+{% endblock content %}

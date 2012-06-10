@@ -8,4 +8,19 @@ members:
 
 announce:
     pattern:  /announce
-    defaults: { _controller: SOTBCoreBundle:Default:announce }
+    defaults: { _controller: SOTBCoreBundle:Tracker:announce }
+
+
+
+
+torrent_upload:
+    pattern:  /upload
+    defaults: { _controller: SOTBCoreBundle:Torrent:upload }
+
+torrent_download:
+    pattern:  /download/{slug}.torrent
+    defaults: { _controller: SOTBCoreBundle:Torrent:download }
+
+torrent_list:
+    pattern:  /list
+    defaults: { _controller: SOTBCoreBundle:Torrent:list }
