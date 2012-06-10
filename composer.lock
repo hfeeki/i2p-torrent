@@ -1,5 +1,5 @@
 {
-    "hash": "9e4dac2b83837c8c9c54c8401892016f",
+    "hash": "ea13a89925ecebfde035ebb81fb5cf09",
     "packages": [
         {
             "package": "doctrine/common",
@@ -52,6 +52,11 @@
             "package": "fzaninotto/faker",
             "version": "dev-master",
             "source-reference": "f6162c88c92b29268d30ff4c000b8b69bd4e372e"
+        },
+        {
+            "package": "gedmo/doctrine-extensions",
+            "version": "dev-master",
+            "source-reference": "7b6631fdb4537c5bb46ebd3f73fb81fd94115559"
         },
         {
             "package": "jms/aop-bundle",
@@ -128,15 +133,20 @@
             "source-reference": "55ad81e65a1023ae07c67075ca49c55556e047bf"
         },
         {
-            "package": "swiftmailer/swiftmailer",
+            "package": "stof/doctrine-extensions-bundle",
             "version": "dev-master",
-            "source-reference": "d33d54cc8a081b0b85734744936ede1ba230dd64"
+            "source-reference": "f141a698d65271a18d86469c1f7b29d7e24170dd"
         },
         {
             "package": "swiftmailer/swiftmailer",
             "version": "dev-master",
             "alias-pretty-version": "4.1.x-dev",
             "alias-version": "4.1.9999999.9999999-dev"
+        },
+        {
+            "package": "swiftmailer/swiftmailer",
+            "version": "dev-master",
+            "source-reference": "d33d54cc8a081b0b85734744936ede1ba230dd64"
         },
         {
             "package": "symfony/assetic-bundle",
@@ -177,13 +187,13 @@
         {
             "package": "twig/twig",
             "version": "dev-master",
-            "alias-pretty-version": "1.8.x-dev",
-            "alias-version": "1.8.9999999.9999999-dev"
+            "source-reference": "018c52fe59479b65920d18a6461edeb312963f9d"
         },
         {
             "package": "twig/twig",
             "version": "dev-master",
-            "source-reference": "018c52fe59479b65920d18a6461edeb312963f9d"
+            "alias-pretty-version": "1.8.x-dev",
+            "alias-version": "1.8.9999999.9999999-dev"
         },
         {
             "package": "twitter/bootstrap",
@@ -210,6 +220,7 @@
         "mopa/bootstrap-bundle": 20,
         "knplabs/knp-paginator-bundle": 20,
         "knplabs/knp-menu-bundle": 20,
-        "fzaninotto/faker": 20
+        "fzaninotto/faker": 20,
+        "stof/doctrine-extensions-bundle": 20
     }
 }
