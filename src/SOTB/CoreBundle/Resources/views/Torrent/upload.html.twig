@@ -1,14 +1,22 @@
 {% extends 'SOTBCoreBundle::layout.html.twig' %}
 
 {% block content %}
-<form action="{{ path('torrent_upload') }}" method="POST" enctype="multipart/form-data">
-    {{ form_row(form.title) }}
-    {{ form_row(form.description) }}
-    {{ form_row(form.file) }}
+<div class="row">
+    <div class="span9">
+        <div class="page-header">
+            <h1>Upload Torrent File</h1>
+        </div>
+        <form action="{{ path('torrent_upload') }}" method="POST" enctype="multipart/form-data" class="form-horizontal">
+            {{ form_row(form.title) }}
+            {{ form_row(form.description) }}
+            {{ form_row(form.filename) }}
 
-    {{ form_rest(form) }}
-    <div class="form-actions">
-        <button type="submit" class="btn btn-primary" data-loading-text="Uploading..." autocomplete="off">Upload</button>
+            {{ form_rest(form) }}
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary loading" data-loading-text="Uploading..." autocomplete="off">Upload</button>
+            </div>
+        </form>
     </div>
-</form>
+</div>
+
 {% endblock content %}

@@ -22,7 +22,7 @@ class TorrentManager
     public function upload(Torrent $torrent)
     {
         /** @var $file \Symfony\Component\HttpFoundation\File\UploadedFile */
-        $file = $torrent->getFile();
+        $file = $torrent->getFilename();
 
         // the file property can be empty if the field is not required
         if (null === $file) {

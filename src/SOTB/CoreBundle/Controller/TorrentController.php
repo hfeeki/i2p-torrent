@@ -23,7 +23,7 @@ class TorrentController extends Controller
         $pagination = $paginator->paginate(
             $query,
             $this->get('request')->query->get('page', 1) /*page number*/,
-            2/*limit per page*/
+            10/*limit per page*/
         );
 
         return compact('pagination');
@@ -53,7 +53,7 @@ class TorrentController extends Controller
         $torrent = new \SOTB\CoreBundle\Document\Torrent();
         $torrent->setUploader($this->getUser());
 
-        $form = $this->createForm(new \SOTB\CoreBundle\Form\Type\TorrentFormType(), $torrent);
+        $form = $this->createForm(new \SOTB\CoreBundle\Form\Type\TorrentFormType(), $torrent, array('validation_groups' => array('upload')));
 
         if ('POST' === $request->getMethod()) {
             $form->bindRequest($request);

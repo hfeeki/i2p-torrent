@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<constraint-mapping xmlns="http://symfony.com/schema/dic/constraint-mapping"
+                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xsi:schemaLocation="http://symfony.com/schema/dic/constraint-mapping http://symfony.com/schema/dic/constraint-mapping/constraint-mapping-1.0.xsd">
+
+    <class name="SOTB\CoreBundle\Document\Torrent">
+        <property name="title">
+            <constraint name="NotBlank">
+                <option name="groups">
+                    <value>upload</value>
+                </option>
+            </constraint>
+            <constraint name="MinLength">
+                <option name="limit">3</option>
+                <option name="groups">
+                    <value>upload</value>
+                </option>
+            </constraint>
+        </property>
+        <property name="filename">
+            <constraint name="NotBlank">
+                <option name="groups">
+                    <value>upload</value>
+                </option>
+            </constraint>
+            <constraint name="File">
+                <option name="maxSize">1024k</option>
+                <option name="mimeTypes">
+                    <value>application/x-bittorrent</value>
+                </option>
+                <option name="mimeTypesMessage">Please upload a valid torrent file</option>
+                <option name="groups">
+                    <value>upload</value>
+                </option>
+            </constraint>
+        </property>
+    </class>
+</constraint-mapping>

@@ -25,7 +25,7 @@ class TorrentFormType extends AbstractType
             ->add('description', 'purified_textarea', array(
             'required' => false
         ))
-            ->add('file', 'file', array(
+            ->add('filename', 'file', array(
             'required' => true
         ));
     }
@@ -38,6 +38,7 @@ class TorrentFormType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'SOTB\CoreBundle\Document\Torrent',
+            'validation_groups' => array('upload')
         ));
     }
 
