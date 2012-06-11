@@ -119,8 +119,11 @@ class Tracker
     public function scrape(ParameterBag $params)
     {
         // todo: limit to only the requested hashes
-
-        $torrents = $this->dm->getRepository('SOTBCoreBundle:Torrent')->findAll();
+        if ($params->has('info_hash')) {
+            $torrents = $this->dm->getRepository('SOTBCoreBundle:Torrent')->findBy(array('hash' => bin2hex($params->get('info_hash'))));
+        } else {
+            $torrents = $this->dm->getRepository('SOTBCoreBundle:Torrent')->findAll();
+        }
 
         $result = array(
             'files' => array()
@@ -128,10 +131,10 @@ class Tracker
 
         foreach ($torrents as $torrent) {
             $result['files'][pack('H*', $torrent->getHash())] = array(
-                'complete' => $torrent->getSeeders(),
-                'downloaded' =>$torrent->getDownloaded(),
+                'complete'   => $torrent->getSeeders(),
+                'downloaded' => $torrent->getDownloaded(),
                 'incomplete' => $torrent->getLeechers(),
-                'name' => $torrent->getName()
+                'name'       => $torrent->getName()
             );
         }
 
