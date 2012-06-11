@@ -9,11 +9,11 @@ use Doctrine\ODM\MongoDB\DocumentRepository;
  */
 class TorrentRepository extends DocumentRepository
 {
-    public function findAllOrderedByName()
+    // hashes may be a single string, or an array of hashes
+    public function findByInfoHash(array $hashes)
     {
         return $this->createQueryBuilder()
-            ->sort('name', 'ASC')
-            ->getQuery()
-            ->execute();
+            ->field('hash')->in($hashes)
+            ->getQuery()->execute();
     }
 }

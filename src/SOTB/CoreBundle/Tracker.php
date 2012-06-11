@@ -72,7 +72,10 @@ class Tracker
 
         if ('completed' === $params->get('event')) {
             $peer->setComplete(true);
+
+            // update the torrent counter
             $torrent->incrementDownloads();
+            $this->dm->persist($torrent);
         }
 
         $peer->setTorrent($torrent);
@@ -82,7 +85,7 @@ class Tracker
         $peer->setUploaded($params->getInt('uploaded'));
         $peer->setLeft($params->getInt('left'));
 
-        $configInterval = '100';
+        $configInterval = '10';
         $interval = $configInterval + mt_rand(round($configInterval / -10), round($configInterval / 10));
 
         // If the client gracefully exists, we set its ttl to 0, double-interval otherwise.
@@ -97,12 +100,7 @@ class Tracker
             return $this->announceFailure($e->getMessage());
         }
 
-        // TODO: this should be cron'd, not done on each announce
-        // update the torrent stats
-        $torrent->setSeeders(intval($peer_stats['complete']));
-        $torrent->setLeechers(intval($peer_stats['incomplete']));
 
-        $this->dm->persist($torrent);
 
         $response = array(
             'interval'      => $interval,
@@ -118,9 +116,11 @@ class Tracker
 
     public function scrape(ParameterBag $params)
     {
+
         // todo: limit to only the requested hashes
         if ($params->has('info_hash')) {
-            $torrents = $this->dm->getRepository('SOTBCoreBundle:Torrent')->findBy(array('hash' => bin2hex($params->get('info_hash'))));
+            $info_hash = array_map(function($v){ return bin2hex($v); }, $params->get('info_hash'));
+            $torrents = $this->dm->getRepository('SOTBCoreBundle:Torrent')->findByInfoHash($info_hash);
         } else {
             $torrents = $this->dm->getRepository('SOTBCoreBundle:Torrent')->findAll();
         }
