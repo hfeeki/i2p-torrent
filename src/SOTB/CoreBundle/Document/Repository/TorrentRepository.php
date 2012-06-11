@@ -16,4 +16,10 @@ class TorrentRepository extends DocumentRepository
             ->field('hash')->in($hashes)
             ->getQuery()->execute();
     }
+
+    public function getAll()
+    {
+        return $this->createQueryBuilder()
+            ->getQuery();
+    }
 }

@@ -2,10 +2,13 @@
 
 {% block content %}
 <form action="{{ path('torrent_upload') }}" method="POST" enctype="multipart/form-data">
-    {{ form_widget(form) }}
+    {{ form_row(form.title) }}
+    {{ form_row(form.description) }}
+    {{ form_row(form.file) }}
 
+    {{ form_rest(form) }}
     <div class="form-actions">
-        <button type="submit" class="btn btn-primary" data-loading-text="Uploading...">Upload</button>
+        <button type="submit" class="btn btn-primary" data-loading-text="Uploading..." autocomplete="off">Upload</button>
     </div>
 </form>
 {% endblock content %}

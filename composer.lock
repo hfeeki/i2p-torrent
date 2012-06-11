@@ -1,6 +1,11 @@
 {
-    "hash": "ea13a89925ecebfde035ebb81fb5cf09",
+    "hash": "a1b957351385561f155f74d95aef6b0b",
     "packages": [
+        {
+            "package": "christeredvartsen/php-bittorrent",
+            "version": "dev-including-tracker",
+            "source-reference": "05c76b4de5308d5a1484849f4ccfa8bc29e9ea4a"
+        },
         {
             "package": "doctrine/common",
             "version": "2.2.2"
@@ -37,11 +42,21 @@
         {
             "package": "doctrine/mongodb-odm-bundle",
             "version": "dev-master",
-            "source-reference": "b535106bc76c44f0fc1e6428c09f02ba1c2c7ae3"
+            "source-reference": "5996d29b4faf4f0bc416d1e8432bc92f655dff93"
         },
         {
             "package": "doctrine/orm",
             "version": "2.2.0"
+        },
+        {
+            "package": "exercise/htmlpurifier-bundle",
+            "version": "dev-master",
+            "source-reference": "2b51e131341a5a00fbce64c99363b05a205db7de"
+        },
+        {
+            "package": "ezyang/htmlpurifier",
+            "version": "dev-master",
+            "source-reference": "7291f19347b05f5833421eaf5152558bfbd2b454"
         },
         {
             "package": "friendsofsymfony/user-bundle",
@@ -86,7 +101,7 @@
         {
             "package": "knplabs/knp-menu",
             "version": "1.1.x-dev",
-            "source-reference": "v1.1.1"
+            "source-reference": "v1.1.2"
         },
         {
             "package": "knplabs/knp-menu-bundle",
@@ -140,13 +155,13 @@
         {
             "package": "swiftmailer/swiftmailer",
             "version": "dev-master",
-            "alias-pretty-version": "4.1.x-dev",
-            "alias-version": "4.1.9999999.9999999-dev"
+            "source-reference": "d33d54cc8a081b0b85734744936ede1ba230dd64"
         },
         {
             "package": "swiftmailer/swiftmailer",
             "version": "dev-master",
-            "source-reference": "d33d54cc8a081b0b85734744936ede1ba230dd64"
+            "alias-pretty-version": "4.1.x-dev",
+            "alias-version": "4.1.9999999.9999999-dev"
         },
         {
             "package": "symfony/assetic-bundle",
@@ -177,7 +192,7 @@
         {
             "package": "symfony/symfony",
             "version": "dev-master",
-            "source-reference": "6266b72ddc17c4ac3c01fa1b14d3200eab947671"
+            "source-reference": "0995b1f28b80f91cfef7b3201840aa3dbcc66ae1"
         },
         {
             "package": "twig/extensions",
@@ -187,13 +202,13 @@
         {
             "package": "twig/twig",
             "version": "dev-master",
-            "source-reference": "018c52fe59479b65920d18a6461edeb312963f9d"
+            "alias-pretty-version": "1.8.x-dev",
+            "alias-version": "1.8.9999999.9999999-dev"
         },
         {
             "package": "twig/twig",
             "version": "dev-master",
-            "alias-pretty-version": "1.8.x-dev",
-            "alias-version": "1.8.9999999.9999999-dev"
+            "source-reference": "d4511d02b45725a56c8cc49127244bca640c9d13"
         },
         {
             "package": "twitter/bootstrap",
@@ -221,6 +236,8 @@
         "knplabs/knp-paginator-bundle": 20,
         "knplabs/knp-menu-bundle": 20,
         "fzaninotto/faker": 20,
-        "stof/doctrine-extensions-bundle": 20
+        "stof/doctrine-extensions-bundle": 20,
+        "exercise/htmlpurifier-bundle": 20,
+        "christeredvartsen/php-bittorrent": 20
     }
 }

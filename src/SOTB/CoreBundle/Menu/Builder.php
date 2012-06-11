@@ -19,6 +19,10 @@ class Builder extends ContainerAware
 
         $menu->addChild('Home', array('route' => 'homepage'));
 
+        $menu->addChild('Torrents', array('route' => 'torrent_list'));
+
+        $menu->addChild('Upload', array('route' => 'torrent_upload'));
+
         if ($this->container->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
             $menuItem2 = $menu->addChild('Members', array('uri' => '#'))
                 ->setAttribute('class', 'dropdown')

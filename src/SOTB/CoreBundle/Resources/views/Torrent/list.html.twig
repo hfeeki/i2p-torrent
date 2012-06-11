@@ -1,20 +1,23 @@
 {% extends 'SOTBCoreBundle::layout.html.twig' %}
 
 {% block content %}
+<div class="navigation pull-right">
+    {{ pagination.render()|raw }}
+</div>
 <table class="table table-striped">
     <thead>
     <tr>
         <th>Name</th>
-        <th>Seeders</th>
-        <th>Leechers</th>
-        <th>Downloaded</th>
+        <th>{{ pagination.sortable('Seeders', 'seeders')|raw }}</th>
+        <th>{{ pagination.sortable('Leechers', 'leechers')|raw }}</th>
+        <th>{{ pagination.sortable('Downloaded', 'downloaded')|raw }}</th>
         <th>Hash</th>
-        <th>Uploaded</th>
+        <th>{{ pagination.sortable('Uploaded', 'created')|raw }}</th>
         <th>Download</th>
     </tr>
     </thead>
     <tbody>
-    {% for torrent in torrents %}
+    {% for torrent in pagination %}
     <tr>
         <td><a href="{{ path('torrent', {'slug': torrent.slug}) }}">{{ torrent.title }}</a></td>
         <td>{{ torrent.seeders }}</td>

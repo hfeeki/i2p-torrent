@@ -17,11 +17,16 @@ class TorrentController extends Controller
     {
         $dm = $this->container->get('doctrine.odm.mongodb.document_manager');
 
-        $torrents = $dm->getRepository('SOTBCoreBundle:Torrent')->findAll();
+        $query = $dm->getRepository('SOTBCoreBundle:Torrent')->getAll();
 
-        return array(
-            'torrents' => $torrents
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $query,
+            $this->get('request')->query->get('page', 1) /*page number*/,
+            2/*limit per page*/
         );
+
+        return compact('pagination');
     }
 
     /**
@@ -61,7 +66,7 @@ class TorrentController extends Controller
                 $dm->persist($torrent);
                 $dm->flush();
 
-                return $this->redirect($this->generateUrl('torrent_list'));
+                return $this->redirect($this->generateUrl('torrent', array('slug' => $torrent->getSlug())));
             }
         }
 

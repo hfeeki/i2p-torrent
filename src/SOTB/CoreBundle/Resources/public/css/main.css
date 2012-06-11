@@ -16,9 +16,17 @@ section {
     border-top: 1px solid #E5E5E5;
 }
 
+.infoBox {
+    margin-bottom: 20px;
+}
 .downloadBox {
     background-color: #DDEEF4;
     padding: 10px;
+}
+
+.downloadBox a {
+    display: block;
+    text-align: center;
 }
 
 .navbar-inner {

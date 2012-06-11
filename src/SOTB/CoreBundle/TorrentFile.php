@@ -361,7 +361,7 @@ class TorrentFile
      */
     protected function touch($void = null)
     {
-        if (is_null($this->{'created by'})) {
+        if (!isset($this->{'created by'})) {
             $this->{'created by'} = 'Anonymous';
         }
 

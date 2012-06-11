@@ -10,7 +10,7 @@
         {{ torrent.description }}
     </div>
     <div class="span3">
-        <div class="downloadBox">
+        <div class="infoBox downloadBox">
             <p>
                 <a href="{{ path('torrent_download', {'slug':torrent.slug}) }}" class="btn btn-primary btn-large"><i class="icon-download-alt icon-white"></i> Torrent</a>
             </p>
@@ -19,9 +19,48 @@
                 <a href="{{ torrent.magnet }}" class="btn btn-large"><i class="icon-magnet"></i> Magnet</a>
             </p>
         </div>
+        <div class="infoBox metaBox">
+            <table class="table table-condensed">
+                <tbody>
+                <tr>
+                    <th>Date</th>
+                    <td>{{ torrent.creationDate | date }}</td>
+                </tr>
+                <tr>
+                    <th>Size</th>
+                    <td>{{ torrent.humanSize }}</td>
+                </tr>
+                <tr>
+                    <th>Discuss</th>
+                    <td>none yet</td>
+                </tr>
+                <tr>
+                    <th>Format</th>
+                    <td>avi</td>
+                </tr>
+                <tr>
+                    <th>Language</th>
+                    <td>english</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
     <div class="span3">
-
+        <div class="well well-small">
+            <div class="sidebar-nav">
+                <ul class="nav nav-list">
+                    <li class="nav-header">Category</li>
+                    <li><a href="">Category</a></li>
+                    <li><a href="">Category</a></li>
+                    <li><a href="">Category</a></li>
+                    <li><a href="">Category</a></li>
+                    <li class="nav-header">Category</li>
+                    <li><a href="">Category</a></li>
+                    <li><a href="">Category</a></li>
+                </ul>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock content %}

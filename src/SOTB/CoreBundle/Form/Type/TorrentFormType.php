@@ -22,7 +22,7 @@ class TorrentFormType extends AbstractType
         $builder->add('title', 'text', array(
             'required' => true
         ))
-            ->add('description', 'textarea', array(
+            ->add('description', 'purified_textarea', array(
             'required' => false
         ))
             ->add('file', 'file', array(
