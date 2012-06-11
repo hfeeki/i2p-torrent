@@ -55,14 +55,6 @@ class TorrentFile
         }
     }
 
-    /** Convert the current Torrent instance in torrent format
-     * @return string encoded torrent data
-     */
-    public function __toString()
-    {
-        return $this->encode($this);
-    }
-
     public function getInfo()
     {
         return $this->info;
@@ -634,6 +626,11 @@ class TorrentFile
         }
 
         return $list;
+    }
+
+    public function getFile()
+    {
+        return bencode(get_object_vars($this));
     }
 
 }

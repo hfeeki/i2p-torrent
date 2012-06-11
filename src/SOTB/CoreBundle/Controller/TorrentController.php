@@ -60,11 +60,11 @@ class TorrentController extends Controller
 
         $torrent = $dm->getRepository('SOTBCoreBundle:Torrent')->findOneBy(array('slug' => $slug));
 
-        $torrentManager = $this->container->get('torrent_manager');
+        if (null === $torrent) {
+            throw $this->createNotFoundException();
+        }
 
-        $result = $torrentManager->readTorrent($torrentManager->getUploadRootDir() . DIRECTORY_SEPARATOR . $torrent->getFilename());
-        var_export($result);
-        die();
+        $torrentManager = $this->container->get('torrent_manager');
 
         return new TorrentResponse($torrent, $torrentManager->getUploadRootDir());
     }

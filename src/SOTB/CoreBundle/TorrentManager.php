@@ -11,10 +11,12 @@ use SOTB\CoreBundle\TorrentFile;
 class TorrentManager
 {
     private $baseDir;
+    private $announceUrl;
 
-    public function __construct($baseDir)
+    public function __construct($baseDir, $announceUrl)
     {
         $this->baseDir = $baseDir;
+        $this->announceUrl = $announceUrl;
     }
 
     public function upload(Torrent $torrent)
@@ -29,26 +31,35 @@ class TorrentManager
 
         $torrentData = new TorrentFile($file->getPathname());
 
-        $torrent->setHash($torrentData->hash_info());
+        // change some properties and write the new file
+        $torrentData->created_by('Anonymous');
+        $torrentData->comment($torrent->getDescription());
 
+        // reset the announce list
+        $torrentData->announce(false);
+        // use only ours
+        $torrentData->announce($this->announceUrl);
+
+
+        $torrent->setHash($torrentData->hash_info());
         $torrent->setAnnounceList($torrentData->announce());
         $torrent->setComment($torrentData->comment());
         $torrent->setCreatedBy($torrentData->created_by());
         $torrent->setCreationDate(new \DateTime('@' . $torrentData->creation_date()));
         $torrent->setName($torrentData->name());
         $torrent->setSize($torrentData->size());
-
-        // these things are corrupt? encoding is off? i don't know. but it breaks mongo
         $torrent->setPieceLength($torrentData->piece_length());
         $torrent->setPieces($torrentData->getPieces());
         $torrent->setPrivate($torrentData->is_private());
-
         $torrent->setFiles($torrentData->offset());
+        $torrent->setFilename($torrent->getHash() . '.torrent');
 
-        // move takes the target directory and then the target filename to move to
-        $moved = $file->move($this->getUploadRootDir(), $torrent->getHash() . '.torrent');
+        file_put_contents($this->getUploadRootDir() . DIRECTORY_SEPARATOR . $torrent->getFilename(), $torrentData->getFile());
 
-        $torrent->setFilename($moved->getFilename());
+        // delete the old tmp file
+        if (is_file($file->getPathname())) {
+            unlink($file->getPathname());
+        }
     }
 
     public function getUploadRootDir()

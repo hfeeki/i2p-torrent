@@ -35,14 +35,14 @@ class Tracker
             return $this->announceFailure("Invalid get parameters.");
         }
 
-        $info_hash = pack('H*', $params->get('info_hash'));
+
 
         // validate the request
-        if (20 != strlen($info_hash)) {
+        if (20 != strlen($params->get('info_hash'))) {
             return $this->announceFailure("Invalid length of info_hash.");
         }
         if (20 != strlen($params->get('peer_id'))) {
-            return $this->announceFailure("Invalid length of info_hash.");
+            return $this->announceFailure("Invalid length of peer_id.");
         }
         if (!(is_numeric($params->getInt('port')) && is_int($params->getInt('port') + 0) && 0 <= $params->getInt('port'))) {
             return $this->announceFailure("Invalid port value.");
@@ -57,7 +57,8 @@ class Tracker
             return $this->announceFailure("Invalid left value.");
         }
 
-        $torrent = $this->dm->getRepository('SOTBCoreBundle:Torrent')->findOneBy(array('hash' => $params->get('info_hash')));
+        $info_hash = bin2hex($params->get('info_hash'));
+        $torrent = $this->dm->getRepository('SOTBCoreBundle:Torrent')->findOneBy(array('hash' => $info_hash));
 
         if (null === $torrent) {
             return $this->announceFailure('Invalid info hash.');
