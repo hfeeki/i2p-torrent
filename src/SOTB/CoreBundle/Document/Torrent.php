@@ -42,6 +42,8 @@ class Torrent
     private $peers;
     private $activePeers;
 
+    private $downloaded;
+
     private $created;
 
     public function __construct()
@@ -52,6 +54,7 @@ class Torrent
         $this->size = 0;
         $this->seeders = 0;
         $this->leechers = 0;
+        $this->downloaded = 0;
         $this->comments = new ArrayCollection();
     }
 
@@ -292,5 +295,20 @@ class Torrent
     public function getPieceLength()
     {
         return $this->pieceLength;
+    }
+
+    public function setDownloaded($downloaded)
+    {
+        $this->downloaded = $downloaded;
+    }
+
+    public function getDownloaded()
+    {
+        return $this->downloaded;
+    }
+
+    public function incrementDownloads()
+    {
+        $this->downloaded++;
     }
 }

@@ -29,4 +29,13 @@ class TrackerController implements ContainerAwareInterface
 
         return $response;
     }
+
+    public function scrapeAction(Request $request)
+    {
+        $tracker = $this->container->get('tracker');
+
+        $response = $tracker->scrape($request->query);
+
+        return $response;
+    }
 }

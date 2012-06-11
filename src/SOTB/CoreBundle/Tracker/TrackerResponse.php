@@ -7,11 +7,11 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * @author Matt Drollette <matt@drollette.com>
  */
-class AnnounceResponse extends Response
+class TrackerResponse extends Response
 {
 
     public function __construct(array $parameters)
     {
-        parent::__construct(bencode($parameters));
+        parent::__construct(bencode($parameters), 200, array('Content-Type' => 'text/plain'));
     }
 }

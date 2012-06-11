@@ -48,6 +48,8 @@
         <field name="createdBy" fieldName="createdBy" type="string"/>
         <field name="encoding" fieldName="encoding" type="string"/>
 
+        <field name="downloaded" fieldName="downloaded" type="int"/>
+
         <field name="created" fieldName="created" type="date"/>
 
     </document>

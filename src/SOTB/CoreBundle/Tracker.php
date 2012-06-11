@@ -6,7 +6,7 @@ use Doctrine\ODM\MongoDB\DocumentManager;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\DependencyInjection\Exception\RuntimeException;
 
-use SOTB\CoreBundle\Tracker\AnnounceResponse;
+use SOTB\CoreBundle\Tracker\TrackerResponse;
 use SOTB\CoreBundle\Document\Peer;
 use SOTB\CoreBundle\Document\Torrent;
 
@@ -34,7 +34,6 @@ class Tracker
         ) {
             return $this->announceFailure("Invalid get parameters.");
         }
-
 
 
         // validate the request
@@ -73,6 +72,7 @@ class Tracker
 
         if ('completed' === $params->get('event')) {
             $peer->setComplete(true);
+            $torrent->incrementDownloads();
         }
 
         $peer->setTorrent($torrent);
@@ -86,7 +86,7 @@ class Tracker
         $interval = $configInterval + mt_rand(round($configInterval / -10), round($configInterval / 10));
 
         // If the client gracefully exists, we set its ttl to 0, double-interval otherwise.
-        $peer->setInterval(('stopped' === $params->get('event'))? 0 : $interval * 2);
+        $peer->setInterval(('stopped' === $params->get('event')) ? 0 : $interval * 2);
 
         $this->dm->persist($peer);
 
@@ -113,7 +113,29 @@ class Tracker
 
         $this->dm->flush();
 
-        return new AnnounceResponse($response);
+        return new TrackerResponse($response);
+    }
+
+    public function scrape(ParameterBag $params)
+    {
+        // todo: limit to only the requested hashes
+
+        $torrents = $this->dm->getRepository('SOTBCoreBundle:Torrent')->findAll();
+
+        $result = array(
+            'files' => array()
+        );
+
+        foreach ($torrents as $torrent) {
+            $result['files'][pack('H*', $torrent->getHash())] = array(
+                'complete' => $torrent->getSeeders(),
+                'downloaded' =>$torrent->getDownloaded(),
+                'incomplete' => $torrent->getLeechers(),
+                'name' => $torrent->getName()
+            );
+        }
+
+        return new TrackerResponse($result);
     }
 
     protected function getPeers(Torrent $torrent, Peer $peer, $compact = false, $no_peer_id = false)

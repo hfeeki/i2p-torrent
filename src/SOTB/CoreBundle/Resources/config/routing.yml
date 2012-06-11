@@ -6,9 +6,15 @@ members:
     pattern:  /member
     defaults: { _controller: SOTBCoreBundle:Default:member }
 
+
+
 announce:
     pattern:  /announce
     defaults: { _controller: SOTBCoreBundle:Tracker:announce }
+
+scrape:
+    pattern:  /scrape
+    defaults: { _controller: SOTBCoreBundle:Tracker:scrape }
 
 
 
