@@ -44,8 +44,7 @@
         "knplabs/knp-menu-bundle":"dev-master",
         "fzaninotto/faker":"dev-master",
         "stof/doctrine-extensions-bundle":"dev-master",
-        "exercise/htmlpurifier-bundle":"dev-master",
-        "christeredvartsen/php-bittorrent":"dev-including-tracker"
+        "exercise/htmlpurifier-bundle":"dev-master"
     },
     "scripts":{
         "post-install-cmd":[
