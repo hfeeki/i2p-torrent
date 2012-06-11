@@ -78,6 +78,17 @@ class Tracker
             $this->dm->persist($torrent);
         }
 
+        // refresh the torrent stats if they're stale
+        if (null === $torrent->getLastUpdate() || $torrent->getLastUpdate()->add(new \DateInterval('PT60S')) < new \DateTime()) {
+            // TODO: this should be cron'd, not done on each announce
+            // update the torrent stats
+            $torrent->setSeeders(rand(1, 50));
+            $torrent->setLeechers(rand(1, 50));
+
+            $torrent->setLastUpdate(new \DateTime());
+
+            $this->dm->persist($torrent);
+        }
         $peer->setTorrent($torrent);
         $peer->setIp($params->get('ip'));
         $peer->setPort($params->get('port'));
@@ -99,8 +110,6 @@ class Tracker
         } catch (\Exception $e) {
             return $this->announceFailure($e->getMessage());
         }
-
-
 
         $response = array(
             'interval'      => $interval,
@@ -189,6 +198,6 @@ class Tracker
 
     protected function announceFailure($msg)
     {
-        return new AnnounceResponse(array('failure reason' => $msg));
+        return new TrackerResponse(array('failure reason' => $msg));
     }
 }

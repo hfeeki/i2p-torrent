@@ -43,6 +43,7 @@ class Torrent
     private $activePeers;
 
     private $downloaded;
+    private $lastUpdate;
 
     private $created;
 
@@ -310,5 +311,23 @@ class Torrent
     public function incrementDownloads()
     {
         $this->downloaded++;
+    }
+
+    public function setLastUpdate($lastUpdate)
+    {
+        $this->lastUpdate = $lastUpdate;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getLastUpdate()
+    {
+        return $this->lastUpdate;
+    }
+
+    public function getMagnet()
+    {
+        return sprintf('magnet:?xt=urn:btih:%2$s%1$sdn=%3$s%1$sxl=%4$d%1$str=%5$s', '&', $this->getHash(), urlencode($this->getName()), $this->getSize(), implode('&tr=', $this->getAnnounceList()));
     }
 }

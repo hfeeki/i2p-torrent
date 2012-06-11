@@ -27,6 +27,22 @@ class TorrentController extends Controller
     /**
      * @Template()
      */
+    public function showAction($slug)
+    {
+        $dm = $this->container->get('doctrine.odm.mongodb.document_manager');
+
+        $torrent = $dm->getRepository('SOTBCoreBundle:Torrent')->findOneBy(array('slug' => $slug));
+
+        if (null === $torrent) {
+            throw $this->createNotFoundException();
+        }
+
+        return array('torrent' => $torrent);
+    }
+
+    /**
+     * @Template()
+     */
     public function uploadAction(Request $request)
     {
         $torrent = new \SOTB\CoreBundle\Document\Torrent();

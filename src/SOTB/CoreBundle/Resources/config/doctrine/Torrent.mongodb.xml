@@ -49,7 +49,7 @@
         <field name="encoding" fieldName="encoding" type="string"/>
 
         <field name="downloaded" fieldName="downloaded" type="int"/>
-
+        <field name="lastUpdate" fieldName="lastUpdate" type="date"/>
         <field name="created" fieldName="created" type="date"/>
 
     </document>

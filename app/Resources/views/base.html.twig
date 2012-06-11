@@ -13,11 +13,11 @@
     {% block stylesheet %}
     {% spaceless %}
     <!-- global css -->
+    {#'../vendor/twitter/bootstrap/less/responsive.less'#}
     {% stylesheets
     filter='less,?yui_css'
             '@SOTBCoreBundle/Resources/public/css/style.css'
             '../vendor/twitter/bootstrap/less/bootstrap.less'
-            '../vendor/twitter/bootstrap/less/responsive.less'
             '@SOTBCoreBundle/Resources/public/css/main.css'
         %}
     <link rel="stylesheet" href="{{ asset_url }}"/>

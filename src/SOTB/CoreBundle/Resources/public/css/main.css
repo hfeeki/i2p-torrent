@@ -1,5 +1,5 @@
 body {
-    padding-top: 60px;
+    padding-top: 40px;
 }
 
 label.required {
@@ -16,3 +16,33 @@ section {
     border-top: 1px solid #E5E5E5;
 }
 
+.downloadBox {
+    background-color: #DDEEF4;
+    padding: 10px;
+}
+
+.navbar-inner {
+    background-color: #005399;
+    background-image: -webkit-linear-gradient(top, #005ba1, #003e75);
+    background-image: linear-gradient(top, #005ba1, #003e75);
+}
+
+.navbar .nav .active > a, .navbar .nav .active > a:hover {
+    background-color: #106bbe;
+}
+
+.navbar .brand {
+    color: #fff;
+}
+
+.navbar .nav > li > a {
+    color: #fff;
+}
+
+.subheader {
+    background-color: #007ae1;
+    height: 50px;
+    margin-bottom: 20px;
+    padding: 20px 0;
+    color: #fff;
+}

@@ -23,6 +23,10 @@ torrent_upload:
     pattern:  /upload
     defaults: { _controller: SOTBCoreBundle:Torrent:upload }
 
+torrent:
+    pattern:  /torrent/{slug}
+    defaults: { _controller: SOTBCoreBundle:Torrent:show }
+
 torrent_download:
     pattern:  /download/{slug}.torrent
     defaults: { _controller: SOTBCoreBundle:Torrent:download }

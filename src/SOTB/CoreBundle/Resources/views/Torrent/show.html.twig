@@ -1,0 +1,27 @@
+{% extends 'SOTBCoreBundle::layout.html.twig' %}
+
+{% block content %}
+
+<div class="row">
+    <div class="span6">
+        <div class="page-header">
+            <h1>{{ torrent.title }}</h1>
+        </div>
+        {{ torrent.description }}
+    </div>
+    <div class="span3">
+        <div class="downloadBox">
+            <p>
+                <a href="{{ path('torrent_download', {'slug':torrent.slug}) }}" class="btn btn-primary btn-large"><i class="icon-download-alt icon-white"></i> Torrent</a>
+            </p>
+
+            <p>
+                <a href="{{ torrent.magnet }}" class="btn btn-large"><i class="icon-magnet"></i> Magnet</a>
+            </p>
+        </div>
+    </div>
+    <div class="span3">
+
+    </div>
+</div>
+{% endblock content %}

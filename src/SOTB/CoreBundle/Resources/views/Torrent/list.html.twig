@@ -9,20 +9,24 @@
         <th>Leechers</th>
         <th>Downloaded</th>
         <th>Hash</th>
-        <th>Created</th>
         <th>Uploaded</th>
+        <th>Download</th>
     </tr>
     </thead>
     <tbody>
     {% for torrent in torrents %}
     <tr>
-        <td><a href="{{ path('torrent_download', {'slug':torrent.slug}) }}">{{ torrent.name }}</a></td>
+        <td><a href="{{ path('torrent', {'slug': torrent.slug}) }}">{{ torrent.title }}</a></td>
         <td>{{ torrent.seeders }}</td>
         <td>{{ torrent.leechers }}</td>
         <td>{{ torrent.downloaded }}</td>
         <td>{{ torrent.hash }}</td>
-        <td>{{ torrent.creationDate | date }}</td>
         <td>{{ torrent.created | date }}</td>
+        <td>
+            <a href="{{ torrent.magnet }}"><i class="icon-magnet"></i> magnet</a>
+            <br/>
+            <a href="{{ path('torrent_download', {'slug':torrent.slug}) }}"><i class="icon-download-alt"></i> torrent</a>
+        </td>
     </tr>
     {% endfor %}
     </tbody>
