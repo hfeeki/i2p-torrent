@@ -79,6 +79,49 @@ class TorrentController extends Controller
     /**
      * @Template()
      */
+    public function requestAction(Request $request)
+    {
+        $torrentRequest = new \SOTB\CoreBundle\Document\Request();
+        $torrentRequest->setUser($this->getUser());
+
+        $form = $this->createForm(new \SOTB\CoreBundle\Form\Type\RequestFormType(), $torrentRequest, array('validation_groups' => array('request')));
+
+        if ('POST' === $request->getMethod()) {
+            $form->bindRequest($request);
+            if ($form->isValid()) {
+                $dm = $this->container->get('doctrine.odm.mongodb.document_manager');
+
+                $dm->persist($torrentRequest);
+                $dm->flush();
+
+                return $this->redirect($this->generateUrl('torrent_request_show', array('slug' => $torrentRequest->getSlug())));
+            }
+        }
+
+        return array(
+            'form' => $form->createView()
+        );
+    }
+
+    /**
+     * @Template()
+     */
+    public function requestShowAction($slug)
+    {
+        $dm = $this->container->get('doctrine.odm.mongodb.document_manager');
+
+        $torrentRequest = $dm->getRepository('SOTBCoreBundle:Request')->findOneBy(array('slug' => $slug));
+
+        if (null === $torrentRequest) {
+            throw $this->createNotFoundException();
+        }
+
+        return array('torrentRequest' => $torrentRequest);
+    }
+
+    /**
+     * @Template()
+     */
     public function searchAction(Request $request)
     {
         $dm = $this->container->get('doctrine.odm.mongodb.document_manager');
@@ -101,6 +144,11 @@ class TorrentController extends Controller
 
         $dm->persist($search);
         $dm->flush();
+
+        // if only one result, send them to it
+        if (1 === $pagination->getTotalItemCount()) {
+            return $this->redirect($this->generateUrl('torrent', array('slug' => $pagination->current()->getSlug())));
+        }
 
         return compact('pagination');
     }

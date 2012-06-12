@@ -8,11 +8,14 @@
     <document name="SOTB\CoreBundle\Document\Request" collection="Requests">
 
         <field name="id" id="true"/>
+        <reference-one name="user" fieldName="user" field="user" target-document="SOTB\UserBundle\Document\User"/>
+
+        <field name="hash" fieldName="hash" type="string"/>
         <field name="title" fieldName="title" type="string"/>
         <field name="description" fieldName="description" type="string"/>
 
         <field name="slug" type="string" length="156" unique="true">
-            <gedmo:slug unique="true" style="camel" updatable="false" separator="-" fields="title" />
+            <gedmo:slug unique="true" fields="title" />
         </field>
 
         <field name="created" fieldName="created" type="date"/>

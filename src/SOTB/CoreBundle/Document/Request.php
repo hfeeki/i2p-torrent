@@ -10,6 +10,8 @@ class Request
     private $id;
 
     private $title;
+    private $user;
+    private $hash;
     private $slug;
 
     private $description;
@@ -64,5 +66,25 @@ class Request
     public function getId()
     {
         return $this->id;
+    }
+
+    public function setHash($hash)
+    {
+        $this->hash = $hash;
+    }
+
+    public function getHash()
+    {
+        return $this->hash;
+    }
+
+    public function setUser($user)
+    {
+        $this->user = $user;
+    }
+
+    public function getUser()
+    {
+        return $this->user;
     }
 }

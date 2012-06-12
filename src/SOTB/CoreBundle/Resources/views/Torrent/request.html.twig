@@ -1,0 +1,22 @@
+{% extends 'SOTBCoreBundle::layout.html.twig' %}
+
+{% block content %}
+<div class="row">
+    <div class="span9">
+        <div class="page-header">
+            <h1>Request a Torrent</h1>
+        </div>
+        <form action="{{ path('torrent_request') }}" method="POST" class="form-horizontal">
+            {{ form_row(form.title) }}
+            {{ form_row(form.description) }}
+            {{ form_row(form.hash) }}
+
+            {{ form_rest(form) }}
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary" autocomplete="off">Submit Request</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock content %}
