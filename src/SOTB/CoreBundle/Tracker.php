@@ -84,7 +84,7 @@ class Tracker
         // refresh the torrent stats if they're stale
         $dv = date_create('now')->diff($torrent->getLastUpdate());
         if (null === $torrent->getLastUpdate() || ($dv->invert && $dv->i > 1)) {
-            // TODO: this should be cron'd, not done on each announce
+            // TODO: this should be cron'd, not done on each announce (stats stop updating if no one is peering)
             // update the torrent stats
             $peer_stats = $this->getPeerStats($torrent);
             $torrent->setSeeders($peer_stats['complete']);
