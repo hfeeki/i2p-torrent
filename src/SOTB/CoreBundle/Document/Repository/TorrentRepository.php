@@ -30,6 +30,7 @@ class TorrentRepository extends DocumentRepository
 
         $qb
             ->addOr($qb->expr()->field('title')->equals(new \MongoRegex('/.*' . $q . '.*/i')))
+            ->addOr($qb->expr()->field('hash')->equals($q))
             ->addOr($qb->expr()->field('name')->equals(new \MongoRegex('/.*' . $q . '.*/i')));
 
 

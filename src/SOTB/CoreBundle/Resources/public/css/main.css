@@ -6,6 +6,12 @@ label.required {
     font-weight: bold;
 }
 
+a.btn:visited { color: #333; }
+
+a.btn-success:visited { color: #fff; }
+
+a.btn-primary:visited { color: #fff; }
+
 section {
     padding-top: 60px;
 }

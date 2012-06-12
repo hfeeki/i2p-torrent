@@ -11,6 +11,7 @@
         {{ torrent.description | nl2br }}
 
         <p>&nbsp;</p>
+
         <div class="well well-small">
             {{ torrent.comment }}
         </div>
@@ -24,6 +25,11 @@
             <p>
                 <a href="{{ torrent.magnet }}" class="btn btn-large"><i class="icon-magnet"></i> Magnet</a>
             </p>
+        </div>
+        <div class="infoBox statsBox">
+            <span class="badge badge-success"><i class="icon-arrow-up icon-white"></i>{{ torrent.seeders }}</span> Seeders<br/>
+            <span class="badge badge-warning"><i class="icon-arrow-down icon-white"></i>{{ torrent.leechers }}</span> Leechers <br/>
+            <span class="badge badge-info"><i class="icon-ok icon-white"></i>{{ torrent.downloaded }}</span> Completed
         </div>
         <div class="infoBox metaBox">
             <table class="table table-condensed">

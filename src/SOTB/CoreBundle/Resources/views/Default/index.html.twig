@@ -2,13 +2,21 @@
 
 {% block content %}
 <div class="row">
-    <div class="span9">
-        <div class="hero-unit">
+    <div class="span12">
+        <div class="hero-unit" style="text-align: center">
             <h1>Torrent Requests</h1>
 
-            <p>Would you like to download a torrent on I2P but aren't able to find it? Ask the community to upload it!</p>
+            <p style="padding: 30px 0;">Would you like to download a torrent on I2P but aren't able to find it? Ask the community to upload it!</p>
 
-            <p><a class="btn btn-primary btn-large">Upload &raquo;</a></p>
+            <div>
+                <div style="float:left; display:inline; width: 50%;text-align: center">
+                    <a href="{{ path('torrent_upload') }}" class="btn btn-primary btn-large btn-wide" style="width: 200px">Upload&nbsp;<i class="icon-upload icon-white"></i></a>
+
+                </div>
+                <div style="float:left; display: inline;width: 50%;text-align: center">
+                    <a href="" class="btn btn-success btn-large" style="width: 200px">Request&nbsp;<i class="icon-bullhorn icon-white"></i></a>
+                </div>
+            </div>
         </div>
     </div>
     <div class="span3">
