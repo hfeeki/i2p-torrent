@@ -6,15 +6,15 @@
         <div class="hero-unit" style="text-align: center">
             <h1>Torrent Requests</h1>
 
-            <p style="padding: 30px 0;">Want to download a torrent on I2P but aren't able to find it? Ask the community to upload it!</p>
+            <p style="padding: 30px 0;">Upload a torrent from the regular internet and the community shall deliver.</p>
 
             <div>
                 <div style="float:left; display:inline; width: 50%;text-align: center">
-                    <a href="{{ path('torrent_upload') }}" class="btn btn-primary btn-large btn-wide" style="width: 200px">Upload Torrent&nbsp;<i class="icon-upload icon-white"></i></a>
+                    <a href="{{ path('torrent_list') }}" class="btn btn-primary btn-large btn-wide" style="width: 200px"> Seed a Torrent&nbsp;<i class="icon-upload icon-white"></i></a>
 
                 </div>
                 <div style="float:left; display: inline;width: 50%;text-align: center">
-                    <a href="" class="btn btn-success btn-large" style="width: 200px">Request Torrent&nbsp;<i class="icon-bullhorn icon-white"></i></a>
+                    <a href="{{ path('torrent_upload') }}" class="btn btn-success btn-large" style="width: 200px">Request a Torrent&nbsp;<i class="icon-bullhorn icon-white"></i></a>
                 </div>
             </div>
         </div>

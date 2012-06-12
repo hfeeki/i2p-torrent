@@ -60,6 +60,7 @@ class Tracker
         $torrent = $this->dm->getRepository('SOTBCoreBundle:Torrent')->findOneBy(array('hash' => $info_hash));
 
         if (null === $torrent) {
+            // TODO: we could automatically add them and fetch the meta-data later
             return $this->announceFailure('Invalid info hash.');
         }
 
@@ -70,25 +71,30 @@ class Tracker
             $peer->setPeerId($params->get('peer_id'));
         }
 
-        if ('completed' === $params->get('event')) {
+        if (0 === $params->getInt('left') || 'completed' === $params->get('event')) {
             $peer->setComplete(true);
 
-            // update the torrent counter
-            $torrent->incrementDownloads();
-            $this->dm->persist($torrent);
+            if ('completed' === $params->get('event')) {
+                // update the torrent counter
+                $torrent->incrementDownloads();
+                $this->dm->persist($torrent);
+            }
         }
 
         // refresh the torrent stats if they're stale
-        if (null === $torrent->getLastUpdate() || $torrent->getLastUpdate()->add(new \DateInterval('PT60S')) < new \DateTime()) {
+        $dv = date_create('now')->diff($torrent->getLastUpdate());
+        if (null === $torrent->getLastUpdate() || ($dv->invert && $dv->i > 1)) {
             // TODO: this should be cron'd, not done on each announce
             // update the torrent stats
-            $torrent->setSeeders(rand(1, 50));
-            $torrent->setLeechers(rand(1, 50));
+            $peer_stats = $this->getPeerStats($torrent);
+            $torrent->setSeeders($peer_stats['complete']);
+            $torrent->setLeechers($peer_stats['incomplete']);
 
             $torrent->setLastUpdate(new \DateTime());
 
             $this->dm->persist($torrent);
         }
+
         $peer->setTorrent($torrent);
         $peer->setIp($params->get('ip'));
         $peer->setPort($params->get('port'));
@@ -125,10 +131,12 @@ class Tracker
 
     public function scrape(ParameterBag $params)
     {
-
         // todo: limit to only the requested hashes
         if ($params->has('info_hash')) {
-            $info_hash = array_map(function($v){ return bin2hex($v); }, $params->get('info_hash'));
+            $info_hash = array_map(function($v)
+            {
+                return bin2hex($v);
+            }, $params->get('info_hash'));
             $torrents = $this->dm->getRepository('SOTBCoreBundle:Torrent')->findByInfoHash($info_hash);
         } else {
             $torrents = $this->dm->getRepository('SOTBCoreBundle:Torrent')->findAll();
@@ -155,7 +163,7 @@ class Tracker
         if ($compact) {
             $return = '';
             foreach ($torrent->getActivePeers() as $aPeer) {
-                if ($peer->getPeerId() !== $peer->$aPeer()) {
+                if ($peer->getPeerId() !== $aPeer->getPeerId()) {
                     $return .= pack('N', ip2long($aPeer->getIp()));
                     $return .= pack('n', intval($aPeer->getPort()));
                 }
@@ -179,16 +187,16 @@ class Tracker
         return $return;
     }
 
-    protected function getPeerStats(Torrent $torrent, Peer $peer)
+    protected function getPeerStats(Torrent $torrent, Peer $peer = null)
     {
         $result = array('complete' => 0, 'incomplete' => 0);
 
         foreach ($torrent->getActivePeers() as $aPeer) {
-            if ($peer->getPeerId() !== $aPeer->getPeerId()) {
+            if (null === $peer || $peer->getPeerId() !== $aPeer->getPeerId()) {
                 if ($aPeer->isComplete()) {
-                    $result['complete'] += 1;
+                    $result['complete']++;
                 } else {
-                    $result['incomplete'] += 1;
+                    $result['incomplete']++;
                 }
             }
         }

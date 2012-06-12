@@ -2,18 +2,20 @@
 
 {% block content %}
 <div class="row">
-    <div class="span9">
+    <div class="span8 offset2">
         <div class="page-header">
             <h1>Request a Torrent</h1>
         </div>
-        <form action="{{ path('torrent_request') }}" method="POST" class="form-horizontal">
+        <p>Upload a torrent file from the regular Internet or provide a torrent hash (or magnet link) to request that it be made available over the darknet.</p>
+        <form action="{{ path('torrent_upload') }}" method="POST" enctype="multipart/form-data" class="form-horizontal">
             {{ form_row(form.title) }}
             {{ form_row(form.description) }}
             {{ form_row(form.hash) }}
+            {{ form_row(form.filename) }}
 
             {{ form_rest(form) }}
             <div class="form-actions">
-                <button type="submit" class="btn btn-primary" autocomplete="off">Submit Request</button>
+                <button type="submit" class="btn btn-primary loading" data-loading-text="Submitting..." autocomplete="off">Submit Request</button>
             </div>
         </form>
     </div>

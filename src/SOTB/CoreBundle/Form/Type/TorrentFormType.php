@@ -20,13 +20,21 @@ class TorrentFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('title', 'text', array(
-            'required' => true
+            'required' => true,
+            'help_block'  => 'the title of the torrent file your are requesting'
         ))
             ->add('description', 'purified_textarea', array(
-            'required' => false
+            'required' => false,
+            'help_block'  => 'your own text description of the torrent'
+        ))
+            ->add('hash', 'text', array(
+            'required' => false,
+            'mapped' => false,
+            'help_block'  => 'torrent hash or magnet link'
         ))
             ->add('filename', 'file', array(
-            'required' => true
+            'required' => false,
+            'help_block'  => 'the .torrent file downloaded from the regular Internet'
         ));
     }
 

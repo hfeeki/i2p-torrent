@@ -25,11 +25,16 @@
             <p>
                 <a href="{{ torrent.magnet }}" class="btn btn-large"><i class="icon-magnet"></i> Magnet</a>
             </p>
+
+            <form action="{{ path('torrent_vote', {'slug': torrent.slug}) }}" method="POST">
+                <button type="submit" class="btn btn-large"><i class="icon-plus"></i> Request Torrent</button>
+            </form>
         </div>
         <div class="infoBox statsBox">
             <span class="badge badge-success"><i class="icon-arrow-up icon-white"></i>{{ torrent.seeders }}</span> Seeders<br/>
             <span class="badge badge-warning"><i class="icon-arrow-down icon-white"></i>{{ torrent.leechers }}</span> Leechers <br/>
-            <span class="badge badge-info"><i class="icon-ok icon-white"></i>{{ torrent.downloaded }}</span> Completed
+            <span class="badge badge-info"><i class="icon-ok icon-white"></i>{{ torrent.downloaded }}</span> Completed <br/>
+            <span class="badge badge-info"><i class="icon-plus icon-white"></i>{{ torrent.requestCount }}</span> Requests <br/>
         </div>
         <div class="infoBox metaBox">
             <table class="table table-condensed">

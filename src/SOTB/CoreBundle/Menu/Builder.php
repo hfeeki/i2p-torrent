@@ -19,9 +19,7 @@ class Builder extends ContainerAware
 
         $menu->addChild('Home', array('route' => 'homepage'));
         $menu->addChild('Torrents', array('route' => 'torrent_list'));
-        $menu->addChild('Upload', array('route' => 'torrent_upload'));
-        $menu->addChild('Request', array('route' => 'torrent_request'));
-
+        $menu->addChild('Request', array('route' => 'torrent_upload'));
 
         return $menu;
     }

@@ -45,6 +45,9 @@ class Torrent
     private $downloaded;
     private $lastUpdate;
 
+    private $requests;
+    private $requestCount;
+
     private $created;
 
     public function __construct()
@@ -56,8 +59,11 @@ class Torrent
         $this->seeders = 0;
         $this->leechers = 0;
         $this->downloaded = 0;
+        $this->requestCount = 1;
+
         $this->comments = new ArrayCollection();
-        $this->announceList = new ArrayCollection();
+        $this->announceList = array();
+        $this->requests = new ArrayCollection();
     }
 
     public function setHash($hash)
@@ -355,5 +361,42 @@ class Torrent
     public function getMagnet()
     {
         return sprintf('magnet:?xt=urn:btih:%2$s%1$sdn=%3$s%1$sxl=%4$d%1$str=%5$s', '&', $this->getHash(), urlencode($this->getName()), $this->getSize(), implode('&tr=', $this->getAnnounceList()));
+    }
+
+    public function setRequestCount($requestCount)
+    {
+        $this->requestCount = $requestCount;
+    }
+
+    public function getRequestCount()
+    {
+        return $this->requestCount;
+    }
+
+    public function setRequests($requests)
+    {
+        $this->requests = new ArrayCollection();
+        $this->requestCount = 1;
+
+        foreach ($requests as $request) {
+            $this->addRequest($request);
+        }
+    }
+
+    public function addRequest(Request $request)
+    {
+        if (!$this->requests instanceof ArrayCollection) {
+            $this->requests = new ArrayCollection();
+        }
+
+        if (!$this->requests->contains($request)) {
+            $this->requestCount++;
+            $this->requests->add($request);
+        }
+    }
+
+    public function getRequests()
+    {
+        return $this->requests;
     }
 }

@@ -50,6 +50,10 @@
 
         <field name="downloaded" fieldName="downloaded" type="int"/>
         <field name="lastUpdate" fieldName="lastUpdate" type="date"/>
+
+        <embed-many name="requests" fieldName="requests" field="requests" target-document="SOTB\CoreBundle\Document\Request"/>
+        <field name="requestCount" fieldName="requestCount" type="int"/>
+
         <field name="created" fieldName="created" type="date"/>
 
     </document>

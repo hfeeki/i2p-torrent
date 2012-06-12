@@ -26,20 +26,13 @@ scrape:
 
 # TORRENT
 torrent_upload:
-    pattern:  /upload
-    defaults: { _controller: SOTBCoreBundle:Torrent:upload }
-
-torrent_request:
     pattern:  /request
     defaults: { _controller: SOTBCoreBundle:Torrent:request }
 
-torrent_request_show:
-    pattern:  /request/{slug}
-    defaults: { _controller: SOTBCoreBundle:Torrent:requestShow }
 
-torrent_request_vote:
-    pattern:  /request/{slug}/vote
-    defaults: { _controller: SOTBCoreBundle:Torrent:requestVote }
+torrent_vote:
+    pattern:  /torrent/{slug}/vote
+    defaults: { _controller: SOTBCoreBundle:Torrent:vote }
     requirements:
         _method:  POST
 

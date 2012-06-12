@@ -49,7 +49,7 @@ class TorrentController extends Controller
     /**
      * @Template()
      */
-    public function uploadAction(Request $request)
+    public function requestAction(Request $request)
     {
         $torrent = new \SOTB\CoreBundle\Document\Torrent();
         $torrent->setUploader($this->getUser());
@@ -67,7 +67,7 @@ class TorrentController extends Controller
                 $dm->persist($torrent);
                 $dm->flush();
 
-                $this->container->get('session')->setFlash('success', 'This torrent has been added.');
+                $this->container->get('session')->setFlash('success', 'This torrent has been requested.');
 
                 return $this->redirect($this->generateUrl('torrent', array('slug' => $torrent->getSlug())));
             }
@@ -78,69 +78,27 @@ class TorrentController extends Controller
         );
     }
 
-    /**
-     * @Template()
-     */
-    public function requestAction(Request $request)
+    public function voteAction($slug)
     {
+        $dm = $this->container->get('doctrine.odm.mongodb.document_manager');
+
+        $torrent = $dm->getRepository('SOTBCoreBundle:Torrent')->findOneBy(array('slug' => $slug));
+
+        if (null === $torrent) {
+            throw $this->createNotFoundException();
+        }
+
         $torrentRequest = new \SOTB\CoreBundle\Document\Request();
         $torrentRequest->setUser($this->getUser());
 
-        $form = $this->createForm(new \SOTB\CoreBundle\Form\Type\RequestFormType(), $torrentRequest, array('validation_groups' => array('request')));
+        $torrent->addRequest($torrentRequest);
 
-        if ('POST' === $request->getMethod()) {
-            $form->bindRequest($request);
-            if ($form->isValid()) {
-                $dm = $this->container->get('doctrine.odm.mongodb.document_manager');
-
-                $dm->persist($torrentRequest);
-                $dm->flush();
-
-                $this->container->get('session')->setFlash('success', 'You have requested this torrent.');
-
-                return $this->redirect($this->generateUrl('torrent_request_show', array('slug' => $torrentRequest->getSlug())));
-            }
-        }
-
-        return array(
-            'form' => $form->createView()
-        );
-    }
-
-    /**
-     * @Template()
-     */
-    public function requestShowAction($slug)
-    {
-        $dm = $this->container->get('doctrine.odm.mongodb.document_manager');
-
-        $torrentRequest = $dm->getRepository('SOTBCoreBundle:Request')->findOneBy(array('slug' => $slug));
-
-        if (null === $torrentRequest) {
-            throw $this->createNotFoundException();
-        }
-
-        return array('torrentRequest' => $torrentRequest);
-    }
-
-    public function requestVoteAction($slug)
-    {
-        $dm = $this->container->get('doctrine.odm.mongodb.document_manager');
-
-        $torrentRequest = $dm->getRepository('SOTBCoreBundle:Request')->findOneBy(array('slug' => $slug));
-
-        if (null === $torrentRequest) {
-            throw $this->createNotFoundException();
-        }
-
-        $torrentRequest->incrementRequests();
-
-        $dm->persist($torrentRequest);
+        $dm->persist($torrent);
         $dm->flush();
 
-        $this->container->get('session')->setFlash('success', 'You have requested this torrent.');
+        $this->container->get('session')->setFlash('success', 'You have added your request for this torrent.');
 
-        return $this->redirect($this->generateUrl('torrent_request_show', array('slug' => $torrentRequest->getSlug())));
+        return $this->redirect($this->generateUrl('torrent', array('slug' => $torrent->getSlug())));
     }
 
     /**

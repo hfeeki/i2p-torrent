@@ -47,6 +47,10 @@ class TrackerController implements ContainerAwareInterface
         # result array
         $arr = array();
 
+        if (null === $str || '' === $str) {
+            return $arr;
+        }
+
         # split on outer delimiter
         $pairs = explode('&', $str);
 

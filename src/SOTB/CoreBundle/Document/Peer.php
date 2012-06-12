@@ -49,7 +49,7 @@ class Peer
 
     public function isComplete()
     {
-        return $this->complete;
+        return true === $this->complete;
     }
 
     public function setIp($ip)

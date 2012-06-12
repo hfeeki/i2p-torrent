@@ -25,12 +25,15 @@
                 </option>
             </constraint>
         </property>
-        <property name="filename">
-            <constraint name="NotBlank">
+        <property name="hash">
+            <constraint name="MaxLength">
+                <option name="limit">1024</option>
                 <option name="groups">
                     <value>upload</value>
                 </option>
             </constraint>
+        </property>
+        <property name="filename">
             <constraint name="File">
                 <option name="maxSize">1024k</option>
                 <option name="mimeTypes">
