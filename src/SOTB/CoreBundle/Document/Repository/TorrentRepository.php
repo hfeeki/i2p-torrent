@@ -3,6 +3,7 @@
 namespace SOTB\CoreBundle\Document\Repository;
 
 use Doctrine\ODM\MongoDB\DocumentRepository;
+use FOS\UserBundle\Model\UserInterface;
 
 /**
  * @author Matt Drollette <matt@drollette.com>
@@ -20,6 +21,25 @@ class TorrentRepository extends DocumentRepository
     public function getAll()
     {
         return $this->createQueryBuilder()
+            ->getQuery();
+    }
+
+    public function getSearch($q)
+    {
+        $qb = $this->createQueryBuilder();
+
+        $qb
+            ->addOr($qb->expr()->field('title')->equals(new \MongoRegex('/.*' . $q . '.*/i')))
+            ->addOr($qb->expr()->field('name')->equals(new \MongoRegex('/.*' . $q . '.*/i')));
+
+
+        return $qb->getQuery();
+    }
+
+    public function getForUser(UserInterface $user)
+    {
+        return $this->createQueryBuilder()
+            ->field('uploader')->references($user)
             ->getQuery();
     }
 }

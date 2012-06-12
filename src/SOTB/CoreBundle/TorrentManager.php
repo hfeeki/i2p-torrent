@@ -33,7 +33,7 @@ class TorrentManager
 
         // change some properties and write the new file
         $torrentData->created_by('Anonymous');
-        $torrentData->comment($torrent->getDescription());
+        $torrentData->comment($torrentData->comment() . ('' == $torrentData->comment() ? '' : ' ') . '[anonymous]');
 
         // reset the announce list
         $torrentData->announce(false);

@@ -42,7 +42,7 @@
         <field name="pieces" fieldName="pieces" type="bin"/>
         <field name="private" fieldName="private" type="boolean"/>
 
-        <field name="announceList" fieldName="announceList" type="hash"/>
+        <field name="announceList" fieldName="announceList" field="announceList" type="hash"/>
         <field name="creationDate" fieldName="creationDate" type="date"/>
         <field name="comment" fieldName="comment" type="string"/>
         <field name="createdBy" fieldName="createdBy" type="string"/>

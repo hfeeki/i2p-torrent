@@ -57,6 +57,7 @@ class Torrent
         $this->leechers = 0;
         $this->downloaded = 0;
         $this->comments = new ArrayCollection();
+        $this->announceList = new ArrayCollection();
     }
 
     public function setHash($hash)

@@ -23,4 +23,23 @@ class DefaultController extends Controller
     {
 
     }
+
+    /**
+     * @Template()
+     */
+    public function myUploadsAction()
+    {
+        $dm = $this->container->get('doctrine.odm.mongodb.document_manager');
+
+        $query = $dm->getRepository('SOTBCoreBundle:Torrent')->getForUser($this->getUser());
+
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $query,
+            $this->get('request')->query->get('page', 1) /*page number*/,
+            10/*limit per page*/
+        );
+
+        return compact('pagination');
+    }
 }

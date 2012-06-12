@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 
 use SOTB\CoreBundle\TorrentResponse;
+use SOTB\CoreBundle\Document\Search;
 
 class TorrentController extends Controller
 {
@@ -73,6 +74,35 @@ class TorrentController extends Controller
         return array(
             'form' => $form->createView()
         );
+    }
+
+    /**
+     * @Template()
+     */
+    public function searchAction(Request $request)
+    {
+        $dm = $this->container->get('doctrine.odm.mongodb.document_manager');
+
+        $query = $dm
+            ->getRepository('SOTBCoreBundle:Torrent')
+            ->getSearch($request->query->getAlnum('q'));
+
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $query,
+            $this->get('request')->query->get('page', 1) /*page number*/,
+            10/*limit per page*/
+        );
+
+        $search = new Search();
+        $search->setQuery($request->get('q'));
+        $search->setNumResults($pagination->getTotalItemCount());
+        $search->setUser($this->getUser());
+
+        $dm->persist($search);
+        $dm->flush();
+
+        return compact('pagination');
     }
 
     public function downloadAction($slug)

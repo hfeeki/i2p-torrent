@@ -2,12 +2,18 @@ homepage:
     pattern:  /
     defaults: { _controller: SOTBCoreBundle:Default:index }
 
+# ACCOUNT
 members:
     pattern:  /member
     defaults: { _controller: SOTBCoreBundle:Default:member }
 
+my_uploads:
+    pattern:  /my-uploads
+    defaults: { _controller: SOTBCoreBundle:Default:myUploads }
 
 
+
+# TRACKER
 announce:
     pattern:  /announce
     defaults: { _controller: SOTBCoreBundle:Tracker:announce }
@@ -18,7 +24,7 @@ scrape:
 
 
 
-
+# TORRENT
 torrent_upload:
     pattern:  /upload
     defaults: { _controller: SOTBCoreBundle:Torrent:upload }
@@ -26,6 +32,10 @@ torrent_upload:
 torrent:
     pattern:  /torrent/{slug}
     defaults: { _controller: SOTBCoreBundle:Torrent:show }
+
+torrent_search:
+    pattern:  /search
+    defaults: { _controller: SOTBCoreBundle:Torrent:search }
 
 torrent_download:
     pattern:  /download/{slug}.torrent

@@ -7,7 +7,13 @@
         <div class="page-header">
             <h1>{{ torrent.title }}</h1>
         </div>
-        {{ torrent.description }}
+
+        {{ torrent.description | nl2br }}
+
+        <p>&nbsp;</p>
+        <div class="well well-small">
+            {{ torrent.comment }}
+        </div>
     </div>
     <div class="span3">
         <div class="infoBox downloadBox">

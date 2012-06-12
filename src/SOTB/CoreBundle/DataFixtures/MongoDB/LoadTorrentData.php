@@ -27,6 +27,7 @@ class LoadTorrentData implements FixtureInterface
             $torrent = new Torrent();
             $torrent->setHash($hash.$a);
             $torrent->setName($faker->company);
+            $torrent->setTitle($faker->company);
 
             for ($i = 1; $i < 50; $i++) {
                 $peer = new Peer();

@@ -17,6 +17,14 @@
                 </option>
             </constraint>
         </property>
+        <property name="description">
+            <constraint name="MaxLength">
+                <option name="limit">5000</option>
+                <option name="groups">
+                    <value>upload</value>
+                </option>
+            </constraint>
+        </property>
         <property name="filename">
             <constraint name="NotBlank">
                 <option name="groups">
