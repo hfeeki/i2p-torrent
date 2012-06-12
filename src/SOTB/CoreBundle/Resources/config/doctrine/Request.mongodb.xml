@@ -13,6 +13,7 @@
         <field name="hash" fieldName="hash" type="string"/>
         <field name="title" fieldName="title" type="string"/>
         <field name="description" fieldName="description" type="string"/>
+        <field name="requests" fieldName="requests" type="int"/>
 
         <field name="slug" type="string" length="156" unique="true">
             <gedmo:slug unique="true" fields="title" />

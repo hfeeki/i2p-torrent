@@ -19,11 +19,14 @@
             </p>
 
             <p>
-                <a href="#" class="btn btn-large"><i class="icon-plus"></i> Request</a>
+
+            <form action="{{ path('torrent_request_vote', {'slug': torrentRequest.slug}) }}" method="POST">
+                <button type="submit" class="btn btn-large"><i class="icon-plus"></i> Vote for Request</button>
+            </form>
             </p>
         </div>
         <div class="infoBox statsBox">
-            <span class="badge badge-success"><i class="icon-arrow-up icon-white"></i>5</span> Requests<br/>
+            <span class="badge badge-success"><i class="icon-arrow-up icon-white"></i>{{ torrentRequest.requests }}</span> Requests<br/>
         </div>
     </div>
     <div class="span3">

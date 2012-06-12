@@ -67,6 +67,8 @@ class TorrentController extends Controller
                 $dm->persist($torrent);
                 $dm->flush();
 
+                $this->container->get('session')->setFlash('success', 'This torrent has been added.');
+
                 return $this->redirect($this->generateUrl('torrent', array('slug' => $torrent->getSlug())));
             }
         }
@@ -94,6 +96,8 @@ class TorrentController extends Controller
                 $dm->persist($torrentRequest);
                 $dm->flush();
 
+                $this->container->get('session')->setFlash('success', 'You have requested this torrent.');
+
                 return $this->redirect($this->generateUrl('torrent_request_show', array('slug' => $torrentRequest->getSlug())));
             }
         }
@@ -117,6 +121,26 @@ class TorrentController extends Controller
         }
 
         return array('torrentRequest' => $torrentRequest);
+    }
+
+    public function requestVoteAction($slug)
+    {
+        $dm = $this->container->get('doctrine.odm.mongodb.document_manager');
+
+        $torrentRequest = $dm->getRepository('SOTBCoreBundle:Request')->findOneBy(array('slug' => $slug));
+
+        if (null === $torrentRequest) {
+            throw $this->createNotFoundException();
+        }
+
+        $torrentRequest->incrementRequests();
+
+        $dm->persist($torrentRequest);
+        $dm->flush();
+
+        $this->container->get('session')->setFlash('success', 'You have requested this torrent.');
+
+        return $this->redirect($this->generateUrl('torrent_request_show', array('slug' => $torrentRequest->getSlug())));
     }
 
     /**

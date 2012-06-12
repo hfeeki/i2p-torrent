@@ -37,6 +37,12 @@ torrent_request_show:
     pattern:  /request/{slug}
     defaults: { _controller: SOTBCoreBundle:Torrent:requestShow }
 
+torrent_request_vote:
+    pattern:  /request/{slug}/vote
+    defaults: { _controller: SOTBCoreBundle:Torrent:requestVote }
+    requirements:
+        _method:  POST
+
 torrent:
     pattern:  /torrent/{slug}
     defaults: { _controller: SOTBCoreBundle:Torrent:show }

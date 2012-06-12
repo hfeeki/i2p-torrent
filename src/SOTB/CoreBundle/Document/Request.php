@@ -13,6 +13,7 @@ class Request
     private $user;
     private $hash;
     private $slug;
+    private $requests;
 
     private $description;
 
@@ -21,6 +22,7 @@ class Request
     public function __construct()
     {
         $this->created = new \DateTime();
+        $this->requests = 1;
     }
 
     public function setCreated($created)
@@ -86,5 +88,20 @@ class Request
     public function getUser()
     {
         return $this->user;
+    }
+
+    public function setRequests($requests)
+    {
+        $this->requests = $requests;
+    }
+
+    public function getRequests()
+    {
+        return $this->requests;
+    }
+
+    public function incrementRequests()
+    {
+        $this->requests++;
     }
 }

@@ -6,11 +6,17 @@ label.required {
     font-weight: bold;
 }
 
-a.btn:visited { color: #333; }
+a.btn:visited {
+    color: #333;
+}
 
-a.btn-success:visited { color: #fff; }
+a.btn-success:visited {
+    color: #fff;
+}
 
-a.btn-primary:visited { color: #fff; }
+a.btn-primary:visited {
+    color: #fff;
+}
 
 section {
     padding-top: 60px;
@@ -31,9 +37,17 @@ section {
     padding: 10px;
 }
 
-.downloadBox a {
+.downloadBox .btn {
     display: block;
     text-align: center;
+}
+
+.downloadBox form {
+    margin: 0;
+}
+
+.downloadBox button.btn {
+    width: 100%;
 }
 
 .navbar-inner {
