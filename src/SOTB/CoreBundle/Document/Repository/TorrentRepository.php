@@ -46,8 +46,12 @@ class TorrentRepository extends DocumentRepository
 
     public function findAllNeedingUpdate()
     {
-        return $this->createQueryBuilder()
-            ->field('lastUpdate')->lt(new \DateTime('1 minute ago'))
-            ->getQuery()->execute();
+        $qb = $this->createQueryBuilder();
+
+        $qb->addOr($qb->expr()->field('lastUpdate')->lt(new \DateTime('1 minute ago')));
+        $qb->addOr($qb->expr()->field('lastUpdate')->exists(false));
+        $qb->addOr($qb->expr()->field('lastUpdate')->equals(''));
+
+        return $qb->getQuery()->execute();
     }
 }
