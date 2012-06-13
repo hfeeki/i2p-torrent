@@ -54,7 +54,7 @@ class TorrentController extends Controller
         $torrent = new \SOTB\CoreBundle\Document\Torrent();
         $torrent->setUploader($this->getUser());
 
-        $form = $this->createForm(new \SOTB\CoreBundle\Form\Type\TorrentFormType(), $torrent, array('validation_groups' => array('upload')));
+        $form = $this->createForm(new \SOTB\CoreBundle\Form\Type\TorrentFormType(), $torrent);
 
         if ('POST' === $request->getMethod()) {
             $form->bindRequest($request);

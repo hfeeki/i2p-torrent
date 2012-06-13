@@ -4,16 +4,35 @@
                     xsi:schemaLocation="http://symfony.com/schema/dic/constraint-mapping http://symfony.com/schema/dic/constraint-mapping/constraint-mapping-1.0.xsd">
 
     <class name="SOTB\CoreBundle\Document\Torrent">
+
+        <group-sequence-provider/>
+
+        <constraint name="Callback">
+            <option name="methods">
+                <value>isValid</value>
+            </option>
+            <option name="groups">
+                <value>either</value>
+            </option>
+        </constraint>
+
         <property name="title">
             <constraint name="NotBlank">
                 <option name="groups">
-                    <value>upload</value>
+                    <value>always</value>
                 </option>
             </constraint>
             <constraint name="MinLength">
                 <option name="limit">3</option>
+                <option name="message">The title must have at least {{ limit }} characters.</option>
                 <option name="groups">
-                    <value>upload</value>
+                    <value>always</value>
+                </option>
+            </constraint>
+            <constraint name="MaxLength">
+                <option name="limit">255</option>
+                <option name="groups">
+                    <value>always</value>
                 </option>
             </constraint>
         </property>
@@ -21,15 +40,34 @@
             <constraint name="MaxLength">
                 <option name="limit">5000</option>
                 <option name="groups">
-                    <value>upload</value>
+                    <value>always</value>
                 </option>
             </constraint>
         </property>
         <property name="hash">
             <constraint name="MaxLength">
                 <option name="limit">1024</option>
+                <option name="message">The hash cannot be more than {{limit}} characters.</option>
                 <option name="groups">
-                    <value>upload</value>
+                    <value>always</value>
+                </option>
+            </constraint>
+            <constraint name="MinLength">
+                <option name="limit">32</option>
+                <option name="message">The hash must be at least 32 characters.</option>
+                <option name="groups">
+                    <value>hash</value>
+                </option>
+            </constraint>
+            <constraint name="NotBlank">
+                <option name="message">The hash cannot be blank.</option>
+                <option name="groups">
+                    <value>hash</value>
+                </option>
+            </constraint>
+            <constraint name="SOTB\CoreBundle\Validator\Constraints\HashOrMagnet">
+                <option name="groups">
+                    <value>hash</value>
                 </option>
             </constraint>
         </property>
@@ -38,8 +76,19 @@
                 <option name="maxSize">1024k</option>
                 <option name="mimeTypes">
                     <value>application/x-bittorrent</value>
+                    <value>application/octet-stream</value>
+                    <value>text/plain</value>
                 </option>
-                <option name="mimeTypesMessage">Please upload a valid torrent file</option>
+                <option name="groups">
+                    <value>upload</value>
+                </option>
+            </constraint>
+            <constraint name="SOTB\CoreBundle\Validator\Constraints\TorrentFile">
+                <option name="groups">
+                    <value>upload</value>
+                </option>
+            </constraint>
+            <constraint name="NotBlank">
                 <option name="groups">
                     <value>upload</value>
                 </option>

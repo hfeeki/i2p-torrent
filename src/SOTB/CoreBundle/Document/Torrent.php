@@ -3,13 +3,15 @@
 namespace SOTB\CoreBundle\Document;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\GroupSequenceProviderInterface;
+use Symfony\Component\Validator\ExecutionContext;
 
 use SOTB\CoreBundle\Document\Peer;
 
 /**
  * @author Matt Drollette <matt@drollette.com>
  */
-class Torrent
+class Torrent implements GroupSequenceProviderInterface
 {
     private $id;
 
@@ -398,5 +400,39 @@ class Torrent
     public function getRequests()
     {
         return $this->requests;
+    }
+
+    /**
+     * Returns which validation groups should be used for a certain state
+     * of the object.
+     *
+     * @return array An array of validation groups
+     */
+    public function getGroupSequence()
+    {
+        $groups = array('always');
+
+        if (!empty($this->filename)) {
+            array_push($groups, 'upload');
+        }
+
+        if (!empty($this->hash)) {
+            array_push($groups, 'hash');
+        }
+
+        if (empty($this->filename) && empty($this->hash)) {
+            array_push($groups, 'either');
+        }
+
+        return $groups;
+    }
+
+    public function isValid(ExecutionContext $context)
+    {
+        // check if the name is actually a fake name
+        if (empty($this->hash) && empty($this->filename)) {
+            $context->addViolationAtSubPath('hash', 'You must supply either a torrent file or a hash/magnet.', array(), null);
+            $context->addViolationAtSubPath('filename', 'You must supply either a torrent file or a hash/magnet.', array(), null);
+        }
     }
 }
