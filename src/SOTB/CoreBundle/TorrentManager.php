@@ -54,6 +54,7 @@ class TorrentManager
         $torrent->setFiles($torrentData->offset());
         $torrent->setFilename($torrent->getHash() . '.torrent');
 
+        // write a new torrent
         file_put_contents($this->getUploadRootDir() . DIRECTORY_SEPARATOR . $torrent->getFilename(), $torrentData->getFile());
 
         // delete the old tmp file

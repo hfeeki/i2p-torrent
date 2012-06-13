@@ -6,7 +6,7 @@ use Doctrine\ODM\MongoDB\DocumentManager;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\DependencyInjection\Exception\RuntimeException;
 
-use SOTB\CoreBundle\Tracker\TrackerResponse;
+use SOTB\CoreBundle\TrackerResponse;
 use SOTB\CoreBundle\Document\Peer;
 use SOTB\CoreBundle\Document\Torrent;
 

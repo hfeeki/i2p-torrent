@@ -4,7 +4,7 @@
         <th>Name</th>
         <th style="text-align: center">{{ pagination.sortable('Seeders', 'seeders', {'defaultDirection': 'desc'})|raw }}</th>
         <th style="text-align: center">{{ pagination.sortable('Leechers', 'leechers', {'defaultDirection': 'desc'})|raw }}</th>
-        <th style="text-align: center">{{ pagination.sortable('Downloads', 'downloaded', {'defaultDirection': 'desc'})|raw }}</th>
+        <th style="text-align: center">{{ pagination.sortable('Requests', 'requestCount', {'defaultDirection': 'desc'})|raw }}</th>
         <th>Hash</th>
         <th>{{ pagination.sortable('Uploaded', 'created', {'defaultDirection': 'desc'})|raw }}</th>
         <th>Download</th>
@@ -13,11 +13,14 @@
     <tbody>
     {% for torrent in pagination %}
     <tr>
-        <td><a href="{{ path('torrent', {'slug': torrent.slug}) }}">{{ torrent.title }}</a></td>
+        <td>
+            <a href="{{ path('torrent', {'slug': torrent.slug}) }}">{{ torrent.title }}</a><br/>
+            {{ torrent.hash }}
+        </td>
         <td style="text-align: center"><span class="badge badge-success"><i class="icon-arrow-up icon-white"></i>{{ torrent.seeders }}</span></td>
         <td style="text-align: center"><span class="badge badge-warning"><i class="icon-arrow-down icon-white"></i>{{ torrent.leechers }}</span></td>
-        <td style="text-align: center"><span class="badge badge-info"><i class="icon-ok icon-white"></i>{{ torrent.downloaded }}</span></td>
-        <td>{{ torrent.hash }}</td>
+        <td style="text-align: center"><span class="badge badge-info"><i class="icon-ok icon-white"></i>{{ torrent.requestCount }}</span></td>
+        <td></td>
         <td>{{ torrent.created | date }}</td>
         <td>
             <a href="{{ torrent.magnet }}"><i class="icon-magnet"></i> magnet</a>

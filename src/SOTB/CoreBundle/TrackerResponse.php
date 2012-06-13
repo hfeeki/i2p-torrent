@@ -1,6 +1,6 @@
 <?php
 
-namespace SOTB\CoreBundle\Tracker;
+namespace SOTB\CoreBundle;
 
 use Symfony\Component\HttpFoundation\Response;
 
