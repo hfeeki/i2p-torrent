@@ -55,6 +55,13 @@
         <field name="requestCount" fieldName="requestCount" type="int"/>
 
         <field name="created" fieldName="created" type="date"/>
-
+        <indexes>
+            <index>
+                <key name="lastUpdate" order="asc" />
+            </index>
+            <index>
+                <key name="hash" unique="true" />
+            </index>
+        </indexes>
     </document>
 </doctrine-mongo-mapping>

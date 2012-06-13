@@ -26,5 +26,11 @@
         <field name="trackerId" fieldName="trackerId" type="string"/>
 
         <field name="created" fieldName="created" type="date"/>
+
+        <indexes>
+            <index>
+                <key name="peerId" />
+            </index>
+        </indexes>
     </document>
 </doctrine-mongo-mapping>

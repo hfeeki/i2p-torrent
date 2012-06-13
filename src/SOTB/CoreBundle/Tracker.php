@@ -81,20 +81,6 @@ class Tracker
             }
         }
 
-        // refresh the torrent stats if they're stale
-        $dv = date_create('now')->diff($torrent->getLastUpdate());
-        if (null === $torrent->getLastUpdate() || ($dv->invert && $dv->i > 1)) {
-            // TODO: this should be cron'd, not done on each announce (stats stop updating if no one is peering)
-            // update the torrent stats
-            $peer_stats = $this->getPeerStats($torrent);
-            $torrent->setSeeders($peer_stats['complete']);
-            $torrent->setLeechers($peer_stats['incomplete']);
-
-            $torrent->setLastUpdate(new \DateTime());
-
-            $this->dm->persist($torrent);
-        }
-
         $peer->setTorrent($torrent);
         $peer->setIp($params->get('ip'));
         $peer->setPort($params->get('port'));
@@ -187,7 +173,7 @@ class Tracker
         return $return;
     }
 
-    protected function getPeerStats(Torrent $torrent, Peer $peer = null)
+    public function getPeerStats(Torrent $torrent, Peer $peer = null)
     {
         $result = array('complete' => 0, 'incomplete' => 0);
 

@@ -43,4 +43,11 @@ class TorrentRepository extends DocumentRepository
             ->field('uploader')->references($user)
             ->getQuery();
     }
+
+    public function findAllNeedingUpdate()
+    {
+        return $this->createQueryBuilder()
+            ->field('lastUpdate')->lt(new \DateTime('1 minute ago'))
+            ->getQuery()->execute();
+    }
 }
