@@ -31,7 +31,7 @@ twig:
 assetic:
     debug:          %kernel.debug%
     use_controller: false
-    bundles:        [SOTBCoreBundle]
+    bundles:        [SOTBCoreBundle, FOSCommentBundle]
     write_to:       %kernel.root_dir%/../web
     filters:
         less:
@@ -118,3 +118,40 @@ stof_doctrine_extensions:
     mongodb:
         default:
             sluggable: true
+
+fos_comment:
+    acl: true
+    db_driver: mongodb
+    class:
+        model:
+            comment: SOTB\CoreBundle\Document\Comment
+            thread: SOTB\CoreBundle\Document\Thread
+    service:
+        acl:
+            thread: fos_comment.acl.thread.roles
+            comment: fos_comment.acl.comment.roles
+            vote: fos_comment.acl.vote.roles
+    acl_roles:
+        comment:
+            create: IS_AUTHENTICATED_ANONYMOUSLY
+            view: IS_AUTHENTICATED_ANONYMOUSLY
+            edit: ROLE_ADMIN
+            delete: ROLE_ADMIN
+        thread:
+            create: IS_AUTHENTICATED_ANONYMOUSLY
+            view: IS_AUTHENTICATED_ANONYMOUSLY
+            edit: ROLE_ADMIN
+            delete: ROLE_ADMIN
+        vote:
+            create: IS_AUTHENTICATED_ANONYMOUSLY
+            view: IS_AUTHENTICATED_ANONYMOUSLY
+            edit: ROLE_ADMIN
+            delete: ROLE_ADMIN
+
+fos_rest:
+    view:
+        view_response_listener: true
+
+sensio_framework_extra:
+    view:    { annotations: false }
+    router:  { annotations: true }

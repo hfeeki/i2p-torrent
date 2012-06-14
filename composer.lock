@@ -1,11 +1,6 @@
 {
-    "hash": "a1b957351385561f155f74d95aef6b0b",
+    "hash": "7e72037680f09682adfbcdeb6ec9593b",
     "packages": [
-        {
-            "package": "christeredvartsen/php-bittorrent",
-            "version": "dev-including-tracker",
-            "source-reference": "05c76b4de5308d5a1484849f4ccfa8bc29e9ea4a"
-        },
         {
             "package": "doctrine/common",
             "version": "2.2.2"
@@ -22,7 +17,7 @@
         {
             "package": "doctrine/doctrine-bundle",
             "version": "dev-master",
-            "source-reference": "f100a7727b89ab5519ed68a72d29e75eb2c85d8b"
+            "source-reference": "3f5149e09d423a42365d59b9b9df4281262c5ce2"
         },
         {
             "package": "doctrine/doctrine-fixtures-bundle",
@@ -37,7 +32,7 @@
         {
             "package": "doctrine/mongodb-odm",
             "version": "dev-master",
-            "source-reference": "20e7318514a6570afe25738820bbd387c05a5c7c"
+            "source-reference": "f3e61b014611cb2035093a0a5fe888aa71d16c80"
         },
         {
             "package": "doctrine/mongodb-odm-bundle",
@@ -59,6 +54,21 @@
             "source-reference": "7291f19347b05f5833421eaf5152558bfbd2b454"
         },
         {
+            "package": "friendsofsymfony/comment-bundle",
+            "version": "dev-master",
+            "source-reference": "71df788e3f0ccd2ed188032ab00852e28c937bfa"
+        },
+        {
+            "package": "friendsofsymfony/rest",
+            "version": "dev-master",
+            "source-reference": "d9f772ddb9bb4fd0d952fa45cf0e5e76510b111c"
+        },
+        {
+            "package": "friendsofsymfony/rest-bundle",
+            "version": "dev-master",
+            "source-reference": "55d76e13158d6d5596406b7b3d082775f86dbb68"
+        },
+        {
             "package": "friendsofsymfony/user-bundle",
             "version": "dev-master",
             "source-reference": "14d5e7a18007c3bd34a7161fa1defd4ac1daa648"
@@ -71,7 +81,11 @@
         {
             "package": "gedmo/doctrine-extensions",
             "version": "dev-master",
-            "source-reference": "7b6631fdb4537c5bb46ebd3f73fb81fd94115559"
+            "source-reference": "03165f515adf6db5c5a0714e1127375d7ecdd15e"
+        },
+        {
+            "package": "iam-persistent/mongodb-acl-bundle",
+            "version": "1.0.0"
         },
         {
             "package": "jms/aop-bundle",
@@ -92,6 +106,11 @@
         {
             "package": "jms/security-extra-bundle",
             "version": "1.1.0"
+        },
+        {
+            "package": "jms/serializer-bundle",
+            "version": "dev-master",
+            "source-reference": "231ac2a01b108b66d76c334b602765f7d879f473"
         },
         {
             "package": "knplabs/knp-components",
@@ -116,7 +135,7 @@
         {
             "package": "kriswallsmith/assetic",
             "version": "dev-master",
-            "source-reference": "8c76115503d23340e19b5cf6aa95f86663f7185f"
+            "source-reference": "d6f89a3170c5280ad554347dc113eb25fdf00ad7"
         },
         {
             "package": "monolog/monolog",
@@ -155,13 +174,13 @@
         {
             "package": "swiftmailer/swiftmailer",
             "version": "dev-master",
-            "source-reference": "d33d54cc8a081b0b85734744936ede1ba230dd64"
+            "alias-pretty-version": "4.1.x-dev",
+            "alias-version": "4.1.9999999.9999999-dev"
         },
         {
             "package": "swiftmailer/swiftmailer",
             "version": "dev-master",
-            "alias-pretty-version": "4.1.x-dev",
-            "alias-version": "4.1.9999999.9999999-dev"
+            "source-reference": "d33d54cc8a081b0b85734744936ede1ba230dd64"
         },
         {
             "package": "symfony/assetic-bundle",
@@ -192,7 +211,7 @@
         {
             "package": "symfony/symfony",
             "version": "dev-master",
-            "source-reference": "0995b1f28b80f91cfef7b3201840aa3dbcc66ae1"
+            "source-reference": "c07e9163a6ed298d628df3c6ec3ab00580c16842"
         },
         {
             "package": "twig/extensions",
@@ -208,7 +227,7 @@
         {
             "package": "twig/twig",
             "version": "dev-master",
-            "source-reference": "d4511d02b45725a56c8cc49127244bca640c9d13"
+            "source-reference": "ca33207bb22fe6365d13bdaf034f936e30b53560"
         },
         {
             "package": "twitter/bootstrap",
@@ -238,6 +257,6 @@
         "fzaninotto/faker": 20,
         "stof/doctrine-extensions-bundle": 20,
         "exercise/htmlpurifier-bundle": 20,
-        "christeredvartsen/php-bittorrent": 20
+        "friendsofsymfony/comment-bundle": 20
     }
 }

@@ -15,6 +15,8 @@
         <div class="well well-small">
             {{ torrent.comment }}
         </div>
+
+        {% include 'FOSCommentBundle:Thread:async.html.twig' with {'id': torrent.id} %}
     </div>
     <div class="span3">
         <div class="infoBox downloadBox">
@@ -49,7 +51,9 @@
                 </tr>
                 <tr>
                     <th>Discuss</th>
-                    <td>none yet</td>
+                    <td>
+                        <span class="badge badge-info">{{ comments }}</span> comments
+                    </td>
                 </tr>
                 <tr>
                     <th>Format</th>

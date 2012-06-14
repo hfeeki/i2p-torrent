@@ -43,7 +43,12 @@ class TorrentController extends Controller
             throw $this->createNotFoundException();
         }
 
-        return array('torrent' => $torrent);
+        $manager = $this->container->get('fos_comment.manager.thread');
+        $thread = $manager->findThreadById($torrent->getId());
+
+        $comments = (null !== $thread)? $thread->getNumComments() : 0;
+
+        return array('torrent' => $torrent, 'comments' => $comments);
     }
 
     /**
