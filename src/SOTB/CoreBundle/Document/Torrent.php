@@ -51,6 +51,8 @@ class Torrent implements GroupSequenceProviderInterface
     private $requestCount;
 
     private $categories;
+    private $language;
+    private $format;
 
     private $created;
 
@@ -69,6 +71,7 @@ class Torrent implements GroupSequenceProviderInterface
         $this->announceList = array();
         $this->requests = new ArrayCollection();
         $this->categories = new ArrayCollection();
+        $this->language = 'en';
     }
 
     public function setHash($hash)
@@ -458,5 +461,25 @@ class Torrent implements GroupSequenceProviderInterface
         if (!$this->categories->contains($category)) {
             $this->categories->add($category);
         }
+    }
+
+    public function setFormat($format)
+    {
+        $this->format = $format;
+    }
+
+    public function getFormat()
+    {
+        return $this->format;
+    }
+
+    public function setLanguage($language)
+    {
+        $this->language = $language;
+    }
+
+    public function getLanguage()
+    {
+        return $this->language;
     }
 }

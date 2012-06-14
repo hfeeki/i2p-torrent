@@ -45,7 +45,8 @@
         "fzaninotto/faker":"dev-master",
         "stof/doctrine-extensions-bundle":"dev-master",
         "exercise/htmlpurifier-bundle":"dev-master",
-        "friendsofsymfony/comment-bundle":"dev-master"
+        "friendsofsymfony/comment-bundle":"dev-master",
+        "sonata-project/intl-bundle":"dev-master"
     },
     "scripts":{
         "post-install-cmd":[

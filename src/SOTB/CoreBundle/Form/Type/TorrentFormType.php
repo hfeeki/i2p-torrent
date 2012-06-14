@@ -29,16 +29,16 @@ class TorrentFormType extends AbstractType
         $builder
             ->add('title', 'text', array(
             'required'    => true,
-            'help_block'  => 'the title of the torrent file your are requesting'
+            'help_block'  => 'The title of the torrent file your are requesting.'
         ))
             ->add('description', 'purified_textarea', array(
             'required'    => false,
-            'help_block'  => 'your own text description of the torrent'
+            'help_block'  => 'Your own text description of the torrent.'
         ))
             ->add($hash)
             ->add('filename', 'file', array(
             'required'    => false,
-            'help_block'  => 'the .torrent file downloaded from the regular Internet'
+            'help_block'  => 'The .torrent file downloaded from the regular Internet.'
         ))
             ->add('categories', 'document', array(
             'required'      => false,
@@ -49,7 +49,9 @@ class TorrentFormType extends AbstractType
             },
             'multiple'      => true,
             'expanded'      => true
-        ));
+        ))
+            ->add('format', 'text', array('required' => false, 'max_length' => 10, 'help_block'  => 'The file format of this torrent (mp3, avi, etc.).'))
+            ->add('language', 'language', array('required' => false, 'preferred_choices' => array('en', 'ru', 'fr', 'de', 'es', 'ar'), 'help_block'  => 'The language of this version of the file.'));
     }
 
 

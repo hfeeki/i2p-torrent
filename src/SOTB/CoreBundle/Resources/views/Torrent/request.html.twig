@@ -7,14 +7,23 @@
             <h1>Request a Torrent</h1>
         </div>
         <p>Upload a torrent file from the regular Internet or provide a torrent hash (or magnet link) to request that it be made available over the darknet.</p>
-        <form action="{{ path('torrent_upload') }}" method="POST" enctype="multipart/form-data" class="form-horizontal">
-            {{ form_row(form.title) }}
-            {{ form_row(form.description) }}
-            {{ form_row(form.hash) }}
-            {{ form_row(form.filename) }}
 
-            {{ form_row(form.categories) }}
-            {{ form_rest(form) }}
+        <form action="{{ path('torrent_upload') }}" method="POST" enctype="multipart/form-data" class="form-horizontal">
+            <fieldset>
+                <legend>Required</legend>
+                {{ form_row(form.title, {'attr': {'placeholder': 'Title of the torrent...'}}) }}
+                {{ form_row(form.description) }}
+                {{ form_row(form.hash) }}
+                {{ form_row(form.filename) }}
+            </fieldset>
+
+            <fieldset>
+                <legend>Optional</legend>
+                {{ form_row(form.categories) }}
+                {{ form_row(form.format, {'attr': {'class': 'input-small', 'placeholder': 'mp3, avi, jpg...'}}) }}
+                {{ form_row(form.language) }}
+                {{ form_rest(form) }}
+            </fieldset>
             <div class="form-actions">
                 <button type="submit" class="btn btn-primary loading" data-loading-text="Submitting..." autocomplete="off">Submit Request</button>
             </div>

@@ -32,6 +32,7 @@ class AppKernel extends Kernel
             new Exercise\HTMLPurifierBundle\ExerciseHTMLPurifierBundle(),
             new FOS\RestBundle\FOSRestBundle(),
             new FOS\CommentBundle\FOSCommentBundle(),
+            new Sonata\IntlBundle\SonataIntlBundle(),
 
         );
 

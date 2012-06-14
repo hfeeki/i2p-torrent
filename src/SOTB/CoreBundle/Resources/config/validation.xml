@@ -94,5 +94,29 @@
                 </option>
             </constraint>
         </property>
+
+        <property name="format">
+            <constraint name="MaxLength">
+                <option name="limit">10</option>
+                <option name="message">The format should not be longer than 10 characters.</option>
+                <option name="groups">
+                    <value>always</value>
+                </option>
+            </constraint>
+        </property>
+        <property name="language">
+            <constraint name="Language">
+                <option name="groups">
+                    <value>always</value>
+                </option>
+            </constraint>
+        </property>
+        <property name="categories">
+            <constraint name="Valid">
+                <option name="groups">
+                    <value>always</value>
+                </option>
+            </constraint>
+        </property>
     </class>
 </constraint-mapping>
