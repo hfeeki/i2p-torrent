@@ -50,6 +50,8 @@ class Torrent implements GroupSequenceProviderInterface
     private $requests;
     private $requestCount;
 
+    private $categories;
+
     private $created;
 
     public function __construct()
@@ -66,6 +68,7 @@ class Torrent implements GroupSequenceProviderInterface
         $this->comments = new ArrayCollection();
         $this->announceList = array();
         $this->requests = new ArrayCollection();
+        $this->categories = new ArrayCollection();
     }
 
     public function setHash($hash)
@@ -433,6 +436,27 @@ class Torrent implements GroupSequenceProviderInterface
         if (empty($this->hash) && empty($this->filename)) {
             $context->addViolationAtSubPath('hash', 'You must supply either a torrent file or a hash/magnet.', array(), null);
             $context->addViolationAtSubPath('filename', 'You must supply either a torrent file or a hash/magnet.', array(), null);
+        }
+    }
+
+    public function setCategories($categories)
+    {
+        $this->categories = new ArrayCollection();
+
+        foreach ($categories as $category) {
+            $this->addCategory($category);
+        }
+    }
+
+    public function getCategories()
+    {
+        return $this->categories;
+    }
+
+    public function addCategory(Category $category)
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories->add($category);
         }
     }
 }

@@ -9,13 +9,10 @@
         <field name="id" id="true"/>
 
         <field name="hash" fieldName="hash" type="string"/>
-        <reference-many name="peers" fieldName="peers" field="peers" mapped-by="torrent"
-                        target-document="SOTB\CoreBundle\Document\Peer">
+        <reference-many name="peers" fieldName="peers" field="peers" mapped-by="torrent" target-document="SOTB\CoreBundle\Document\Peer">
         </reference-many>
 
-        <reference-many name="activePeers" fieldName="activePeers" field="activePeers" mapped-by="torrent"
-                        target-document="SOTB\CoreBundle\Document\Peer"
-                        repository-method="findActivePeers">
+        <reference-many name="activePeers" fieldName="activePeers" field="activePeers" mapped-by="torrent" target-document="SOTB\CoreBundle\Document\Peer" repository-method="findActivePeers">
             <sort>
                 <sort field="expires" order="asc"/>
             </sort>
@@ -25,7 +22,7 @@
 
         <field name="name" fieldName="name" type="string"/>
         <field name="slug" type="string" unique="true">
-            <gedmo:slug unique="true" fields="title" />
+            <gedmo:slug unique="true" fields="title"/>
         </field>
 
         <field name="description" fieldName="description" type="string"/>
@@ -54,13 +51,15 @@
         <embed-many name="requests" fieldName="requests" field="requests" target-document="SOTB\CoreBundle\Document\Request"/>
         <field name="requestCount" fieldName="requestCount" type="int"/>
 
+        <reference-many field="categories" fieldName="categories" name="categories" target-document="SOTB\CoreBundle\Document\Category" mappedBy="torrents"/>
+
         <field name="created" fieldName="created" type="date"/>
         <indexes>
             <index>
-                <key name="lastUpdate" order="asc" />
+                <key name="lastUpdate" order="asc"/>
             </index>
             <index>
-                <key name="hash" unique="true" />
+                <key name="hash" unique="true"/>
             </index>
         </indexes>
     </document>

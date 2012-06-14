@@ -63,6 +63,16 @@
                     <th>Language</th>
                     <td>english</td>
                 </tr>
+                <tr>
+                    <th>Categories</th>
+                    <td>
+                        {% for category in torrent.categories %}
+                        <a href="{{ path('category', {'slug': category.slug}) }}">{{ category.name }}</a>{% if not loop.last %}, {% endif %}
+                        {% else %}
+                        No categories
+                        {% endfor %}
+                    </td>
+                </tr>
                 </tbody>
             </table>
         </div>
@@ -71,14 +81,10 @@
         <div class="well well-small">
             <div class="sidebar-nav">
                 <ul class="nav nav-list">
-                    <li class="nav-header">Category</li>
-                    <li><a href="">Category</a></li>
-                    <li><a href="">Category</a></li>
-                    <li><a href="">Category</a></li>
-                    <li><a href="">Category</a></li>
-                    <li class="nav-header">Category</li>
-                    <li><a href="">Category</a></li>
-                    <li><a href="">Category</a></li>
+                    <li class="nav-header">Categories</li>
+                    {% for category in categories %}
+                    <li><a href="{{ path('category', {'slug': category.slug}) }}">{{ category.name }}</a></li>
+                    {% endfor %}
                 </ul>
             </div>
         </div>

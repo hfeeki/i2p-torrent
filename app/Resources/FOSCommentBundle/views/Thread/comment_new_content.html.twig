@@ -42,7 +42,7 @@
                         {% if parent is not null %}
                             <input type="button" value="{% trans from 'FOSCommentBundle' %}fos_comment_comment_reply_cancel{% endtrans %}" class="btn btn-small fos_comment_comment_reply_cancel" />
                         {% endif %}
-                        <input class="btn btn-primary btn-small" type="submit" value="{% trans from 'FOSCommentBundle' %}fos_comment_comment_new_submit{% endtrans %}" />
+                        <input class="btn btn-primary btn-small loading" data-loading-text="posting..." type="submit" value="{% trans from 'FOSCommentBundle' %}fos_comment_comment_new_submit{% endtrans %}" />
                     {% endblock %}
                 </div>
 

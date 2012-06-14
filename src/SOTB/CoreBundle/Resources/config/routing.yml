@@ -29,7 +29,6 @@ torrent_upload:
     pattern:  /request
     defaults: { _controller: SOTBCoreBundle:Torrent:request }
 
-
 torrent_vote:
     pattern:  /torrent/{slug}/vote
     defaults: { _controller: SOTBCoreBundle:Torrent:vote }
@@ -51,3 +50,10 @@ torrent_download:
 torrent_list:
     pattern:  /list
     defaults: { _controller: SOTBCoreBundle:Torrent:list }
+
+
+# CATEGORIES
+category:
+    pattern:  /category/{slug}
+    defaults: { _controller: SOTBCoreBundle:Torrent:category }
+

@@ -39,6 +39,16 @@ class TorrentFormType extends AbstractType
             ->add('filename', 'file', array(
             'required'    => false,
             'help_block'  => 'the .torrent file downloaded from the regular Internet'
+        ))
+            ->add('categories', 'document', array(
+            'required'      => false,
+            'class'         => 'SOTBCoreBundle:Category',
+            'query_builder' => function(DocumentRepository $dm)
+            {
+                return $dm->createQueryBuilder();
+            },
+            'multiple'      => true,
+            'expanded'      => true
         ));
     }
 

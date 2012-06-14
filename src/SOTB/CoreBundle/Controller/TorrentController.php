@@ -43,12 +43,39 @@ class TorrentController extends Controller
             throw $this->createNotFoundException();
         }
 
+        $categories = $dm->getRepository('SOTBCoreBundle:Category')->findAll();
+
         $manager = $this->container->get('fos_comment.manager.thread');
         $thread = $manager->findThreadById($torrent->getId());
 
         $comments = (null !== $thread)? $thread->getNumComments() : 0;
 
-        return array('torrent' => $torrent, 'comments' => $comments);
+        return array('torrent' => $torrent, 'comments' => $comments, 'categories' => $categories);
+    }
+
+    /**
+     * @Template()
+     */
+    public function categoryAction($slug)
+    {
+        $dm = $this->container->get('doctrine.odm.mongodb.document_manager');
+
+        $category = $dm->getRepository('SOTBCoreBundle:Category')->findOneBy(array('slug' => $slug));
+
+        if (null === $category) {
+            throw $this->createNotFoundException();
+        }
+
+        $query = $dm->getRepository('SOTBCoreBundle:Torrent')->getInCategory($category);
+
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $query,
+            $this->get('request')->query->get('page', 1) /*page number*/,
+            10/*limit per page*/
+        );
+
+        return array('category' => $category, 'pagination' => $pagination);
     }
 
     /**

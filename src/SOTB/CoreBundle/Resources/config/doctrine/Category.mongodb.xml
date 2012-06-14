@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mongo-mapping xmlns="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping"
+                        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                        xmlns:gedmo="http://gediminasm.org/schemas/orm/doctrine-extensions-mapping"
+                        xsi:schemaLocation="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping
+                        http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
+
+    <document name="SOTB\CoreBundle\Document\Category" collection="Categories">
+        <field name="id" id="true"/>
+
+        <field name="name" fieldName="name" type="string"/>
+        <field name="slug" type="string" unique="true">
+            <gedmo:slug unique="true" fields="name"/>
+        </field>
+
+        <reference-many field="torrents" name="torrents" fieldName="torrents" inversed-by="categories" target-document="SOTB\CoreBundle\Document\Torrent"/>
+
+    </document>
+</doctrine-mongo-mapping>

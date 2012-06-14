@@ -1,0 +1,17 @@
+{% extends 'SOTBCoreBundle::layout.html.twig' %}
+
+{% block content %}
+<div class="page-header">
+    <h1>{{ category.name }}</h1>
+</div>
+<div class="row">
+    <div class="span12">
+        <div class="navigation pull-right">
+            {{ pagination.render()|raw }}
+        </div>
+    </div>
+</div>
+
+{% include 'SOTBCoreBundle:Torrent:_table.html.twig' with {'pagination': pagination} %}
+
+{% endblock content %}

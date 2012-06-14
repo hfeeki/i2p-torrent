@@ -1,5 +1,5 @@
 {
-    "hash": "7e72037680f09682adfbcdeb6ec9593b",
+    "hash": "decc4756077eb3463313a2ed1a679aca",
     "packages": [
         {
             "package": "doctrine/common",
@@ -84,10 +84,6 @@
             "source-reference": "03165f515adf6db5c5a0714e1127375d7ecdd15e"
         },
         {
-            "package": "iam-persistent/mongodb-acl-bundle",
-            "version": "1.0.0"
-        },
-        {
             "package": "jms/aop-bundle",
             "version": "1.0.0"
         },
@@ -152,6 +148,11 @@
             "source-reference": "84b8bf537163b4470f14d02554a0e9eb5d300172"
         },
         {
+            "package": "pagerfanta/pagerfanta",
+            "version": "dev-master",
+            "source-reference": "c490684def33e992241e7fad33bcbd03d9d18643"
+        },
+        {
             "package": "sensio/distribution-bundle",
             "version": "dev-master",
             "source-reference": "7d75b222c8e4ead64ff82e5c9b2fa3ba71c70cf0"
@@ -174,13 +175,18 @@
         {
             "package": "swiftmailer/swiftmailer",
             "version": "dev-master",
-            "alias-pretty-version": "4.1.x-dev",
-            "alias-version": "4.1.9999999.9999999-dev"
+            "source-reference": "d33d54cc8a081b0b85734744936ede1ba230dd64"
         },
         {
             "package": "swiftmailer/swiftmailer",
             "version": "dev-master",
-            "source-reference": "d33d54cc8a081b0b85734744936ede1ba230dd64"
+            "alias-pretty-version": "4.1.x-dev",
+            "alias-version": "4.1.9999999.9999999-dev"
+        },
+        {
+            "package": "sylius/categorizer-bundle",
+            "version": "dev-feature/mongodb-support",
+            "source-reference": "7e331022793d60ded479b3442e37d2c47e7c1010"
         },
         {
             "package": "symfony/assetic-bundle",
@@ -232,6 +238,11 @@
         {
             "package": "twitter/bootstrap",
             "version": "2.0.2"
+        },
+        {
+            "package": "white-october/pagerfanta-bundle",
+            "version": "dev-master",
+            "source-reference": "6d7c84759ca85a4c3a993a844922dc4629d42adf"
         }
     ],
     "packages-dev": null,
@@ -257,6 +268,7 @@
         "fzaninotto/faker": 20,
         "stof/doctrine-extensions-bundle": 20,
         "exercise/htmlpurifier-bundle": 20,
-        "friendsofsymfony/comment-bundle": 20
+        "friendsofsymfony/comment-bundle": 20,
+        "sylius/categorizer-bundle": 20
     }
 }

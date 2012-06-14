@@ -4,6 +4,7 @@ namespace SOTB\CoreBundle\Document\Repository;
 
 use Doctrine\ODM\MongoDB\DocumentRepository;
 use FOS\UserBundle\Model\UserInterface;
+use SOTB\CoreBundle\Document\Category;
 
 /**
  * @author Matt Drollette <matt@drollette.com>
@@ -41,6 +42,13 @@ class TorrentRepository extends DocumentRepository
     {
         return $this->createQueryBuilder()
             ->field('uploader')->references($user)
+            ->getQuery();
+    }
+
+    public function getInCategory(Category $category)
+    {
+        return $this->createQueryBuilder()
+            ->field('categories')->references($category)
             ->getQuery();
     }
 

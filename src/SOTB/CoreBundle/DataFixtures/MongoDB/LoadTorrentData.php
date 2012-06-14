@@ -8,6 +8,7 @@ use Faker\Factory as FakerFactory;
 
 use SOTB\CoreBundle\Document\Torrent;
 use SOTB\CoreBundle\Document\Peer;
+use SOTB\CoreBundle\Document\Category;
 
 /**
  * @author Matt Drollette <matt@drollette.com>
@@ -15,19 +16,56 @@ use SOTB\CoreBundle\Document\Peer;
 class LoadTorrentData implements FixtureInterface
 {
 
+    private $categories = array(
+        'Animations',
+        'Audio Books',
+        'Books',
+        'Games',
+        'Graphic Novels',
+        'Movies',
+        'Music',
+        'Other',
+        'Pictures',
+        'Podcasts',
+        'Porn',
+        'Television'
+    );
+
     /**
      * {@inheritDoc}
      */
     public function load(ObjectManager $manager)
     {
         $faker = FakerFactory::create();
-
         $hash = '1234567890123456789';
+
+        // create the categories
+        foreach ($this->categories as $category) {
+            $cat = new Category();
+            $cat->setName($category);
+
+            for ($c = 11; $c <= 15; $c++) {
+                $torrent = new Torrent();
+                $torrent->setHash($hash . $c);
+                $torrent->setName($faker->company);
+                $torrent->setTitle($faker->company);
+                $torrent->setDescription($faker->paragraph);
+
+                $torrent->addCategory($cat);
+
+                $manager->persist($torrent);
+            }
+
+            $manager->persist($cat);
+        }
+
+
         for ($a = 1; $a <= 4; $a++) {
             $torrent = new Torrent();
-            $torrent->setHash($hash.$a);
+            $torrent->setHash($hash . $a);
             $torrent->setName($faker->company);
             $torrent->setTitle($faker->company);
+            $torrent->setDescription($faker->paragraph);
 
             for ($i = 1; $i < 50; $i++) {
                 $peer = new Peer();
