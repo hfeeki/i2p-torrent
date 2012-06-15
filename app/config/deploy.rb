@@ -2,6 +2,8 @@ set :application, "torrent"
 set :domain,      "locke.drollette.com"
 set :deploy_to,   "/home/matt/hidden/torrent"
 set :app_path,    "app"
+set :branch,      "master"
+set :symfony_env_prod, "prod"
 
 set :repository,  "git@github.com:MDrollette/Torrent.git"
 set :scm,         :git
