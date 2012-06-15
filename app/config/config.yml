@@ -65,7 +65,9 @@ swiftmailer:
     host:      %mailer_host%
     username:  %mailer_user%
     password:  %mailer_password%
-    spool:     { type: memory }
+    spool:
+        type:   file
+        path:   %kernel.root_dir%/spool
 
 doctrine_mongodb:
     connections:
