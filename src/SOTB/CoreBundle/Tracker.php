@@ -37,12 +37,12 @@ class Tracker
 
         // validate the request
         $info_hash = bin2hex(urldecode($params->get('info_hash')));
-        if (20 != strlen($info_hash)) {
-            return $this->announceFailure("Invalid length of info_hash.");
+        if (40 != strlen($info_hash)) {
+            return $this->announceFailure("Invalid length of info_hash. ". $info_hash);
         }
         $peer_id = bin2hex(urldecode($params->get('peer_id')));
-        if (20 != strlen($peer_id)) {
-            return $this->announceFailure("Invalid length of peer_id.");
+        if (strlen($peer_id) < 20 || strlen($peer_id) > 128) {
+            return $this->announceFailure("Invalid length of peer_id. ". $peer_id);
         }
         if (!(is_numeric($params->getInt('port')) && is_int($params->getInt('port') + 0) && 0 <= $params->getInt('port'))) {
             return $this->announceFailure("Invalid port value.");
@@ -88,7 +88,8 @@ class Tracker
         $peer->setUploaded($params->getInt('uploaded'));
         $peer->setLeft($params->getInt('left'));
 
-        $configInterval = '10';
+        // todo: configurable?
+        $configInterval = '900';
         $interval = $configInterval + mt_rand(round($configInterval / -10), round($configInterval / 10));
 
         // If the client gracefully exists, we set its ttl to 0, double-interval otherwise.

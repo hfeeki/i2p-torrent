@@ -1,0 +1,47 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]><html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--><html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Error Occurred!</title>
+    <meta name="description" content="Error page">
+
+    <meta name="viewport" content="width=device-width">
+    {% spaceless %}
+    <!-- global css -->
+    {#'../vendor/twitter/bootstrap/less/responsive.less'#}
+    {% stylesheets
+    filter='less,?yui_css'
+            '@SOTBCoreBundle/Resources/public/css/style.css'
+            '../vendor/twitter/bootstrap/less/bootstrap.less'
+            '@SOTBCoreBundle/Resources/public/css/main.css'
+        %}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+    {% endstylesheets %}
+    {% endspaceless %}
+</head>
+<body>
+<div class="container">
+    <div class="content">
+        <div class="row">
+            <div class="span12">
+                <div class="hero-unit">
+                    <h1>Oops! An Error Occurred</h1>
+
+                    <h2>{{ "now" | date("F jS \\a\\t g:ia") }}</h2>
+
+                    <p>
+                        Something is broken. Please find us on IRC and let us know
+                        what you were doing when this error occurred. We will fix it as soon
+                        as possible. Sorry for any inconvenience caused.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

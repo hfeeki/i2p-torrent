@@ -20,7 +20,7 @@ class TrackerController implements ContainerAwareInterface
     {
         $tracker = $this->container->get('tracker');
 
-        $params = new ParameterBag($this->proper_parse_str($request->getQueryString()));
+        $params = $request->query;
 
         if (!$params->has('ip')) {
             $params->set('ip', $request->getClientIp());
