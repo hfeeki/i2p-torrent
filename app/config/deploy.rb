@@ -26,4 +26,4 @@ set :use_composer, true
 set :dump_assetic_assets, true
 
 set :shared_files,      ["app/config/parameters.yml"]
-set :shared_children,   [app_path + "/logs", app_path + "/spool"]
+set :shared_children,   [app_path + "/logs", app_path + "/spool", app_path + "/torrents"]

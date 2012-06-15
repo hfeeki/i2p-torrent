@@ -53,6 +53,7 @@ section {
 .navbar-inner {
     background-color: #005399;
     background-image: -webkit-linear-gradient(top, #005ba1, #003e75);
+    background-image: -moz-linear-gradient(center top , #005ba1, #003e75);
     background-image: linear-gradient(top, #005ba1, #003e75);
 }
 

@@ -35,12 +35,13 @@ class Tracker
             return $this->announceFailure("Invalid get parameters.");
         }
 
-
         // validate the request
-        if (20 != strlen($params->get('info_hash'))) {
+        $info_hash = bin2hex(urldecode($params->get('info_hash')));
+        if (20 != strlen($info_hash)) {
             return $this->announceFailure("Invalid length of info_hash.");
         }
-        if (20 != strlen($params->get('peer_id'))) {
+        $peer_id = bin2hex(urldecode($params->get('peer_id')));
+        if (20 != strlen($peer_id)) {
             return $this->announceFailure("Invalid length of peer_id.");
         }
         if (!(is_numeric($params->getInt('port')) && is_int($params->getInt('port') + 0) && 0 <= $params->getInt('port'))) {
@@ -56,7 +57,6 @@ class Tracker
             return $this->announceFailure("Invalid left value.");
         }
 
-        $info_hash = bin2hex($params->get('info_hash'));
         $torrent = $this->dm->getRepository('SOTBCoreBundle:Torrent')->findOneBy(array('hash' => $info_hash));
 
         if (null === $torrent) {
@@ -64,11 +64,11 @@ class Tracker
             return $this->announceFailure('Invalid info hash.');
         }
 
-        $peer = $this->dm->getRepository('SOTBCoreBundle:Peer')->findOneBy(array('peerId' => $params->get('peer_id')));
+        $peer = $this->dm->getRepository('SOTBCoreBundle:Peer')->findOneBy(array('peerId' => $peer_id));
 
         if (null === $peer) {
             $peer = new Peer();
-            $peer->setPeerId($params->get('peer_id'));
+            $peer->setPeerId($peer_id);
         }
 
         if (0 === $params->getInt('left') || 'completed' === $params->get('event')) {
