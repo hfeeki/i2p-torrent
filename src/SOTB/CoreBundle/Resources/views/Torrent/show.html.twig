@@ -16,7 +16,14 @@
             {{ torrent.comment }}
         </div>
 
-        {% include 'FOSCommentBundle:Thread:async.html.twig' with {'id': torrent.id} %}
+        <div id="fos_comment_thread" data-thread="{{ thread.id }}">
+
+            {% include 'FOSCommentBundle:Thread:comments.html.twig' with {
+                'comments': comments,
+                'thread': thread
+            } %}
+
+        </div>
     </div>
     <div class="span3">
         <div class="infoBox downloadBox">
@@ -52,7 +59,7 @@
                 <tr>
                     <th>Discuss</th>
                     <td>
-                        <span class="badge badge-info">{{ comments }}</span> comments
+                        <span class="badge badge-info">{{ thread.numComments }}</span> comments
                     </td>
                 </tr>
                 <tr>
@@ -91,3 +98,13 @@
     </div>
 </div>
 {% endblock content %}
+
+{% block javascript %}
+{{ parent() }}
+{% javascripts '@FOSCommentBundle/Resources/assets/js/comments.js' %}
+<script type="text/javascript" src="{{ asset_url }}">
+    // URI identifier for the thread comments
+    var fos_comment_thread_id = '{{ path('fos_comment_get_thread_comments', {'id': thread.id}) }}';
+</script>
+{% endjavascripts %}
+{% endblock javascript %}

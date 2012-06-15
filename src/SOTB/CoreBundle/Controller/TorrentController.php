@@ -33,7 +33,7 @@ class TorrentController extends Controller
     /**
      * @Template()
      */
-    public function showAction($slug)
+    public function showAction(Request $request, $slug)
     {
         $dm = $this->container->get('doctrine.odm.mongodb.document_manager');
 
@@ -46,11 +46,25 @@ class TorrentController extends Controller
         $categories = $dm->getRepository('SOTBCoreBundle:Category')->findAll();
 
         $manager = $this->container->get('fos_comment.manager.thread');
-        $thread = $manager->findThreadById($torrent->getId());
 
-        $comments = (null !== $thread)? $thread->getNumComments() : 0;
+        $thread = $this->container->get('fos_comment.manager.thread')->findThreadById($torrent->getId());
+        if (null === $thread) {
+            $thread = $this->container->get('fos_comment.manager.thread')->createThread();
+            $thread->setId($torrent->getId());
+            $thread->setPermalink($request->getUri());
 
-        return array('torrent' => $torrent, 'comments' => $comments, 'categories' => $categories);
+            // Add the thread
+            $this->container->get('fos_comment.manager.thread')->saveThread($thread);
+        }
+
+        $comments = $this->container->get('fos_comment.manager.comment')->findCommentTreeByThread($thread);
+
+        return array(
+            'comments' => $comments,
+            'thread' => $thread,
+            'torrent' => $torrent,
+            'categories' => $categories
+        );
     }
 
     /**
