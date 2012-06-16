@@ -27,7 +27,7 @@ class Tracker
         if (
             !$params->has('info_hash') ||
             !$params->has('peer_id') ||
-            !$params->has('port') ||
+            // !$params->has('port') || // we don't need ports in i2p
             !$params->has('uploaded') ||
             !$params->has('downloaded') ||
             !$params->has('left')
@@ -44,9 +44,9 @@ class Tracker
         if (strlen($peer_id) < 20 || strlen($peer_id) > 128) {
             return $this->announceFailure("Invalid length of peer_id. ". $peer_id);
         }
-        if (!(is_numeric($params->getInt('port')) && is_int($params->getInt('port') + 0) && 0 <= $params->getInt('port'))) {
-            return $this->announceFailure("Invalid port value.");
-        }
+//        if (!(is_numeric($params->getInt('port')) && is_int($params->getInt('port') + 0) && 0 <= $params->getInt('port'))) {
+//            return $this->announceFailure("Invalid port value.");
+//        }
         if (!(is_numeric($params->getInt('uploaded')) && is_int($params->getInt('uploaded') + 0) && 0 <= $params->getInt('uploaded'))) {
             return $this->announceFailure("Invalid uploaded value.");
         }
