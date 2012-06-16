@@ -25,6 +25,13 @@ class TrackerController implements ContainerAwareInterface
         // use the IP from the query string, or the clientIP, even though thats always localhost
         $params->set('ip', $request->query->get('ip', $request->getClientIp()));
 
+        // do validation of client
+        if ($request->headers->has('X-I2P-DestB64')) {
+            if ($params->get('ip') !== $request->headers->get('X-I2P-DestB64')) {
+                $this->announceFailure('Spoofed client address detected.');
+            }
+        }
+
         // These parameters are always required
         if (
             !$request->query->has('info_hash') ||
