@@ -45,9 +45,9 @@ class Tracker
         $peer->setTorrent($torrent);
         $peer->setIp($params->get('ip'));
         $peer->setPort($params->get('port'));
-        $peer->setDownloaded($params->getInt('downloaded'));
-        $peer->setUploaded($params->getInt('uploaded'));
-        $peer->setLeft($params->getInt('left'));
+        $peer->setDownloaded($params->get('downloaded'));
+        $peer->setUploaded($params->get('uploaded'));
+        $peer->setLeft($params->get('left'));
 
         // Some randomizing for security?
         $interval = $this->configInterval + mt_rand(round($this->configInterval / -10), round($this->configInterval / 10));
@@ -56,7 +56,7 @@ class Tracker
         $peer->setInterval(('stopped' === $params->get('event')) ? 0 : $interval * 2);
 
         try {
-            $peers = $this->getPeers($torrent, $peer, $params->get('compact'), $params->get('no_peer_id'));
+            $peers = $this->getPeers($torrent, $peer, $params->get('compact'), $params->get('no_peer_id'), $params->get('numwant'));
             $peer_stats = $this->getPeerStats($torrent, $peer);
         } catch (\Exception $e) {
             return $this->announceFailure($e->getMessage());
@@ -130,14 +130,18 @@ class Tracker
         return $peer;
     }
 
-    protected function getPeers(Torrent $torrent, Peer $peer, $compact = false, $no_peer_id = false)
+    protected function getPeers(Torrent $torrent, Peer $peer, $compact = false, $no_peer_id = false, $numwant = 50)
     {
         $activePeers = $torrent->getActivePeers();
 
         if ($compact) {
             $return = '';
             if (count($activePeers)) {
+                $loopy = 1;
                 foreach ($activePeers as $aPeer) {
+                    if ($loopy++ > $numwant) {
+                        break;
+                    }
                     if ($peer->getPeerId() !== $aPeer->getPeerId()) {
                         $return .= pack('N', ip2long($aPeer->getIp()));
                         $return .= pack('n', intval($aPeer->getPort()));
@@ -147,7 +151,11 @@ class Tracker
         } else {
             $return = array();
             if (count($activePeers)) {
+                $loopy = 1;
                 foreach ($torrent->getActivePeers() as $aPeer) {
+                    if ($loopy++ > $numwant) {
+                        break;
+                    }
                     if ($peer->getPeerId() !== $aPeer->getPeerId()) {
                         $result = array(
                             'ip'        => $aPeer->getIp(),

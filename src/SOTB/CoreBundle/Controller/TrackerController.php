@@ -70,6 +70,12 @@ class TrackerController implements ContainerAwareInterface
         }
         $params->set('left', $request->query->getInt('left'));
 
+        // validate numwant
+        if ($request->query->has('numwant') && !(is_numeric($request->query->getInt('left')) && is_int($request->query->getInt('left') + 0))) {
+            return $this->announceFailure("Invalid numwant value.");
+        }
+        $params->set('numwant', $request->query->getInt('numwant', 50));
+
         // validate the event, if it's set
         if ($request->query->has('event') && !in_array($request->query->get('event'), array('started', 'stopped', 'completed'))) {
             return $this->announceFailure('Invalid event.');
@@ -88,10 +94,6 @@ class TrackerController implements ContainerAwareInterface
         return $response;
     }
 
-    /**
-     * @param $hash
-     * @return bool|string
-     */
     protected function parseInfoHash($hash)
     {
         $info_hash = urldecode($hash);
