@@ -27,7 +27,7 @@
             <argument type="service" id="exercise_html_purifier.default" />
         </service>
 
-        <service id="size.twig.extension" class="SOTB\CoreBundle\Twig\Extension\SizeExtension">
+        <service id="misc.twig.extension" class="SOTB\CoreBundle\Twig\Extension\MiscExtension">
             <tag name="twig.extension" />
         </service>
     </services>

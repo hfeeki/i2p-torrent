@@ -24,7 +24,7 @@ class TorrentController extends Controller
         $pagination = $paginator->paginate(
             $query,
             $this->get('request')->query->get('page', 1) /*page number*/,
-            10/*limit per page*/
+            30/*limit per page*/
         );
 
         return compact('pagination');
@@ -44,8 +44,6 @@ class TorrentController extends Controller
         }
 
         $categories = $dm->getRepository('SOTBCoreBundle:Category')->findAll();
-
-        $manager = $this->container->get('fos_comment.manager.thread');
 
         $thread = $this->container->get('fos_comment.manager.thread')->findThreadById($torrent->getId());
         if (null === $thread) {
@@ -86,7 +84,7 @@ class TorrentController extends Controller
         $pagination = $paginator->paginate(
             $query,
             $this->get('request')->query->get('page', 1) /*page number*/,
-            10/*limit per page*/
+            30/*limit per page*/
         );
 
         return array('category' => $category, 'pagination' => $pagination);
@@ -162,7 +160,7 @@ class TorrentController extends Controller
         $pagination = $paginator->paginate(
             $query,
             $this->get('request')->query->get('page', 1) /*page number*/,
-            10/*limit per page*/
+            30/*limit per page*/
         );
 
         $search = new Search();

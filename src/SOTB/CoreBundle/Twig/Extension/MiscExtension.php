@@ -5,11 +5,14 @@ namespace SOTB\CoreBundle\Twig\Extension;
 /**
  * @author Matt Drollette <matt@drollette.com>
  */
-class SizeExtension extends \Twig_Extension {
+class MiscExtension extends \Twig_Extension
+{
 
-    public function getFilters() {
+    public function getFilters()
+    {
         return array(
             'human_size'  => new \Twig_Filter_Method($this, 'humanSize'),
+            'array_sort'  => new \Twig_Filter_Method($this, 'arraySort'),
         );
     }
 
@@ -39,9 +42,22 @@ class SizeExtension extends \Twig_Extension {
         }
     }
 
+    public function arraySort($arr, $col, $dir = SORT_DESC)
+    {
+        $sort_col = array();
+        foreach ($arr as $key=> $row) {
+            $sort_col[$key] = $row[$col];
+        }
+
+        array_multisort($sort_col, $dir, $arr);
+
+        return $arr;
+    }
+
+
     public function getName()
     {
-        return 'size_extension';
+        return 'misc_extension';
     }
 
 }

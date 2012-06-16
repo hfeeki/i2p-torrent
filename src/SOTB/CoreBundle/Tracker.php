@@ -36,11 +36,17 @@ class Tracker
         }
 
         // validate the request
-        $info_hash = bin2hex(urldecode($params->get('info_hash')));
+        $info_hash = urldecode($params->get('info_hash'));
+        if (!ctype_xdigit($info_hash)) {
+            $info_hash = bin2hex($info_hash);
+        }
         if (40 != strlen($info_hash)) {
             return $this->announceFailure("Invalid length of info_hash. ". $info_hash);
         }
-        $peer_id = bin2hex(urldecode($params->get('peer_id')));
+        $peer_id = urldecode($params->get('peer_id'));
+        if (!ctype_xdigit($peer_id)) {
+            $peer_id = bin2hex($peer_id);
+        }
         if (strlen($peer_id) < 20 || strlen($peer_id) > 128) {
             return $this->announceFailure("Invalid length of peer_id. ". $peer_id);
         }

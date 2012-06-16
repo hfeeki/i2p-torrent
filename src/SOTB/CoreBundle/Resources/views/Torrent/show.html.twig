@@ -20,14 +20,14 @@
             <thead>
             <tr>
                 <th>File</th>
-                <th>Size</th>
+                <th style="text-align: right">Size</th>
             </tr>
             </thead>
             <tbody>
             {% for file, meta in torrent.files %}
             <tr>
                 <td>{{ file }}</td>
-                <td style="white-space: nowrap;">{{ meta.length | human_size }}</td>
+                <td style="text-align: right;white-space: nowrap;">{{ meta.length | human_size }}</td>
             </tr>
             {% endfor %}
             </tbody>
@@ -42,6 +42,28 @@
         </div>
         {% endif %}
 
+        {% if torrent.activePeers.count %}
+        <h4>Swarm</h4>
+        <table class="table table-condensed table-bordered">
+            <thead>
+            <tr>
+                <th>Peer</th>
+                <th>Downloaded</th>
+                <th>Uploaded</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for peer in torrent.activePeers %}
+            <tr>
+                <td>{{ peer.ip | slice(0,12) }}</td>
+                <td>{{ peer.downloaded | human_size }}</td>
+                <td>{{ peer.uploaded | human_size }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+
         <hr />
         <div id="fos_comment_thread" data-thread="{{ thread.id }}">
 
@@ -54,16 +76,18 @@
     </div>
     <div class="span3">
         <div class="infoBox downloadBox">
+            {% if torrent.filename %}
             <p>
                 <a href="{{ path('torrent_download', {'slug':torrent.slug}) }}" class="btn btn-primary btn-large"><i class="icon-download-alt icon-white"></i> Torrent</a>
             </p>
+            {% endif %}
 
             <p>
                 <a href="{{ torrent.magnet }}" class="btn btn-large"><i class="icon-magnet"></i> Magnet</a>
             </p>
 
             <form action="{{ path('torrent_vote', {'slug': torrent.slug}) }}" method="POST">
-                <button type="submit" class="btn btn-large"><i class="icon-plus"></i> Request Torrent</button>
+                <button type="submit" class="btn btn-large"><i class="icon-plus"></i> Request Seeders</button>
             </form>
         </div>
         <div class="infoBox statsBox">
