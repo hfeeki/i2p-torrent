@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mongo-mapping xmlns="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping"
+                        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                        xsi:schemaLocation="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping
+                        http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
+
+    <embedded-document name="SOTB\CoreBundle\Document\Info">
+
+        <field name="name" fieldName="name" type="string"/>
+        <field name="length" fieldName="length" type="int"/>
+        <field name="md5sum" fieldName="md5sum" type="string"/>
+
+        <field name="extra" fieldName="extra" type="hash"/>
+        <field name="files" fieldName="files" type="hash"/>
+
+        <field name="pieceLength" fieldName="pieceLength" type="int"/>
+        <field name="pieces" fieldName="pieces" type="bin"/>
+        <field name="private" fieldName="private" type="boolean"/>
+
+    </embedded-document>
+</doctrine-mongo-mapping>

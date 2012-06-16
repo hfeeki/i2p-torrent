@@ -106,6 +106,8 @@ class TorrentController extends Controller
                 $dm = $this->container->get('doctrine.odm.mongodb.document_manager');
 
                 $torrentManager = $this->container->get('torrent_manager');
+                $torrentManager->process($torrent);
+
                 $torrentManager->upload($torrent);
 
                 $dm->persist($torrent);
@@ -191,7 +193,7 @@ class TorrentController extends Controller
 
         $torrentManager = $this->container->get('torrent_manager');
 
-        return new TorrentResponse($torrent, $torrentManager->getUploadRootDir());
+        return new TorrentResponse($torrentManager->getFileData($torrent), $torrent->getSlug());
     }
 
 }

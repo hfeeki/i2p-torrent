@@ -19,8 +19,6 @@
         </reference-many>
 
         <field name="title" fieldName="title" type="string"/>
-
-        <field name="name" fieldName="name" type="string"/>
         <field name="slug" type="string" unique="true">
             <gedmo:slug unique="true" fields="title"/>
         </field>
@@ -34,10 +32,7 @@
         <field name="filename" fieldName="filename" type="string"/>
 
         <field name="files" fieldName="files" type="hash"/>
-
-        <field name="pieceLength" fieldName="pieceLength" type="int"/>
-        <field name="pieces" fieldName="pieces" type="bin"/>
-        <field name="private" fieldName="private" type="boolean"/>
+        <embed-one name="info" fieldName="info" field="info" target-document="SOTB\CoreBundle\Document\Info"/>
 
         <field name="announceList" fieldName="announceList" field="announceList" type="hash"/>
         <field name="creationDate" fieldName="creationDate" type="date"/>

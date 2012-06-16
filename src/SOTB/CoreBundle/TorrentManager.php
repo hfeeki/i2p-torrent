@@ -2,7 +2,10 @@
 
 namespace SOTB\CoreBundle;
 
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+
 use SOTB\CoreBundle\Document\Torrent;
+use SOTB\CoreBundle\Document\Info;
 use SOTB\CoreBundle\TorrentFile;
 
 /**
@@ -19,27 +22,26 @@ class TorrentManager
         $this->announceUrl = $announceUrl;
     }
 
-    public function upload(Torrent $torrent)
+    public function process(Torrent $torrent)
     {
-        /** @var $file \Symfony\Component\HttpFoundation\File\UploadedFile */
-        $file = $torrent->getFilename();
+        /** @var $file UploadedFile */
+        $file = $torrent->_file;
 
         $announceList = array($this->announceUrl);
 
-        // the file property can be empty if the field is not required
+        // we only got a magnet link
         if (null === $file) {
-
             // let's set the announce on this anyway (was a magnet link or a hash)
             $torrent->setAnnounceList($announceList);
 
-            return;
+            return $torrent;
         }
 
         $torrentData = new TorrentFile($file->getPathname());
 
         // change some properties and write the new file
         $torrentData->created_by('Anonymous');
-        $torrentData->comment($torrentData->comment() . ('' == $torrentData->comment() ? '' : ' ') . '[anonymous]');
+        //$torrentData->comment($torrentData->comment() . ('' == $torrentData->comment() ? '' : ' ') . '[anonymous]');
 
         // get the announce list
         $origAnnounceList = $torrentData->announce();
@@ -47,44 +49,109 @@ class TorrentManager
         // remove any non-i2p hosts
         if (is_array($origAnnounceList)) {
             foreach ($origAnnounceList as $announceUrl) {
-                if ('i2p' === $this->get_tld_from_url($announceUrl) && $announceUrl !== $this->announceUrl) {
-                    array_push($announceList, $announceUrl);
+                if (is_array($announceUrl)) {
+                    foreach ($announceUrl as $moreNesting) {
+                        if ('i2p' === $this->get_tld_from_url($moreNesting) && $moreNesting !== $this->announceUrl) {
+                            array_push($announceList, $moreNesting);
+                        }
+                    }
+                } else {
+                    if ('i2p' === $this->get_tld_from_url($announceUrl) && $announceUrl !== $this->announceUrl) {
+                        array_push($announceList, $announceUrl);
+                    }
                 }
             }
         }
 
         // reset the announce list
         $torrentData->announce(false);
-
-        // add back the new list with us as primary
         $torrentData->announce($announceList);
-
 
         $torrent->setHash($torrentData->hash_info());
         $torrent->setAnnounceList($torrentData->announce());
         $torrent->setComment($torrentData->comment());
         $torrent->setCreatedBy($torrentData->created_by());
         $torrent->setCreationDate(new \DateTime('@' . $torrentData->creation_date()));
-        $torrent->setName($torrentData->name());
-        $torrent->setSize($torrentData->size());
-        $torrent->setPieceLength($torrentData->piece_length());
-        $torrent->setPieces($torrentData->getPieces());
-        $torrent->setPrivate($torrentData->is_private());
         $torrent->setFiles($torrentData->offset());
+        $torrent->setSize($torrentData->size());
+
+        $info = new Info();
+        $info->setName($torrentData->name());
+        $info->setPieceLength($torrentData->piece_length());
+        $info->setPieces($torrentData->getPieces());
+
+        $torrentInfo = $torrentData->getInfo();
+
+        //optional private flag
+        if (array_key_exists('private', $torrentInfo)) {
+            $info->setPrivate($torrentData->is_private());
+        }
+        if (isset($torrentInfo['files']) && is_array($torrentInfo['files'])) {
+            $info->setFiles($torrentInfo['files']);
+        } else {
+            $info->setLength($torrentInfo['length']);
+
+            if (isset($torrentInfo['md5sum'])) {
+                $info->setMd5sum($torrentInfo['md5sum']);
+            }
+        }
+
+        // add any extra fields
+        foreach ($torrentInfo as $key => $val) {
+            $extra = array();
+            // exclude the required fields
+            if (!in_array($key, array('name', 'pieces', 'piece length', 'private', 'files', 'md5sum', 'length'))) {
+                $extra[$key] = $val;
+            }
+        }
+        $info->setExtra($extra);
+
+        $torrent->setInfo($info);
+
+        return $torrent;
+    }
+
+    public function upload(Torrent $torrent)
+    {
+        /** @var $file \Symfony\Component\HttpFoundation\File\UploadedFile */
+        $file = $torrent->_file;
+
+        if (!$file instanceof UploadedFile || null === $torrent->getHash() || '' === $torrent->getHash()) {
+            return false;
+        }
+
         $torrent->setFilename($torrent->getHash() . '.torrent');
 
-        // write a new torrent
-        file_put_contents($this->getUploadRootDir() . DIRECTORY_SEPARATOR . $torrent->getFilename(), $torrentData->getFile());
-
-        // delete the old tmp file
-        if (is_file($file->getPathname())) {
-            unlink($file->getPathname());
-        }
+        // we save the original uploaded file with no modifications
+        $file->move($this->getUploadRootDir(), $torrent->getFilename());
     }
 
     public function getUploadRootDir()
     {
         return $this->baseDir;
+    }
+
+    /**
+     * @param Torrent $torrent
+     * @return the bencoded data for a torrent file
+     */
+    public function getFileData(Torrent $torrent)
+    {
+        $data = array(
+            'announce'      => (is_array($torrent->getAnnounceList())) ? current($torrent->getAnnounceList()) : $torrent->getAnnounceList(),
+            'announce-list' => array((is_array($torrent->getAnnounceList())) ? $torrent->getAnnounceList() : array($torrent->getAnnounceList())),
+            'creation date' => ($torrent->getCreationDate()) ? $torrent->getCreationDate()->getTimestamp() : time(),
+            'comment'       => (null !== $torrent->getComment()) ? $torrent->getComment() : '',
+            'created by'    => (null !== $torrent->getCreatedBy()) ? $torrent->getCreatedBy() : 'Anonymous',
+            'info'          => $torrent->getInfo()->toArray()
+        );
+
+        ksort($data);
+
+//        var_export($data);
+//        die();
+
+        return bencode($data);
     }
 
     private function get_tld_from_url($url)

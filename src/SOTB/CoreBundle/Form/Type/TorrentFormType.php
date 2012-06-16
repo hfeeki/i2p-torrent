@@ -36,7 +36,7 @@ class TorrentFormType extends AbstractType
             'help_block'  => 'Your own text description of the torrent.'
         ))
             ->add($hash)
-            ->add('filename', 'file', array(
+            ->add('_file', 'file', array(
             'required'    => false,
             'help_block'  => 'The .torrent file downloaded from the regular Internet.'
         ))

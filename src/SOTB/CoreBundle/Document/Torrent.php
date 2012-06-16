@@ -16,7 +16,6 @@ class Torrent implements GroupSequenceProviderInterface
     private $id;
 
     private $title;
-    private $name;
     private $slug;
     private $description;
     private $size; // in bytes
@@ -25,14 +24,11 @@ class Torrent implements GroupSequenceProviderInterface
     private $leechers;
     private $comments;
 
-    private $_file; // only used to pass the file in the upload form
+    public $_file; // only used to pass the file in the upload form
     private $filename; // for locating the torrent file on disk (using the hash as the file name anyway)
 
-    private $pieceLength;
-    private $pieces;
-    private $private;
-
-    private $files;
+    private $files; //display field only 
+    private $info; // the original info hash
 
     private $announceList;
     private $creationDate;
@@ -172,16 +168,6 @@ class Torrent implements GroupSequenceProviderInterface
         return $this->encoding;
     }
 
-    public function setName($name)
-    {
-        $this->name = $name;
-    }
-
-    public function getName()
-    {
-        return $this->name;
-    }
-
     public function getActivePeers()
     {
         return $this->activePeers;
@@ -262,16 +248,6 @@ class Torrent implements GroupSequenceProviderInterface
         return $this->filename;
     }
 
-    public function setFile($file)
-    {
-        $this->_file = $file;
-    }
-
-    public function getFile()
-    {
-        return $this->_file;
-    }
-
     public function setTitle($title)
     {
         $this->title = $title;
@@ -280,41 +256,6 @@ class Torrent implements GroupSequenceProviderInterface
     public function getTitle()
     {
         return $this->title;
-    }
-
-    public function setPrivate($private)
-    {
-        $this->private = $private;
-    }
-
-    public function setFiles($files)
-    {
-        $this->files = $files;
-    }
-
-    public function getFiles()
-    {
-        return $this->files;
-    }
-
-    public function setPieces($pieces)
-    {
-        $this->pieces = $pieces;
-    }
-
-    public function getPieces()
-    {
-        return $this->pieces;
-    }
-
-    public function setPieceLength($pieceLength)
-    {
-        $this->pieceLength = $pieceLength;
-    }
-
-    public function getPieceLength()
-    {
-        return $this->pieceLength;
     }
 
     public function setDownloaded($downloaded)
@@ -344,7 +285,7 @@ class Torrent implements GroupSequenceProviderInterface
 
     public function getMagnet()
     {
-        return sprintf('magnet:?xt=urn:btih:%2$s%1$sdn=%3$s%1$sxl=%4$d%1$str=%5$s', '&', $this->getHash(), urlencode($this->getName()), $this->getSize(), implode('&tr=', $this->getAnnounceList()));
+        return sprintf('magnet:?xt=urn:btih:%2$s%1$sdn=%3$s%1$sxl=%4$d%1$str=%5$s', '&', $this->getHash(), urlencode($this->getTitle()), $this->getSize(), implode('&tr=', $this->getAnnounceList()));
     }
 
     public function setRequestCount($requestCount)
@@ -394,7 +335,7 @@ class Torrent implements GroupSequenceProviderInterface
     {
         $groups = array('always');
 
-        if (!empty($this->filename)) {
+        if (!empty($this->_file)) {
             array_push($groups, 'upload');
         }
 
@@ -402,7 +343,7 @@ class Torrent implements GroupSequenceProviderInterface
             array_push($groups, 'hash');
         }
 
-        if (empty($this->filename) && empty($this->hash)) {
+        if (empty($this->_file) && empty($this->hash)) {
             array_push($groups, 'either');
         }
 
@@ -412,9 +353,9 @@ class Torrent implements GroupSequenceProviderInterface
     public function isValid(ExecutionContext $context)
     {
         // check if the name is actually a fake name
-        if (empty($this->hash) && empty($this->filename)) {
+        if (empty($this->hash) && empty($this->_file)) {
             $context->addViolationAtSubPath('hash', 'You must supply either a torrent file or a hash/magnet.', array(), null);
-            $context->addViolationAtSubPath('filename', 'You must supply either a torrent file or a hash/magnet.', array(), null);
+            $context->addViolationAtSubPath('_file', 'You must supply either a torrent file or a hash/magnet.', array(), null);
         }
     }
 
@@ -477,5 +418,25 @@ class Torrent implements GroupSequenceProviderInterface
     public function getVisible()
     {
         return $this->visible;
+    }
+
+    public function setInfo($info)
+    {
+        $this->info = $info;
+    }
+
+    public function getInfo()
+    {
+        return $this->info;
+    }
+
+    public function setFiles($files)
+    {
+        $this->files = $files;
+    }
+
+    public function getFiles()
+    {
+        return $this->files;
     }
 }

@@ -71,7 +71,7 @@
                 </option>
             </constraint>
         </property>
-        <property name="filename">
+        <property name="_file">
             <constraint name="File">
                 <option name="maxSize">1024k</option>
                 <option name="mimeTypes">

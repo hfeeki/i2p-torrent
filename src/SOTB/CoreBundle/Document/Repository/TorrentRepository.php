@@ -22,7 +22,7 @@ class TorrentRepository extends DocumentRepository
     public function getAll()
     {
         return $this->createQueryBuilder()
-            //->field('visible')->notEqual(false)
+            ->field('visible')->notEqual(false)
             ->getQuery();
     }
 

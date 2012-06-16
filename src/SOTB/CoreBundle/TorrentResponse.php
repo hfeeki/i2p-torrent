@@ -11,28 +11,23 @@ use SOTB\CoreBundle\Document\Torrent;
  */
 class TorrentResponse extends Response
 {
-    private $baseDir;
-    private $torrent;
+    private $torrentData;
 
-    public function __construct(Torrent $torrent, $baseDir)
+    public function __construct($torrentData, $name)
     {
-        $this->baseDir = $baseDir;
-        $this->torrent = $torrent;
+        $this->torrentData = $torrentData;
 
         parent::__construct('', 200, array(
             'Content-Type'        => 'application/x-bittorrent',
-            'Content-Length'      => filesize($this->getPathname()),
-            'Content-Disposition' => 'attachment; filename="' . $this->torrent->getSlug() . '.torrent"'
+            'Content-Length'      => strlen($torrentData),
+            'Content-Disposition' => 'attachment; filename="' . $name. '.torrent"'
         ));
-    }
-
-    protected function getPathname()
-    {
-        return $this->baseDir . DIRECTORY_SEPARATOR . $this->torrent->getFilename();
     }
 
     public function sendContent()
     {
-        return readfile($this->getPathname());
+        echo $this->torrentData;
+
+        return $this;
     }
 }
