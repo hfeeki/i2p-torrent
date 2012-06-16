@@ -256,19 +256,22 @@ class TorrentFile
         $files = array();
         $size = 0;
         if (isset($this->info['files']) && is_array($this->info['files'])) {
-            foreach ($this->info['files'] as $file)
-                $files[self::path($file['path'], $this->info['name'])] = array(
-                    'startpiece'    => floor($size / $this->info['piece length']),
-                    'offset'        => fmod($size, $this->info['piece length']),
-                    'size'          => $size += $file['length'],
-                    'endpiece'      => floor($size / $this->info['piece length'])
-                );
+            foreach ($this->info['files'] as $file) {
+                $path = self::path($file['path'], $this->info['name']);
+                $files[$path]['startpiece'] = floor($size / $this->info['piece length']);
+                $files[$path]['offset'] = fmod($size, $this->info['piece length']);
+                $files[$path]['length'] = $file['length'];
+
+                $size += $file['length'];
+
+                $files[$path]['endpiece'] = floor($size / $this->info['piece length']);
+            }
         } elseif (isset($this->info['name'])) {
             $files[$this->info['name']] = array(
-                'startpiece'    => 0,
-                'offset'        => 0,
-                'size'          => $this->info['length'],
-                'endpiece'      => floor($this->info['length'] / $this->info['piece length'])
+                'startpiece'      => 0,
+                'offset'          => 0,
+                'length'          => $this->info['length'],
+                'endpiece'        => floor($this->info['length'] / $this->info['piece length'])
             );
         }
 

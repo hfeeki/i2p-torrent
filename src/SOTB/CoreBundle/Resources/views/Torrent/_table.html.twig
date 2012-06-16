@@ -1,7 +1,7 @@
 <table class="table table-striped">
     <thead>
     <tr>
-        <th>Name</th>
+        <th>{{ pagination.sortable('Name', 'title', {'defaultDirection': 'asc'})|raw }}</th>
         <th style="text-align: center">{{ pagination.sortable('Seeders', 'seeders', {'defaultDirection': 'desc'})|raw }}</th>
         <th style="text-align: center">{{ pagination.sortable('Leechers', 'leechers', {'defaultDirection': 'desc'})|raw }}</th>
         <th style="text-align: center">{{ pagination.sortable('Requests', 'requestCount', {'defaultDirection': 'desc'})|raw }}</th>

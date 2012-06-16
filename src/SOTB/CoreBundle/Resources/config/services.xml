@@ -26,6 +26,10 @@
         <service id="sotb.form.transformer.html_purifier" class="Exercise\HTMLPurifierBundle\Form\HTMLPurifierTransformer">
             <argument type="service" id="exercise_html_purifier.default" />
         </service>
+
+        <service id="size.twig.extension" class="SOTB\CoreBundle\Twig\Extension\SizeExtension">
+            <tag name="twig.extension" />
+        </service>
     </services>
 
 </container>

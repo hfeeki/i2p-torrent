@@ -35,10 +35,24 @@ class TorrentManager
         $torrentData->created_by('Anonymous');
         $torrentData->comment($torrentData->comment() . ('' == $torrentData->comment() ? '' : ' ') . '[anonymous]');
 
+        $announceList = array($this->announceUrl);
+        // get the announce list
+        $origAnnounceList = $torrentData->announce();
+
+        // remove any non-i2p hosts
+        if (is_array($origAnnounceList)) {
+            foreach ($origAnnounceList as $announceUrl) {
+                if ('i2p' === $this->get_tld_from_url($announceUrl) && $announceUrl !== $this->announceUrl) {
+                    array_push($announceList, $announceUrl);
+                }
+            }
+        }
+
         // reset the announce list
         $torrentData->announce(false);
-        // use only ours
-        $torrentData->announce($this->announceUrl);
+
+        // add back the new list with us as primary
+        $torrentData->announce($announceList);
 
 
         $torrent->setHash($torrentData->hash_info());
@@ -66,5 +80,20 @@ class TorrentManager
     public function getUploadRootDir()
     {
         return $this->baseDir;
+    }
+
+    private function get_tld_from_url($url)
+    {
+        $tld = '';
+
+        $url_parts = parse_url((string)$url);
+        if (is_array($url_parts) && isset($url_parts['host'])) {
+            $host_parts = explode('.', $url_parts['host']);
+            if (is_array($host_parts) && count($host_parts) > 0) {
+                $tld = array_pop($host_parts);
+            }
+        }
+
+        return $tld;
     }
 }

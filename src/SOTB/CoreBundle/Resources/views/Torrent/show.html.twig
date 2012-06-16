@@ -5,17 +5,44 @@
 <div class="row">
     <div class="span6">
         <div class="page-header">
-            <h1>{{ torrent.title }}</h1>
+            <h1>{{ torrent.title }}<br/>
+                <small>{{ torrent.hash }}</small>
+            </h1>
         </div>
 
         {{ torrent.description | nl2br }}
 
         <p>&nbsp;</p>
 
+        {% if torrent.files %}
+        <h4>Contents</h4>
+        <table class="table table-condensed table-bordered">
+            <thead>
+            <tr>
+                <th>File</th>
+                <th>Size</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for file, meta in torrent.files %}
+            <tr>
+                <td>{{ file }}</td>
+                <td style="white-space: nowrap;">{{ meta.length | human_size }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+
+        {% if torrent.comment != '' %}
+        <h4>Comment</h4>
+
         <div class="well well-small">
             {{ torrent.comment }}
         </div>
+        {% endif %}
 
+        <hr />
         <div id="fos_comment_thread" data-thread="{{ thread.id }}">
 
             {% include 'FOSCommentBundle:Thread:comments.html.twig' with {
@@ -54,7 +81,7 @@
                 </tr>
                 <tr>
                     <th>Size</th>
-                    <td>{{ torrent.humanSize }}</td>
+                    <td>{{ torrent.size | human_size }}</td>
                 </tr>
                 <tr>
                     <th>Discuss</th>
