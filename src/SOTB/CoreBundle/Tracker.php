@@ -16,71 +16,20 @@ use SOTB\CoreBundle\Document\Torrent;
 class Tracker
 {
     private $dm;
+    private $configInterval;
+    private $announceUrl;
 
-    public function __construct(DocumentManager $dm)
+    public function __construct(DocumentManager $dm, $interval, $announceUrl)
     {
         $this->dm = $dm;
+        $this->configInterval = $interval;
+        $this->announceUrl = $announceUrl;
     }
 
-    public function announce(ParameterBag $params)
+    public function announce($info_hash, $peer_id, ParameterBag $params)
     {
-        if (
-            !$params->has('info_hash') ||
-            !$params->has('peer_id') ||
-            !$params->has('uploaded') ||
-            !$params->has('downloaded') ||
-            !$params->has('left')
-        ) {
-            return $this->announceFailure("Invalid get parameters.");
-        }
-
-        // validate the request
-        $info_hash = urldecode($params->get('info_hash'));
-        if (!ctype_xdigit($info_hash)) {
-            $info_hash = bin2hex($info_hash);
-        }
-        if (40 != strlen($info_hash) || !ctype_xdigit($info_hash)) {
-            return $this->announceFailure("Invalid length of info_hash. " . $info_hash);
-        }
-        $peer_id = urldecode($params->get('peer_id'));
-        if (!preg_match('/^[\x20-\x7f]*$/D', $peer_id)) {
-            $peer_id = bin2hex($peer_id);
-        }
-        if (strlen($peer_id) < 5 || strlen($peer_id) > 128) {
-            return $this->announceFailure("Invalid length of peer_id. " . $peer_id);
-        }
-        if (!(is_numeric($params->getInt('uploaded')) && is_int($params->getInt('uploaded') + 0) && 0 <= $params->getInt('uploaded'))) {
-            return $this->announceFailure("Invalid uploaded value.");
-        }
-        if (!(is_numeric($params->getInt('downloaded')) && is_int($params->getInt('downloaded') + 0) && 0 <= $params->getInt('downloaded'))) {
-            return $this->announceFailure("Invalid downloaded value.");
-        }
-        if (!(is_numeric($params->getInt('left')) && is_int($params->getInt('left') + 0) && 0 <= $params->getInt('left'))) {
-            return $this->announceFailure("Invalid left value.");
-        }
-
-        $torrent = $this->dm->getRepository('SOTBCoreBundle:Torrent')->findOneBy(array('hash' => $info_hash));
-
-        // Open tracker
-        if (null === $torrent) {
-            $torrent = new Torrent();
-            $torrent->setTitle($info_hash);
-            $torrent->setOpenTracked(true);
-            $torrent->setVisible(false);
-            $torrent->setHash($info_hash);
-
-            $announceList = array();
-            $torrent->setAnnounceList($announceList);
-
-            $this->dm->persist($torrent);
-        }
-
-        $peer = $this->dm->getRepository('SOTBCoreBundle:Peer')->findOneBy(array('peerId' => $peer_id));
-
-        if (null === $peer) {
-            $peer = new Peer();
-            $peer->setPeerId($peer_id);
-        }
+        $torrent = $this->getTorrent($info_hash);
+        $peer = $this->getPeer($peer_id);
 
         if (0 === $params->getInt('left') || 'completed' === $params->get('event')) {
             $peer->setComplete(true);
@@ -88,10 +37,10 @@ class Tracker
             if ('completed' === $params->get('event')) {
                 // update the torrent counter
                 $torrent->incrementDownloads();
-                $this->dm->persist($torrent);
             }
         }
 
+        // update the peer info
         $peer->setTorrent($torrent);
         $peer->setIp($params->get('ip'));
         $peer->setPort($params->get('port'));
@@ -99,17 +48,14 @@ class Tracker
         $peer->setUploaded($params->getInt('uploaded'));
         $peer->setLeft($params->getInt('left'));
 
-        // todo: configurable?
-        $configInterval = '10';
-        $interval = $configInterval + mt_rand(round($configInterval / -10), round($configInterval / 10));
+        // Some randomizing for security?
+        $interval = $this->configInterval + mt_rand(round($this->configInterval / -10), round($this->configInterval / 10));
 
         // If the client gracefully exists, we set its ttl to 0, double-interval otherwise.
         $peer->setInterval(('stopped' === $params->get('event')) ? 0 : $interval * 2);
 
-        $this->dm->persist($peer);
-
         try {
-            $peers = $this->getPeers($torrent, $peer, $params->get('compact', false), $params->get('no_peer_id', false));
+            $peers = $this->getPeers($torrent, $peer, $params->get('compact'), $params->get('no_peer_id'));
             $peer_stats = $this->getPeerStats($torrent, $peer);
         } catch (\Exception $e) {
             return $this->announceFailure($e->getMessage());
@@ -121,8 +67,6 @@ class Tracker
             'incomplete'    => intval($peer_stats['incomplete']),
             'peers'         => $peers,
         );
-
-        $this->dm->flush();
 
         return new TrackerResponse($response);
     }
@@ -154,6 +98,41 @@ class Tracker
         }
 
         return new TrackerResponse($result);
+    }
+
+    protected function getTorrent($info_hash)
+    {
+        // Find the torrent
+        $torrent = $this->dm->getRepository('SOTBCoreBundle:Torrent')->findOneBy(array('hash' => $info_hash));
+
+        // Open tracker
+        if (null === $torrent) {
+            $torrent = new Torrent();
+            $torrent->setTitle($info_hash);
+            $torrent->setOpenTracked(true);
+            $torrent->setVisible(false);
+            $torrent->setHash($info_hash);
+
+            // add our announcer so magnets will work
+            $announceList = array($this->announceUrl);
+            $torrent->setAnnounceList($announceList);
+
+            $this->dm->persist($torrent);
+        }
+
+        return $torrent;
+    }
+
+    protected function getPeer($peer_id)
+    {
+        // Find the peer
+        $peer = $this->dm->getRepository('SOTBCoreBundle:Peer')->findOneBy(array('peerId' => $peer_id));
+        if (null === $peer) {
+            $peer = new Peer();
+            $peer->setPeerId($peer_id);
+        }
+
+        return $peer;
     }
 
     protected function getPeers(Torrent $torrent, Peer $peer, $compact = false, $no_peer_id = false)

@@ -7,6 +7,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
+use SOTB\CoreBundle\TrackerResponse;
+
 class TrackerController implements ContainerAwareInterface
 {
     private $container;
@@ -18,15 +20,73 @@ class TrackerController implements ContainerAwareInterface
 
     public function announceAction(Request $request)
     {
-        $tracker = $this->container->get('tracker');
+        $params = new ParameterBag();
 
-        $params = $request->query;
+        // use the IP from the query string, or the clientIP, even though thats always localhost
+        $params->set('ip', $request->query->get('ip', $request->getClientIp()));
 
-        if (!$params->has('ip')) {
-            $params->set('ip', $request->getClientIp());
+        // These parameters are always required
+        if (
+            !$request->query->has('info_hash') ||
+            !$request->query->has('peer_id') ||
+            !$request->query->has('uploaded') ||
+            !$request->query->has('downloaded') ||
+            !$request->query->has('left')
+        ) {
+            return $this->announceFailure("Invalid get parameters.");
         }
 
-        $response = $tracker->announce($params);
+        // Parse and validate the info hash
+        $info_hash = urldecode($request->query->get('info_hash'));
+        if (!ctype_xdigit($info_hash)) {
+            $info_hash = bin2hex($info_hash);
+        }
+        if (40 != strlen($info_hash) || !ctype_xdigit($info_hash)) {
+            return $this->announceFailure("Invalid length of info_hash. " . $info_hash);
+        }
+
+        // Parse and validate the peer id
+        $peer_id = urldecode($request->query->get('peer_id'));
+        if (!preg_match('/^[\x20-\x7f]*$/D', $peer_id)) {
+            $peer_id = bin2hex($peer_id);
+        }
+        // todo: this isn't an accurate check, but it's a start
+        if (strlen($peer_id) < 5 || strlen($peer_id) > 128) {
+            return $this->announceFailure("Invalid length of peer_id. " . $peer_id);
+        }
+
+        // validate uploaded
+        if (!(is_numeric($request->query->getInt('uploaded')) && is_int($request->query->getInt('uploaded') + 0))) {
+            return $this->announceFailure("Invalid uploaded value.");
+        }
+        $params->set('uploaded', $request->query->getInt('uploaded'));
+
+        // validate downloaded
+        if (!(is_numeric($request->query->getInt('downloaded')) && is_int($request->query->getInt('downloaded') + 0))) {
+            return $this->announceFailure("Invalid downloaded value.");
+        }
+        $params->set('downloaded', $request->query->getInt('downloaded'));
+
+        // validate left
+        if (!(is_numeric($request->query->getInt('left')) && is_int($request->query->getInt('left') + 0))) {
+            return $this->announceFailure("Invalid left value.");
+        }
+        $params->set('left', $request->query->getInt('left'));
+
+        // validate the event, if it's set
+        if ($request->query->has('event') && !in_array($request->query->get('event'), array('started', 'stopped', 'completed'))) {
+            return $this->announceFailure('Invalid event.');
+        }
+        $params->set('event', $request->query->get('event'));
+
+        // Optional
+        $params->set('port', $request->query->get('port'));
+        $params->set('compact', $request->query->get('compact', false));
+        $params->set('no_peer_id', $request->query->get('no_peer_id', false));
+
+        // Process the announce
+        $tracker = $this->container->get('tracker');
+        $response = $tracker->announce($info_hash, $peer_id, $params);
 
         return $response;
     }
@@ -40,6 +100,11 @@ class TrackerController implements ContainerAwareInterface
         $response = $tracker->scrape($qs);
 
         return $response;
+    }
+
+    protected function announceFailure($msg)
+    {
+        return new TrackerResponse(array('failure reason' => $msg));
     }
 
     protected function proper_parse_str($str)
