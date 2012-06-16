@@ -38,7 +38,7 @@ class TrackerController implements ContainerAwareInterface
 
         // Parse and validate the info hash
         $info_hash = $this->parseInfoHash($request->query->get('info_hash'));
-        if (false === $info_hash) {
+        if (null === $info_hash) {
             return $this->announceFailure("Invalid length of info_hash. " . $info_hash);
         }
 
@@ -88,6 +88,10 @@ class TrackerController implements ContainerAwareInterface
         return $response;
     }
 
+    /**
+     * @param $hash
+     * @return bool|string
+     */
     protected function parseInfoHash($hash)
     {
         $info_hash = urldecode($hash);
@@ -95,7 +99,7 @@ class TrackerController implements ContainerAwareInterface
             $info_hash = bin2hex($info_hash);
         }
         if (40 != strlen($info_hash) || !ctype_xdigit($info_hash)) {
-            return false;
+            return;
         }
 
         return $info_hash;
@@ -115,14 +119,22 @@ class TrackerController implements ContainerAwareInterface
             $info_hash = array($info_hash);
         }
 
+        // parse the hashes for each item
         $obj = $this;
         $info_hash = array_map(function($v) use ($obj)
         {
             return $obj->parseInfoHash($v);
         }, $info_hash);
 
+
+        // strip out any null values from the parse infohash array
+        $info_hash = array_filter($info_hash, function ($val)
+        {
+            return null !== $val;
+        });
+
         $tracker = $this->container->get('tracker');
-        $response = $tracker->scrape($info_hash);
+        $response = $tracker->scrape(array_unique($info_hash));
 
         return $response;
     }
