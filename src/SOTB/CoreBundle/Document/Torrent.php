@@ -53,6 +53,8 @@ class Torrent implements GroupSequenceProviderInterface
     private $categories;
     private $language;
     private $format;
+    private $openTracked;
+    private $visible;
 
     private $created;
 
@@ -66,6 +68,8 @@ class Torrent implements GroupSequenceProviderInterface
         $this->leechers = 0;
         $this->downloaded = 0;
         $this->requestCount = 1;
+        $this->openTracked = false;
+        $this->visible = true;
 
         $this->comments = new ArrayCollection();
         $this->announceList = array();
@@ -453,5 +457,25 @@ class Torrent implements GroupSequenceProviderInterface
     public function getLanguage()
     {
         return $this->language;
+    }
+
+    public function setOpenTracked($openTracked)
+    {
+        $this->openTracked = $openTracked;
+    }
+
+    public function getOpenTracked()
+    {
+        return $this->openTracked;
+    }
+
+    public function setVisible($visible)
+    {
+        $this->visible = $visible;
+    }
+
+    public function getVisible()
+    {
+        return $this->visible;
     }
 }

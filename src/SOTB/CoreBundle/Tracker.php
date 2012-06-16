@@ -27,7 +27,6 @@ class Tracker
         if (
             !$params->has('info_hash') ||
             !$params->has('peer_id') ||
-            // !$params->has('port') || // we don't need ports in i2p
             !$params->has('uploaded') ||
             !$params->has('downloaded') ||
             !$params->has('left')
@@ -40,19 +39,16 @@ class Tracker
         if (!ctype_xdigit($info_hash)) {
             $info_hash = bin2hex($info_hash);
         }
-        if (40 != strlen($info_hash)) {
-            return $this->announceFailure("Invalid length of info_hash. ". $info_hash);
+        if (40 != strlen($info_hash) || !ctype_xdigit($info_hash)) {
+            return $this->announceFailure("Invalid length of info_hash. " . $info_hash);
         }
         $peer_id = urldecode($params->get('peer_id'));
         if (!ctype_xdigit($peer_id)) {
             $peer_id = bin2hex($peer_id);
         }
-        if (strlen($peer_id) < 20 || strlen($peer_id) > 128) {
-            return $this->announceFailure("Invalid length of peer_id. ". $peer_id);
+        if (strlen($peer_id) < 20 || strlen($peer_id) > 128 || !ctype_xdigit($peer_id)) {
+            return $this->announceFailure("Invalid length of peer_id. " . $peer_id);
         }
-//        if (!(is_numeric($params->getInt('port')) && is_int($params->getInt('port') + 0) && 0 <= $params->getInt('port'))) {
-//            return $this->announceFailure("Invalid port value.");
-//        }
         if (!(is_numeric($params->getInt('uploaded')) && is_int($params->getInt('uploaded') + 0) && 0 <= $params->getInt('uploaded'))) {
             return $this->announceFailure("Invalid uploaded value.");
         }
@@ -65,9 +61,15 @@ class Tracker
 
         $torrent = $this->dm->getRepository('SOTBCoreBundle:Torrent')->findOneBy(array('hash' => $info_hash));
 
+        // Open tracker
         if (null === $torrent) {
-            // TODO: we could automatically add them and fetch the meta-data later
-            return $this->announceFailure('Invalid info hash.');
+            $torrent = new Torrent();
+            $torrent->setTitle($info_hash);
+            $torrent->setOpenTracked(true);
+            $torrent->setVisible(false);
+            $torrent->setHash($info_hash);
+
+            $this->dm->persist($torrent);
         }
 
         $peer = $this->dm->getRepository('SOTBCoreBundle:Peer')->findOneBy(array('peerId' => $peer_id));
@@ -153,26 +155,32 @@ class Tracker
 
     protected function getPeers(Torrent $torrent, Peer $peer, $compact = false, $no_peer_id = false)
     {
+        $activePeers = $torrent->getActivePeers();
+
         if ($compact) {
             $return = '';
-            foreach ($torrent->getActivePeers() as $aPeer) {
-                if ($peer->getPeerId() !== $aPeer->getPeerId()) {
-                    $return .= pack('N', ip2long($aPeer->getIp()));
-                    $return .= pack('n', intval($aPeer->getPort()));
+            if (is_array($activePeers)) {
+                foreach ($activePeers as $aPeer) {
+                    if ($peer->getPeerId() !== $aPeer->getPeerId()) {
+                        $return .= pack('N', ip2long($aPeer->getIp()));
+                        $return .= pack('n', intval($aPeer->getPort()));
+                    }
                 }
             }
         } else {
             $return = array();
-            foreach ($torrent->getActivePeers() as $aPeer) {
-                if ($peer->getPeerId() !== $aPeer->getPeerId()) {
-                    $result = array(
-                        'ip'        => $aPeer->getIp(),
-                        'port'      => $aPeer->getPort(),
-                    );
-                    if (!$no_peer_id) {
-                        $result['peer id'] = $aPeer->getPeerId();
+            if (is_array($activePeers)) {
+                foreach ($torrent->getActivePeers() as $aPeer) {
+                    if ($peer->getPeerId() !== $aPeer->getPeerId()) {
+                        $result = array(
+                            'ip'        => $aPeer->getIp(),
+                            'port'      => $aPeer->getPort(),
+                        );
+                        if (!$no_peer_id) {
+                            $result['peer id'] = $aPeer->getPeerId();
+                        }
+                        $return[] = $result;
                     }
-                    $return[] = $result;
                 }
             }
         }
@@ -183,13 +191,16 @@ class Tracker
     public function getPeerStats(Torrent $torrent, Peer $peer = null)
     {
         $result = array('complete' => 0, 'incomplete' => 0);
+        $activePeers = $torrent->getActivePeers();
 
-        foreach ($torrent->getActivePeers() as $aPeer) {
-            if (null === $peer || $peer->getPeerId() !== $aPeer->getPeerId()) {
-                if ($aPeer->isComplete()) {
-                    $result['complete']++;
-                } else {
-                    $result['incomplete']++;
+        if (is_array($activePeers)) {
+            foreach ($activePeers as $aPeer) {
+                if (null === $peer || $peer->getPeerId() !== $aPeer->getPeerId()) {
+                    if ($aPeer->isComplete()) {
+                        $result['complete']++;
+                    } else {
+                        $result['incomplete']++;
+                    }
                 }
             }
         }

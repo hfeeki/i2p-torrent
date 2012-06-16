@@ -22,6 +22,7 @@ class TorrentRepository extends DocumentRepository
     public function getAll()
     {
         return $this->createQueryBuilder()
+            ->field('visible')->notEqual(false)
             ->getQuery();
     }
 
@@ -29,7 +30,7 @@ class TorrentRepository extends DocumentRepository
     {
         $qb = $this->createQueryBuilder();
 
-        $qb
+        $qb->field('visible')->notEqual(false)
             ->addOr($qb->expr()->field('title')->equals(new \MongoRegex('/.*' . $q . '.*/i')))
             ->addOr($qb->expr()->field('hash')->equals($q))
             ->addOr($qb->expr()->field('name')->equals(new \MongoRegex('/.*' . $q . '.*/i')));
@@ -48,6 +49,7 @@ class TorrentRepository extends DocumentRepository
     public function getInCategory(Category $category)
     {
         return $this->createQueryBuilder()
+            ->field('visible')->notEqual(false)
             ->field('categories')->references($category)
             ->getQuery();
     }

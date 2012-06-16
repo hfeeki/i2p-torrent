@@ -54,6 +54,8 @@
         <reference-many field="categories" fieldName="categories" name="categories" target-document="SOTB\CoreBundle\Document\Category" mappedBy="torrents"/>
         <field name="language" fieldName="language" type="string"/>
         <field name="format" fieldName="format" type="string"/>
+        <field name="openTracked" fieldName="openTracked" type="boolean"/>
+        <field name="visible" fieldName="visible" type="boolean"/>
 
         <field name="created" fieldName="created" type="date"/>
         <indexes>
