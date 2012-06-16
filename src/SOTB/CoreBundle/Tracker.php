@@ -37,6 +37,7 @@ class Tracker
             if ('completed' === $params->get('event')) {
                 // update the torrent counter
                 $torrent->incrementDownloads();
+                $this->dm->persist($torrent);
             }
         }
 
@@ -61,6 +62,9 @@ class Tracker
             return $this->announceFailure($e->getMessage());
         }
 
+        $this->dm->persist($peer);
+        $this->dm->flush();
+
         $response = array(
             'interval'      => $interval,
             'complete'      => intval($peer_stats['complete']),
@@ -71,18 +75,9 @@ class Tracker
         return new TrackerResponse($response);
     }
 
-    public function scrape(ParameterBag $params)
+    public function scrape($info_hash)
     {
-        // todo: limit to only the requested hashes
-        if ($params->has('info_hash')) {
-            $info_hash = array_map(function($v)
-            {
-                return bin2hex($v);
-            }, $params->get('info_hash'));
-            $torrents = $this->dm->getRepository('SOTBCoreBundle:Torrent')->findByInfoHash($info_hash);
-        } else {
-            $torrents = $this->dm->getRepository('SOTBCoreBundle:Torrent')->findAll();
-        }
+        $torrents = $this->dm->getRepository('SOTBCoreBundle:Torrent')->findByInfoHash($info_hash);
 
         $result = array(
             'files' => array()

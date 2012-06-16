@@ -37,11 +37,8 @@ class TrackerController implements ContainerAwareInterface
         }
 
         // Parse and validate the info hash
-        $info_hash = urldecode($request->query->get('info_hash'));
-        if (!ctype_xdigit($info_hash)) {
-            $info_hash = bin2hex($info_hash);
-        }
-        if (40 != strlen($info_hash) || !ctype_xdigit($info_hash)) {
+        $info_hash = $this->parseInfoHash($request->query->get('info_hash'));
+        if (false === $info_hash) {
             return $this->announceFailure("Invalid length of info_hash. " . $info_hash);
         }
 
@@ -91,13 +88,41 @@ class TrackerController implements ContainerAwareInterface
         return $response;
     }
 
+    protected function parseInfoHash($hash)
+    {
+        $info_hash = urldecode($hash);
+        if (!ctype_xdigit($info_hash)) {
+            $info_hash = bin2hex($info_hash);
+        }
+        if (40 != strlen($info_hash) || !ctype_xdigit($info_hash)) {
+            return false;
+        }
+
+        return $info_hash;
+    }
+
     public function scrapeAction(Request $request)
     {
+        $qs = $this->proper_parse_str($request->getQueryString());
+
+        if (!array_key_exists('info_hash', $qs)) {
+            return $this->announceFailure('Invalid info hash.');
+        }
+
+        $info_hash = $qs['info_hash'];
+
+        if (!is_array($info_hash)) {
+            $info_hash = array($info_hash);
+        }
+
+        $obj = $this;
+        $info_hash = array_map(function($v) use ($obj)
+        {
+            return $obj->parseInfoHash($v);
+        }, $info_hash);
+
         $tracker = $this->container->get('tracker');
-
-        $qs = new ParameterBag($this->proper_parse_str($request->getQueryString()));
-
-        $response = $tracker->scrape($qs);
+        $response = $tracker->scrape($info_hash);
 
         return $response;
     }
