@@ -43,10 +43,10 @@ class Tracker
             return $this->announceFailure("Invalid length of info_hash. " . $info_hash);
         }
         $peer_id = urldecode($params->get('peer_id'));
-        if (!ctype_xdigit($peer_id)) {
+        if (!preg_match('/^[\x20-\x7f]*$/D', $peer_id)) {
             $peer_id = bin2hex($peer_id);
         }
-        if (strlen($peer_id) < 20 || strlen($peer_id) > 128 || !ctype_xdigit($peer_id)) {
+        if (strlen($peer_id) < 5 || strlen($peer_id) > 128) {
             return $this->announceFailure("Invalid length of peer_id. " . $peer_id);
         }
         if (!(is_numeric($params->getInt('uploaded')) && is_int($params->getInt('uploaded') + 0) && 0 <= $params->getInt('uploaded'))) {
@@ -68,6 +68,9 @@ class Tracker
             $torrent->setOpenTracked(true);
             $torrent->setVisible(false);
             $torrent->setHash($info_hash);
+
+            $announceList = array();
+            $torrent->setAnnounceList($announceList);
 
             $this->dm->persist($torrent);
         }
@@ -97,7 +100,7 @@ class Tracker
         $peer->setLeft($params->getInt('left'));
 
         // todo: configurable?
-        $configInterval = '900';
+        $configInterval = '10';
         $interval = $configInterval + mt_rand(round($configInterval / -10), round($configInterval / 10));
 
         // If the client gracefully exists, we set its ttl to 0, double-interval otherwise.
@@ -159,7 +162,7 @@ class Tracker
 
         if ($compact) {
             $return = '';
-            if (is_array($activePeers)) {
+            if (count($activePeers)) {
                 foreach ($activePeers as $aPeer) {
                     if ($peer->getPeerId() !== $aPeer->getPeerId()) {
                         $return .= pack('N', ip2long($aPeer->getIp()));
@@ -169,7 +172,7 @@ class Tracker
             }
         } else {
             $return = array();
-            if (is_array($activePeers)) {
+            if (count($activePeers)) {
                 foreach ($torrent->getActivePeers() as $aPeer) {
                     if ($peer->getPeerId() !== $aPeer->getPeerId()) {
                         $result = array(
@@ -193,7 +196,7 @@ class Tracker
         $result = array('complete' => 0, 'incomplete' => 0);
         $activePeers = $torrent->getActivePeers();
 
-        if (is_array($activePeers)) {
+        if (count($activePeers)) {
             foreach ($activePeers as $aPeer) {
                 if (null === $peer || $peer->getPeerId() !== $aPeer->getPeerId()) {
                     if ($aPeer->isComplete()) {

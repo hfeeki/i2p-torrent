@@ -68,6 +68,7 @@ swiftmailer:
     spool:
         type:   file
         path:   %kernel.root_dir%/spool
+    delivery_address: root@localhost
 
 doctrine_mongodb:
     connections:

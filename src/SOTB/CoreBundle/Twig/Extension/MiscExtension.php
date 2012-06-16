@@ -13,6 +13,7 @@ class MiscExtension extends \Twig_Extension
         return array(
             'human_size'  => new \Twig_Filter_Method($this, 'humanSize'),
             'array_sort'  => new \Twig_Filter_Method($this, 'arraySort'),
+            'wordwrap'  => new \Twig_Filter_Method($this, 'wordwrap'),
         );
     }
 
@@ -52,6 +53,11 @@ class MiscExtension extends \Twig_Extension
         array_multisort($sort_col, $dir, $arr);
 
         return $arr;
+    }
+
+    public function wordwrap($content, $size)
+    {
+        return preg_replace('/([^\s]{'.$size.'})/', "$1 ", $content);
     }
 
 

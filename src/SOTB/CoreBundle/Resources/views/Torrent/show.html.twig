@@ -10,7 +10,9 @@
             </h1>
         </div>
 
-        {{ torrent.description | nl2br }}
+        <div class="torrentDescription">
+            {{ torrent.description | nl2br }}
+        </div>
 
         <p>&nbsp;</p>
 
@@ -64,7 +66,7 @@
         </table>
         {% endif %}
 
-        <hr />
+        <hr/>
         <div id="fos_comment_thread" data-thread="{{ thread.id }}">
 
             {% include 'FOSCommentBundle:Thread:comments.html.twig' with {

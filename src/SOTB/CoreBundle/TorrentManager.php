@@ -24,8 +24,14 @@ class TorrentManager
         /** @var $file \Symfony\Component\HttpFoundation\File\UploadedFile */
         $file = $torrent->getFilename();
 
+        $announceList = array($this->announceUrl);
+
         // the file property can be empty if the field is not required
         if (null === $file) {
+
+            // let's set the announce on this anyway (was a magnet link or a hash)
+            $torrent->setAnnounceList($announceList);
+
             return;
         }
 
@@ -35,7 +41,6 @@ class TorrentManager
         $torrentData->created_by('Anonymous');
         $torrentData->comment($torrentData->comment() . ('' == $torrentData->comment() ? '' : ' ') . '[anonymous]');
 
-        $announceList = array($this->announceUrl);
         // get the announce list
         $origAnnounceList = $torrentData->announce();
 

@@ -45,10 +45,12 @@ class TrackerUpdateCommand extends ContainerAwareCommand
             $torrent->setLastUpdate(new \DateTime());
 
             $dm->persist($torrent);
+
+            $output->writeln($torrent->getHash() . ' - [' . $torrent->getSeeders() . ']  [' . $torrent->getLeechers() . ']');
         }
 
         $dm->flush();
 
-        $output->writeln('Processed '. $processed .' torrents with a total of '. $seeders .' seeders and '. $leechers .' leechers.');
+        $output->writeln('Processed ' . $processed . ' torrents with a total of ' . $seeders . ' seeders and ' . $leechers . ' leechers.');
     }
 }
