@@ -9,6 +9,7 @@
         <field name="id" id="true"/>
 
         <field name="hash" fieldName="hash" type="string"/>
+
         <reference-many name="peers" fieldName="peers" field="peers" mapped-by="torrent" target-document="SOTB\CoreBundle\Document\Peer">
         </reference-many>
 
@@ -34,6 +35,7 @@
         <field name="files" fieldName="files" type="hash"/>
         <embed-one name="info" fieldName="info" field="info" target-document="SOTB\CoreBundle\Document\Info"/>
 
+        <field name="announce" fieldName="announce" type="string"/>
         <field name="announceList" fieldName="announceList" field="announceList" type="hash"/>
         <field name="creationDate" fieldName="creationDate" type="date"/>
         <field name="comment" fieldName="comment" type="string"/>

@@ -6,7 +6,9 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 use SOTB\CoreBundle\Document\Torrent;
 use SOTB\CoreBundle\Document\Info;
-use SOTB\CoreBundle\TorrentFile;
+use SOTB\CoreBundle\Torrent\NativeEncoder;
+use SOTB\CoreBundle\Torrent\NativeDecoder;
+use PHP\BitTorrent\Torrent as TorrentFile;
 
 /**
  * @author Matt Drollette <matt@drollette.com>
@@ -27,28 +29,24 @@ class TorrentManager
         /** @var $file UploadedFile */
         $file = $torrent->_file;
 
-        $announceList = array($this->announceUrl);
+        // let's set the announce on this anyway (was a magnet link or a hash)
+        $torrent->setAnnounce($this->announceUrl);
 
         // we only got a magnet link
         if (null === $file) {
-            // let's set the announce on this anyway (was a magnet link or a hash)
-            $torrent->setAnnounceList($announceList);
-
             return $torrent;
         }
 
-        $torrentData = new TorrentFile($file->getPathname());
-
-        // change some properties and write the new file
-        $torrentData->created_by('Anonymous');
-        //$torrentData->comment($torrentData->comment() . ('' == $torrentData->comment() ? '' : ' ') . '[anonymous]');
+        $torrentFile = TorrentFile::createFromTorrentFile($file->getPathname(), new NativeDecoder());
 
         // get the announce list
-        $origAnnounceList = $torrentData->announce();
+        $origAnnounceList = $torrentFile->getAnnounceList();
 
         // remove any non-i2p hosts
+        $announceList = array();
         if (is_array($origAnnounceList)) {
             foreach ($origAnnounceList as $announceUrl) {
+                // it SHOULD be a nested array, but some torrents are invalid with just a single nest
                 if (is_array($announceUrl)) {
                     foreach ($announceUrl as $moreNesting) {
                         if ('i2p' === $this->get_tld_from_url($moreNesting) && $moreNesting !== $this->announceUrl) {
@@ -62,29 +60,30 @@ class TorrentManager
                 }
             }
         }
+        // according to spec, it should be nested
+        $announceList = array($announceList);
 
         // reset the announce list
-        $torrentData->announce(false);
-        $torrentData->announce($announceList);
+        $filtered = array_filter($announceList);
+        if (!empty($filtered)) {
+            $torrent->setAnnounceList($announceList);
+        }
 
-        $torrent->setHash($torrentData->hash_info());
-        $torrent->setAnnounceList($torrentData->announce());
-        $torrent->setComment($torrentData->comment());
-        $torrent->setCreatedBy($torrentData->created_by());
-        $torrent->setCreationDate(new \DateTime('@' . $torrentData->creation_date()));
-        $torrent->setFiles($torrentData->offset());
-        $torrent->setSize($torrentData->size());
+        $torrent->setComment($torrentFile->getComment());
+        $torrent->setCreatedBy($torrentFile->getCreatedBy());
+        $torrent->setCreationDate(new \DateTime('@' . $torrentFile->getCreatedAt()));
+        $torrent->setFiles($torrentFile->getFileList());
+        $torrent->setSize($torrentFile->getSize());
 
+        $torrentInfo = $torrentFile->getInfo();
         $info = new Info();
-        $info->setName($torrentData->name());
-        $info->setPieceLength($torrentData->piece_length());
-        $info->setPieces($torrentData->getPieces());
-
-        $torrentInfo = $torrentData->getInfo();
+        $info->setName($torrentInfo['name']);
+        $info->setPieceLength($torrentInfo['piece length']);
+        $info->setPieces($torrentInfo['pieces']);
 
         //optional private flag
         if (array_key_exists('private', $torrentInfo)) {
-            $info->setPrivate($torrentData->is_private());
+            $info->setPrivate($torrentInfo['private']);
         }
         if (isset($torrentInfo['files']) && is_array($torrentInfo['files'])) {
             $info->setFiles($torrentInfo['files']);
@@ -96,7 +95,7 @@ class TorrentManager
             }
         }
 
-        // add any extra fields
+        // add any extra info fields (one torrent had added a "source" to be included in the hash)
         foreach ($torrentInfo as $key => $val) {
             $extra = array();
             // exclude the required fields
@@ -107,6 +106,11 @@ class TorrentManager
         $info->setExtra($extra);
 
         $torrent->setInfo($info);
+
+        // calculate the info hash
+        $encoder = new NativeEncoder();
+        $infoHash = sha1($encoder->encode($torrentInfo));
+        $torrent->setHash($infoHash);
 
         return $torrent;
     }
@@ -138,8 +142,8 @@ class TorrentManager
     public function getFileData(Torrent $torrent)
     {
         $data = array(
-            'announce'      => (is_array($torrent->getAnnounceList())) ? current($torrent->getAnnounceList()) : $torrent->getAnnounceList(),
-            'announce-list' => array((is_array($torrent->getAnnounceList())) ? $torrent->getAnnounceList() : array($torrent->getAnnounceList())),
+            'announce'      => $torrent->getAnnounce(),
+            'announce-list' => $torrent->getAnnounceList(),
             'creation date' => ($torrent->getCreationDate()) ? $torrent->getCreationDate()->getTimestamp() : time(),
             'comment'       => (null !== $torrent->getComment()) ? $torrent->getComment() : '',
             'created by'    => (null !== $torrent->getCreatedBy()) ? $torrent->getCreatedBy() : 'Anonymous',

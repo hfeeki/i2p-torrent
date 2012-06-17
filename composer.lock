@@ -1,6 +1,11 @@
 {
-    "hash": "fe730215aaaea581ecede0ab6c805271",
+    "hash": "d0bfe0aad689259e80361286c9c3ec31",
     "packages": [
+        {
+            "package": "christeredvartsen/php-bittorrent",
+            "version": "dev-master",
+            "source-reference": "afb9e624326016fe64d6780110baef9f15539a57"
+        },
         {
             "package": "doctrine/common",
             "version": "2.2.2"
@@ -184,7 +189,7 @@
         {
             "package": "sensio/generator-bundle",
             "version": "dev-master",
-            "source-reference": "a142feefff90199c78e5fcecee09463ca9740c55"
+            "source-reference": "5ea684fcf0e98acc33c29d65ee9e80ac15c69a0a"
         },
         {
             "package": "sonata-project/intl-bundle",
@@ -205,13 +210,7 @@
         {
             "package": "swiftmailer/swiftmailer",
             "version": "dev-master",
-            "alias-pretty-version": "4.1.x-dev",
-            "alias-version": "4.1.9999999.9999999-dev"
-        },
-        {
-            "package": "swiftmailer/swiftmailer",
-            "version": "dev-master",
-            "source-reference": "dce073dda43dcf9c1d571cfde26e909f154a8a7b"
+            "source-reference": "c013c12c925f9cacd1834b49f2c4bd6cfb2a52d3"
         },
         {
             "package": "symfony/assetic-bundle",
@@ -242,13 +241,7 @@
         {
             "package": "symfony/symfony",
             "version": "dev-master",
-            "alias-pretty-version": "2.1.x-dev",
-            "alias-version": "2.1.9999999.9999999-dev"
-        },
-        {
-            "package": "symfony/symfony",
-            "version": "dev-master",
-            "source-reference": "f881d28240eb21327794c67933188ee1e835eda9"
+            "source-reference": "bc147d34926f0e5c367d225a04b31b40a579eeba"
         },
         {
             "package": "twig/extensions",
@@ -295,6 +288,7 @@
         "stof/doctrine-extensions-bundle": 20,
         "exercise/htmlpurifier-bundle": 20,
         "friendsofsymfony/comment-bundle": 20,
-        "sonata-project/intl-bundle": 20
+        "sonata-project/intl-bundle": 20,
+        "christeredvartsen/php-bittorrent": 20
     }
 }

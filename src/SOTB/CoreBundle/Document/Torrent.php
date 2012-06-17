@@ -30,6 +30,7 @@ class Torrent implements GroupSequenceProviderInterface
     private $files; //display field only 
     private $info; // the original info hash
 
+    private $announce;
     private $announceList;
     private $creationDate;
     private $comment;
@@ -285,7 +286,7 @@ class Torrent implements GroupSequenceProviderInterface
 
     public function getMagnet()
     {
-        return sprintf('magnet:?xt=urn:btih:%2$s%1$sdn=%3$s%1$sxl=%4$d%1$str=%5$s', '&', $this->getHash(), urlencode($this->getTitle()), $this->getSize(), implode('&tr=', $this->getAnnounceList()));
+        return sprintf('magnet:?xt=urn:btih:%2$s%1$sdn=%3$s%1$sxl=%4$d%1$str=%5$s', '&', $this->getHash(), urlencode($this->getTitle()), $this->getSize(), '&tr='. $this->getAnnounce());
     }
 
     public function setRequestCount($requestCount)
@@ -438,5 +439,15 @@ class Torrent implements GroupSequenceProviderInterface
     public function getFiles()
     {
         return $this->files;
+    }
+
+    public function setAnnounce($announce)
+    {
+        $this->announce = $announce;
+    }
+
+    public function getAnnounce()
+    {
+        return $this->announce;
     }
 }

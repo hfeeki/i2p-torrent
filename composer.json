@@ -19,6 +19,10 @@
                 }
             }
 
+        },
+        {
+            "type":"git",
+            "url": "http://github.com/MDrollette/php-bittorrent.git"
         }
     ],
     "require":{
@@ -46,7 +50,8 @@
         "stof/doctrine-extensions-bundle":"dev-master",
         "exercise/htmlpurifier-bundle":"dev-master",
         "friendsofsymfony/comment-bundle":"dev-master",
-        "sonata-project/intl-bundle":"dev-master"
+        "sonata-project/intl-bundle":"dev-master",
+        "christeredvartsen/php-bittorrent":"dev-master"
     },
     "scripts":{
         "post-install-cmd":[
