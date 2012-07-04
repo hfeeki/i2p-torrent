@@ -1,11 +1,11 @@
 {
-    "hash": "78922a5fb4338a249766270bcaad468b",
+    "hash": "44a72a072f7f3f4259f05bf0accf2d98",
     "packages": [
         {
             "package": "christeredvartsen/php-bittorrent",
             "version": "dev-master",
-            "source-reference": "b55ec8d48f407ec9ea3f466d09462b5bcc392043",
-            "commit-date": "1329216937"
+            "source-reference": "de71d9243803abce3ccc309883f3c658b0e303bd",
+            "commit-date": "1341441104"
         },
         {
             "package": "doctrine/common",
@@ -36,8 +36,8 @@
         {
             "package": "doctrine/doctrine-fixtures-bundle",
             "version": "dev-master",
-            "source-reference": "45db22f6d0a0ff0d2f26e3154458c1e62d163921",
-            "commit-date": "1340840008"
+            "source-reference": "5de09b6f373c79779624e5a72c557a0955d000f2",
+            "commit-date": "1341432964"
         },
         {
             "package": "doctrine/mongodb",
