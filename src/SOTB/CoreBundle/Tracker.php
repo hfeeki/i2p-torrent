@@ -31,7 +31,7 @@ class Tracker
         $torrent = $this->getTorrent($info_hash);
         $peer = $this->getPeer($peer_id);
 
-        if (0 === $params->getInt('left') || 'completed' === $params->get('event')) {
+        if ('completed' === $params->get('event') || (0 === $params->getInt('left') && $params->getInt('downloaded') > 1)) {
             $peer->setComplete(true);
 
             if ('completed' === $params->get('event')) {

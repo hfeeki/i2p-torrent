@@ -6,8 +6,7 @@
     <div class="span6">
         <div class="page-header">
             <h1>{{ torrent.title }}<br/>
-                <small>{{ torrent.hash }}</small><br/>
-                <small>{{ torrent.info.hash }}</small>
+                <small>{{ torrent.hash }}</small>
             </h1>
         </div>
 
@@ -27,10 +26,10 @@
             </tr>
             </thead>
             <tbody>
-            {% for file, meta in torrent.files %}
+            {% for file in torrent.files %}
             <tr>
-                <td>{{ file }}</td>
-                <td style="text-align: right;white-space: nowrap;">{{ meta.length | human_size }}</td>
+                <td>{{ file.path | join('/') }}</td>
+                <td style="text-align: right;white-space: nowrap;">{{ file.length | human_size }}</td>
             </tr>
             {% endfor %}
             </tbody>

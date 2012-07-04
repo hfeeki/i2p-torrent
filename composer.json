@@ -1,6 +1,7 @@
 {
-    "name":"unknown",
-    "description":"Base project",
+    "name":"torrent",
+    "description":"Torrent project",
+    "minimum-stability": "dev",
     "autoload":{
         "psr-0":{
             "":"src/"
@@ -22,7 +23,7 @@
         },
         {
             "type":"git",
-            "url": "http://github.com/MDrollette/php-bittorrent.git"
+            "url":"https://github.com/MDrollette/php-bittorrent.git"
         }
     ],
     "require":{
