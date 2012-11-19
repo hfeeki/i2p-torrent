@@ -29,7 +29,7 @@ twig:
 assetic:
     debug:          %kernel.debug%
     use_controller: false
-    bundles:        [SOTBCoreBundle, FOSCommentBundle]
+    bundles:        [TwigBundle, SOTBCoreBundle, FOSCommentBundle]
     write_to:       %kernel.root_dir%/../web
     filters:
         less:
