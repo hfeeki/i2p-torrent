@@ -152,9 +152,6 @@ class TorrentManager
 
         ksort($data);
 
-//        var_export($data);
-//        die();
-
         return bencode($data);
     }
 
